@@ -5,6 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "lint": "npx prettier --check 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
+    "lint:fix": "npx prettier --write 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
     "start": "next start"
   },
   "dependencies": {
@@ -13,5 +17,27 @@
     "next": "^9.5.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-nextjs": "^1.0.6",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-html": "^5.0.5",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^26.4.0",
+    "prettier": "1.19.1"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@config(.*)$": "<rootDir>/src/config$1"
+    }
   }
 }
