@@ -13,7 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      HEDERA_ACCOUNT_ID: ${{ secrets.HEDERA_ACCOUNT_ID }}
+      HEDERA_PRIVATE_KEY: ${{ secrets.HEDERA_PRIVATE_KEY }}
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
