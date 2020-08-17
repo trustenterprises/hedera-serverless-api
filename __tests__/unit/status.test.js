@@ -15,3 +15,7 @@ test("UNPROCESSIBLE_ENTITY status code is 422", () => {
 test("BAD_REQUEST status code is 400", () => {
 	expect(Status.BAD_REQUEST).toBe(400)
 })
+
+test("METHOD_NOT_ALLOWED status code is 405", () => {
+	expect(Status.METHOD_NOT_ALLOWED).toBe(405)
+})
