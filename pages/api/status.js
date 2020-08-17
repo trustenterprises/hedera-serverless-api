@@ -1,5 +1,8 @@
 import withAuthentication from "app/middleware/withAuthentication"
 import Config from "app/config"
+import Language from "app/constants/language"
+
+const { statusRequest } = Language
 
 async function ConnectionStatusHandler(req, res) {
 	res.statusCode = 200
@@ -9,16 +12,15 @@ async function ConnectionStatusHandler(req, res) {
 	}
 
 	return res.json({
-		message: "Your environment status for your client",
-		environment_set: {
+		message: statusRequest.message,
+		environment_status: {
 			hederaAccountId: !!Config.accountId,
 			hederaPrivateKey: !!Config.privateKey,
 			authenticationKey:
 				!!Config.authenticationKey && Config.authenticationKeyValid()
 		},
 		meta: {
-			message:
-				'Hide this status endpoint by setting "HIDE_STATUS=TRUE" in your environment'
+			hint: statusRequest.meta_hint
 		}
 	})
 }
