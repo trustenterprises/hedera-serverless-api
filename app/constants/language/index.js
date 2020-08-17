@@ -4,6 +4,9 @@ module.exports = {
 		withAuthenticationResponse: {
 			noApikey: 'Please set "x-api-key" in your header',
 			invalidApikey: 'Unable to validate with the supplied "x-api-key"'
+		},
+		onlyPostResponse: {
+			notAllowed: (method) => `Method ${method} is not allowed on this route`
 		}
 	},
 
