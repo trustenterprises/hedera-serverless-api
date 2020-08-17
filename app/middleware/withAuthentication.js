@@ -2,7 +2,10 @@ import Language from "app/constants/language"
 import Validation from "app/validators"
 import Status from "app/constants/status"
 
-const { noApikey, invalidApikey } = Language.middleware.withAuthenticationResponse
+const {
+	noApikey,
+	invalidApikey
+} = Language.middleware.withAuthenticationResponse
 
 function withAuthentication(handler) {
 	return async (req, res) => {

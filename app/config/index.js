@@ -7,9 +7,10 @@ const {
 	HIDE_STATUS
 } = process.env
 
-const AUTH_KEY_MIN_LENGTH = 10;
+const AUTH_KEY_MIN_LENGTH = 10
 
-const authenticationKeyValid = () => API_SECRET_KEY && API_SECRET_KEY.length >= AUTH_KEY_MIN_LENGTH
+const authenticationKeyValid = () =>
+	API_SECRET_KEY && API_SECRET_KEY.length >= AUTH_KEY_MIN_LENGTH
 
 export default {
 	authenticationKeyValid,
