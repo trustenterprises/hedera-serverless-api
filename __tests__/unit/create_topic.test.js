@@ -3,7 +3,7 @@ import useMockedHashgraphContext from 'mocks/useMockedHashgraphContext'
 import createTopicHandler from 'app/handler/createTopicHandler';
 import prepare from 'app/utils/prepare'
 
-test("Make sure that hedera account id exists", async () => {
+test("Test handler for '/consensus/createTopic'", async () => {
   const { req, res } = createMocks({
      method: 'GET',
    });
