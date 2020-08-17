@@ -16,6 +16,7 @@ jobs:
     env:
       HEDERA_ACCOUNT_ID: ${{ secrets.HEDERA_ACCOUNT_ID }}
       HEDERA_PRIVATE_KEY: ${{ secrets.HEDERA_PRIVATE_KEY }}
+      API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
@@ -27,6 +28,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: npm run build --if-present  
-    - run: yarn lint  
+    - run: npm run build --if-present
+    - run: yarn lint
     - run: yarn test
