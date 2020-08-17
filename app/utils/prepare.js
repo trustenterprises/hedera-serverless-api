@@ -3,7 +3,7 @@
  *
  * e.g.
  * export default
- *   pipe(
+ *   prepare(
  *     withAuthentication,
  *     withValidation,
  *     useHashgraphContext
