@@ -3,6 +3,7 @@ import {
 	MirrorClient,
 	Ed25519PrivateKey,
 	Ed25519PublicKey,
+	AccountBalanceQuery,
 	MirrorConsensusTopicQuery,
 	ConsensusTopicCreateTransaction,
 	ConsensusMessageSubmitTransaction
@@ -48,6 +49,16 @@ class HashgraphClient extends HashgraphClientContract {
 			topicId,
 			submitPublicKey: submitPublicKey.toString()
 		}
+	}
+
+	async accountBalanceQuery() {
+		const client = this.#client
+
+		const balance = await new AccountBalanceQuery()
+			.setAccountId(Config.accountId)
+			.execute(client)
+
+		return { balance: balance.toString() }
 	}
 }
 
