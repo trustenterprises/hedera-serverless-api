@@ -6,7 +6,7 @@ import CreateTopicHandler from "app/handler/createTopicHandler"
 
 // Ensure that this route can only be called with POST
 export default prepare(
-  onlyPost,
+	onlyPost,
 	withAuthentication,
 	useHashgraphContext
 )(CreateTopicHandler)

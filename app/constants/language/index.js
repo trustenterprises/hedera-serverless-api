@@ -6,7 +6,7 @@ module.exports = {
 			invalidApikey: 'Unable to validate with the supplied "x-api-key"'
 		},
 		onlyPostResponse: {
-			notAllowed: (method) => `Method ${method} is not allowed on this route`
+			notAllowed: method => `Method ${method} is not allowed on this route`
 		}
 	},
 
