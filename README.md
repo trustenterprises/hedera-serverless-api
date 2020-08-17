@@ -4,6 +4,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/project?template=https://github.com/mattsmithies/hedera-serverless-consensus)
 
+
+## Routes
+
+Consensus Service
+
+CRUD for topics
+
+Check balance
+
 ## Getting Started
 
 First, run the development server:
