@@ -34,10 +34,5 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "jest": "^26.4.0",
     "prettier": "1.19.1"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^@config(.*)$": "<rootDir>/src/config$1"
-    }
   }
 }
