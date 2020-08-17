@@ -12,3 +12,7 @@ test("Ensure that a bad authentication key is invalid", () => {
 
 	expect(isValidKey).toBe(false)
 })
+
+test("Ensure that a authentication key is at least 10 characters long", () => {
+	expect(Config.authenticationKeyValid()).toBe(true)
+})
