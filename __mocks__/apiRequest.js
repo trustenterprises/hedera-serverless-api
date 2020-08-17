@@ -2,9 +2,11 @@
 
 const mockedApiRequest = ({
   mock: (
-    headers = {}
+    headers = {},
+    method = "GET"
   ) => ({
-    headers
+    headers,
+    method
   })
 })
 
