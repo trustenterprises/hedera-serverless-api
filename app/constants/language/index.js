@@ -10,6 +10,7 @@ module.exports = {
 	// Requests
 	statusRequest: {
 		message: "Your environment status for your client",
-		meta_hint: 'Hide this status endpoint by setting "HIDE_STATUS=TRUE" in your environment'
+		meta_hint:
+			'Hide this status endpoint by setting "HIDE_STATUS=TRUE" in your environment'
 	}
 }
