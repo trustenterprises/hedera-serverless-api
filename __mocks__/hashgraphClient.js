@@ -15,6 +15,13 @@ class mockedHashgraphClient extends HashgraphClientContract {
       submitPublicKey: "302a300506032b657003210034314146f2f694822547af9007baa32fcc5a6962e7c5141333846a6cf04b64ca"
     }
   }
+
+  // Example response returning the account balance
+  async accountBalanceQuery () {
+    return {
+      balance: "9995.232"
+    }
+  }
 }
 
 export default mockedHashgraphClient
