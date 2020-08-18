@@ -1,11 +1,15 @@
 class HashgraphClientContract {
 	constructor() {
 		if (!this.createNewTopic) {
-			throw new Error('A job must implement a "createNewTopic" method')
+			throw new Error(
+				'The hashgraph client must implement a "createNewTopic" method'
+			)
 		}
 
 		if (!this.accountBalanceQuery) {
-			throw new Error('A job must implement a "accountBalanceQuery" method')
+			throw new Error(
+				'The hashgraph client must implement a "accountBalanceQuery" method'
+			)
 		}
 	}
 }

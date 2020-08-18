@@ -26,28 +26,39 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	// Validate the memo when creating a topic and whether it should be a "private" submit topic
-	async createNewTopic() {
+	async createNewTopic({ memo, enable_private_submit_key }) {
 		const client = this.#client
-
-		const submitKey = await Ed25519PrivateKey.generate()
-		const submitPublicKey = submitKey.publicKey
+		const transactionResponse = {}
 
 		// TODO: This is used for submitting messages to hedera with the recorded public key
 		// const rawPublicKey = "302a300506032b657003210034314146f2f694822547af9007baa32fcc5a6962e7c5141333846a6cf04b64ca"
 		// const submitPublicKey = Ed25519PublicKey.fromString(rawPublicKey)
 		// console.log(submitPublicKey.toString());
 
-		const transactionId = await new ConsensusTopicCreateTransaction()
-			// .setTopicMemo("HCS topic with submit key") // add a optional memo
-			.setSubmitKey(submitPublicKey)
-			.execute(client)
+		const transaction = new ConsensusTopicCreateTransaction()
+
+		if (memo) {
+			transaction.setTopicMemo(memo)
+			transactionResponse.memo = memo
+		}
+
+		if (enable_private_submit_key) {
+			const submitKey = await Ed25519PrivateKey.generate()
+			const submitPublicKey = submitKey.publicKey
+
+			transactionResponse.submitPublicKey = submitPublicKey.toString()
+			transaction.setSubmitKey(submitPublicKey)
+		}
+
+		const transactionId = await transaction.execute(client)
 
 		const receipt = await transactionId.getReceipt(client)
 		const topicId = receipt.getConsensusTopicId()
 
+		const { shard, realm, topic } = topicId
 		return {
-			topicId,
-			submitPublicKey: submitPublicKey.toString()
+			...transactionResponse,
+			topic: `${shard}.${realm}.${topic}`
 		}
 	}
 
