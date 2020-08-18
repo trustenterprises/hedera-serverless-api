@@ -1,6 +1,7 @@
 import Config from 'app/config'
 import Status from 'app/constants/status'
 import { createMocks } from 'node-mocks-http';
+import MockHashgraphResponse from 'mocks/static/hashgraph'
 import useMockedHashgraphContext from 'mocks/useMockedHashgraphContext'
 import onlyGet from "app/middleware/onlyGet"
 import withAuthentication from "app/middleware/withAuthentication"
@@ -46,9 +47,7 @@ test("Test success handler for '/consensus/createTopic'", async () => {
   expect(res._getStatusCode()).toBe(200);
   expect(JSON.parse(res._getData())).toEqual(
     expect.objectContaining({
-      data: {
-        balance: "9995.232"
-      }
+      data: MockHashgraphResponse.accountBalance
     }),
   );
 })

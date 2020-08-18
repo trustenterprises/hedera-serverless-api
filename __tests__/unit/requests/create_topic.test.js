@@ -1,6 +1,7 @@
 import Config from 'app/config'
 import Status from 'app/constants/status'
 import { createMocks } from 'node-mocks-http';
+import MockHashgraphResponse from 'mocks/static/hashgraph'
 import useMockedHashgraphContext from 'mocks/useMockedHashgraphContext'
 import onlyPost from "app/middleware/onlyPost"
 import withAuthentication from "app/middleware/withAuthentication"
@@ -41,17 +42,88 @@ test("Test success handler for '/consensus/createTopic'", async () => {
 
   await injectedTopicHandler(req, res)
 
-  expect(res._getStatusCode()).toBe(200);
+  expect(res._getStatusCode()).toBe(Status.OK);
+
   expect(JSON.parse(res._getData())).toEqual(
     expect.objectContaining({
-      data: {
-        topic: {
-          shard: 0,
-          realm: 0,
-          topic: 127561
-        },
-        submitPublicKey: "302a300506032b657003210034314146f2f694822547af9007baa32fcc5a6962e7c5141333846a6cf04b64ca"
-      }
+      data: MockHashgraphResponse.newTopic
     }),
   );
+})
+
+test("Test success handler with memo for '/consensus/createTopic'", async () => {
+  const { req, res } = createMocks({
+     method: 'POST',
+     headers: {
+       'x-api-key': Config.authenticationKey
+     },
+     body: {
+       memo: "hello"
+     }
+   });
+
+  await injectedTopicHandler(req, res)
+
+  expect(JSON.parse(res._getData())).toEqual(
+    expect.objectContaining({
+      data: MockHashgraphResponse.newTopicWithMemo
+    }),
+  );
+})
+
+test("Test success handler with memo and key for '/consensus/createTopic'", async () => {
+  const { req, res } = createMocks({
+     method: 'POST',
+     headers: {
+       'x-api-key': Config.authenticationKey
+     },
+     body: {
+       memo: "hello",
+       enable_private_submit_key: true
+     }
+   });
+
+  await injectedTopicHandler(req, res)
+
+  expect(JSON.parse(res._getData())).toEqual(
+    expect.objectContaining({
+      data: MockHashgraphResponse.newTopicWithMemoAndKey
+    }),
+  );
+})
+
+test("Test success handler with key for '/consensus/createTopic'", async () => {
+  const { req, res } = createMocks({
+     method: 'POST',
+     headers: {
+       'x-api-key': Config.authenticationKey
+     },
+     body: {
+       enable_private_submit_key: true
+     }
+   });
+
+  await injectedTopicHandler(req, res)
+
+  expect(JSON.parse(res._getData())).toEqual(
+    expect.objectContaining({
+      data: MockHashgraphResponse.newTopicWithPublicKey
+    }),
+  );
+})
+
+test("Test fail validation handler for '/consensus/createTopic'", async () => {
+  const { req, res } = createMocks({
+     method: 'POST',
+     headers: {
+       'x-api-key': Config.authenticationKey
+     },
+     body: {
+       memo: 1,
+     }
+   });
+
+  await injectedTopicHandler(req, res)
+
+  expect(res._getStatusCode()).toBe(Status.UNPROCESSIBLE_ENTITY);
 })

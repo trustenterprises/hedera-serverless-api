@@ -13,14 +13,14 @@ const mockedHandler = () => 'ok'
 const handlerWithMiddleware = onlyGet(mockedHandler)
 const mockedApiResponse = MockedApiResponse.mock()
 
-test("Expect that a request with a GET method fails", async () => {
+test("Expect that a request with a GET method succeeds", async () => {
 	const mockedApiRequest = MockedApiRequest.mock()
 	const response = await handlerWithMiddleware(mockedApiRequest, mockedApiResponse)
 
 	expect(response).toBe("ok")
 })
 
-test("Expect that a request with an invalid api key fails", async () => {
+test("Expect that a request with a POST method fails", async () => {
 	const mockedApiRequest = MockedApiRequest.mock({}, "POST")
 	const response = await handlerWithMiddleware(mockedApiRequest, mockedApiResponse)
 

@@ -20,7 +20,7 @@ test("Expect that a request with a GET method fails", async () => {
 	expect(response).toBe(onlyPostResponse.notAllowed("GET"))
 })
 
-test("Expect that a request with an invalid api key fails", async () => {
+test("Expect that a request with a POST method succeeds", async () => {
 	const mockedApiRequest = MockedApiRequest.mock({}, "POST")
 	const response = await handlerWithMiddleware(mockedApiRequest, mockedApiResponse)
 
