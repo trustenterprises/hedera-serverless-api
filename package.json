@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "test": "jest",
+    "test": "jest  --coverage",
     "test:watch": "jest --watchAll",
     "lint": "npx prettier --check 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
     "lint:fix": "npx prettier --write 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
     "start": "next start"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@hashgraph/sdk": "^1.3.0",
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
