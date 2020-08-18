@@ -1,26 +1,33 @@
 // Mocked hashgraph client for injection
 import HashgraphClientContract from 'app/hashgraph/contract'
+import MockHashgraphResponse from './static/hashgraph'
 import Config from "app/config"
 
 class mockedHashgraphClient extends HashgraphClientContract {
 
   // Example response when creating a new topic
-  async createNewTopic () {
-    return {
-      topic: {
-        shard: 0,
-        realm: 0,
-        topic: 127561
-      },
-      submitPublicKey: "302a300506032b657003210034314146f2f694822547af9007baa32fcc5a6962e7c5141333846a6cf04b64ca"
+  async createNewTopic ({
+		memo,
+		enable_private_submit_key
+	}) {
+    if (memo && enable_private_submit_key) {
+      return MockHashgraphResponse.newTopicWithMemoAndKey
     }
+
+    if (memo) {
+      return MockHashgraphResponse.newTopicWithMemo
+    }
+
+    if (enable_private_submit_key) {
+      return MockHashgraphResponse.newTopicWithPublicKey
+    }
+
+    return MockHashgraphResponse.newTopic
   }
 
   // Example response returning the account balance
   async accountBalanceQuery () {
-    return {
-      balance: "9995.232"
-    }
+    return MockHashgraphResponse.accountBalance
   }
 }
 
