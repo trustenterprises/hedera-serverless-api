@@ -25,7 +25,9 @@ class HashgraphClient extends HashgraphClientContract {
 		)
 	}
 
-	// Validate the memo when creating a topic and whether it should be a "private" submit topic
+	/**
+	 * Skipping the admin signing of the transaction as this API is accessed through an authKey
+	 **/
 	async createNewTopic({ memo, enable_private_submit_key }) {
 		const client = this.#client
 		const transactionResponse = {}
