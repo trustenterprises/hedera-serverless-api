@@ -1,15 +1,13 @@
-import Language from "app/constants/language"
-import Status from "app/constants/status"
-
-const { notAllowed } = Language.middleware.onlyPostResponse
+import Request from "app/constants/request"
+import Response from "app/response"
 
 function onlyGet(handler) {
 	return async (req, res) => {
-		if (req.method !== "GET") {
-			return res.status(Status.METHOD_NOT_ALLOWED).send(notAllowed(req.method))
+		if (req.method === Request.GET) {
+			return handler(req, res)
 		}
 
-		return handler(req, res)
+		return Response.methodNotAllowed(res, req.method)
 	}
 }
 
