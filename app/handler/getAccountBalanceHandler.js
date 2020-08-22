@@ -1,10 +1,10 @@
-// The raw request handler before middleware, validators and injected context
+import Response from "app/response"
+
 async function GetAccountBalanceHandler(req, res) {
 	const { hashgraphClient } = req.context
-	const response = await hashgraphClient.accountBalanceQuery()
+	const balance = await hashgraphClient.accountBalanceQuery()
 
-	res.statusCode = 200
-	res.json({ data: response })
+	Response.json(res, balance)
 }
 
 export default GetAccountBalanceHandler
