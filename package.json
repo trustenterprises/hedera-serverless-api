@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "test": "jest  --coverage",
-    "test:watch": "jest --watchAll",
+    "test": "jest  --coverage --testPathIgnorePatterns='e2e/*'",
+    "test:watch": "jest --testPathIgnorePatterns='e2e/*' --watchAll",
+    "test:all": "jest --coverage",
     "lint": "npx prettier --check 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
     "lint:fix": "npx prettier --write 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
     "start": "next start"
