@@ -14,7 +14,7 @@ const injectedTopicHandler = prepare(
   useMockedHashgraphContext
 )(createTopicHandler)
 
-test("Test unauthorised handler for '/consensus/createTopic'", async () => {
+test("Test unauthorised handler for '/consensus/topic'", async () => {
   const { req, res } = createMocks({
      method: 'POST'
    });
@@ -24,7 +24,7 @@ test("Test unauthorised handler for '/consensus/createTopic'", async () => {
   expect(res._getStatusCode()).toBe(Status.UNAUTHORIZED);
 })
 
-test("Test bad method handler for '/consensus/createTopic'", async () => {
+test("Test bad method handler for '/consensus/topic'", async () => {
   const { req, res } = createMocks();
 
   await injectedTopicHandler(req, res)
@@ -32,7 +32,7 @@ test("Test bad method handler for '/consensus/createTopic'", async () => {
   expect(res._getStatusCode()).toBe(Status.METHOD_NOT_ALLOWED);
 })
 
-test("Test success handler for '/consensus/createTopic'", async () => {
+test("Test success handler for '/consensus/topic'", async () => {
   const { req, res } = createMocks({
      method: 'POST',
      headers: {
@@ -51,7 +51,7 @@ test("Test success handler for '/consensus/createTopic'", async () => {
   );
 })
 
-test("Test success handler with memo for '/consensus/createTopic'", async () => {
+test("Test success handler with memo for '/consensus/topic'", async () => {
   const { req, res } = createMocks({
      method: 'POST',
      headers: {
@@ -71,7 +71,7 @@ test("Test success handler with memo for '/consensus/createTopic'", async () => 
   );
 })
 
-test("Test success handler with memo and key for '/consensus/createTopic'", async () => {
+test("Test success handler with memo and key for '/consensus/topic'", async () => {
   const { req, res } = createMocks({
      method: 'POST',
      headers: {
@@ -92,7 +92,7 @@ test("Test success handler with memo and key for '/consensus/createTopic'", asyn
   );
 })
 
-test("Test success handler with key for '/consensus/createTopic'", async () => {
+test("Test success handler with key for '/consensus/topic'", async () => {
   const { req, res } = createMocks({
      method: 'POST',
      headers: {
@@ -112,7 +112,7 @@ test("Test success handler with key for '/consensus/createTopic'", async () => {
   );
 })
 
-test("Test fail validation handler for '/consensus/createTopic'", async () => {
+test("Test fail validation handler for '/consensus/topic'", async () => {
   const { req, res } = createMocks({
      method: 'POST',
      headers: {

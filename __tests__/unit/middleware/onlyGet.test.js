@@ -24,5 +24,5 @@ test("Expect that a request with a POST method fails", async () => {
 	const mockedApiRequest = MockedApiRequest.mock({}, "POST")
 	const response = await handlerWithMiddleware(mockedApiRequest, mockedApiResponse)
 
-	expect(response).toBe(onlyPostResponse.notAllowed("POST"))
+	expect(response.reason).toBe(onlyPostResponse.notAllowed("POST"))
 })

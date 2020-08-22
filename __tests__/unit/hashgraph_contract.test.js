@@ -16,5 +16,22 @@ test("Check hashgraph contract throws errors, 'accountBalanceQuery' not set", ()
 
 	expect(() => {
 		new HashgraphClientNoBalance()
+	}).toThrow('The hashgraph client must implement a "getTopicInfo" method');
+})
+
+test("Check hashgraph contract throws errors, 'accountBalanceQuery' not set", () => {
+
+	class HashgraphClientNoBalance extends HashgraphClientContract {
+		createNewTopic () {
+			return true
+		}
+
+		getTopicInfo () {
+			return true
+		}
+	}
+
+	expect(() => {
+		new HashgraphClientNoBalance()
 	}).toThrow('The hashgraph client must implement a "accountBalanceQuery" method');
 })

@@ -17,14 +17,14 @@ test("Expect that a request with no api key fails", async () => {
 	const mockedApiRequest = MockedApiRequest.mock()
 	const response = await handlerWithMiddleware(mockedApiRequest, mockedApiResponse)
 
-	expect(response).toBe(withAuthenticationResponse.noApikey)
+	expect(response.reason).toBe(withAuthenticationResponse.noApikey)
 })
 
 test("Expect that a request with an invalid api key fails", async () => {
 	const mockedApiRequest = MockedApiRequest.mock({ 'x-api-key': 'bad-key' })
 	const response = await handlerWithMiddleware(mockedApiRequest, mockedApiResponse)
 
-	expect(response).toBe(withAuthenticationResponse.invalidApikey)
+	expect(response.reason).toBe(withAuthenticationResponse.invalidApikey)
 })
 
 test("Expect that a request with a valid api key is successfull", async () => {

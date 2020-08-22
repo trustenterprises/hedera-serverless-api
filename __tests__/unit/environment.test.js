@@ -7,7 +7,7 @@ test("Make sure that the config returns the account id", () => {
 })
 
 test("Make sure that the config returns the private key", () => {
-	expect(Config.accountId).toBe(HEDERA_ACCOUNT_ID)
+	expect(Config.privateKey).toBe(HEDERA_PRIVATE_KEY)
 })
 
 test("Make sure that the config returns the api secret key", () => {
