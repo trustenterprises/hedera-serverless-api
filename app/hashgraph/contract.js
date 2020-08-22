@@ -1,16 +1,16 @@
+function throwUnless (candidate, method) {
+	if (!candidate) {
+		throw new Error(
+			`The hashgraph client must implement a "${method}" method`
+		)
+	}
+}
+
 class HashgraphClientContract {
 	constructor() {
-		if (!this.createNewTopic) {
-			throw new Error(
-				'The hashgraph client must implement a "createNewTopic" method'
-			)
-		}
-
-		if (!this.accountBalanceQuery) {
-			throw new Error(
-				'The hashgraph client must implement a "accountBalanceQuery" method'
-			)
-		}
+		throwUnless(this.createNewTopic, "createNewTopic")
+		throwUnless(this.getTopicInfo, "getTopicInfo")
+		throwUnless(this.accountBalanceQuery, "accountBalanceQuery")
 	}
 }
 

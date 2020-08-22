@@ -4,12 +4,16 @@ import {
 	Ed25519PrivateKey,
 	Ed25519PublicKey,
 	AccountBalanceQuery,
+	ConsensusTopicInfoQuery,
 	MirrorConsensusTopicQuery,
 	ConsensusTopicCreateTransaction,
 	ConsensusMessageSubmitTransaction
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import Config from "app/config"
+
+// Put this in utils
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -54,6 +58,15 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const transactionId = await transaction.execute(client)
 
+		console.log(transactionId);
+		console.log('start sleep');
+		// Is this required?
+		await sleep(5000)
+		console.log('end sleep');
+
+		// Try old
+		// const transactionId = "0.0.116507@1598054187.112000000"
+
 		const receipt = await transactionId.getReceipt(client)
 		const topicId = receipt.getConsensusTopicId()
 
@@ -62,6 +75,16 @@ class HashgraphClient extends HashgraphClientContract {
 			...transactionResponse,
 			topic: `${shard}.${realm}.${topic}`
 		}
+	}
+
+	// TODO: We might reduce this to
+	async getTopicInfo(topicId) {
+		// const client = this.#client
+		// const topic = await new ConsensusTopicInfoQuery()
+		// 	.setTopicId(topicId)
+		// 	.execute(client)
+		//
+		// return topic;
 	}
 
 	async accountBalanceQuery() {
