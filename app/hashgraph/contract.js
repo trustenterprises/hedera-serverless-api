@@ -1,8 +1,6 @@
-function throwUnless (candidate, method) {
+function throwUnless(candidate, method) {
 	if (!candidate) {
-		throw new Error(
-			`The hashgraph client must implement a "${method}" method`
-		)
+		throw new Error(`The hashgraph client must implement a "${method}" method`)
 	}
 }
 

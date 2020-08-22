@@ -58,11 +58,11 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const transactionId = await transaction.execute(client)
 
-		console.log(transactionId);
-		console.log('start sleep');
+		console.log(transactionId)
+		console.log("start sleep")
 		// Is this required?
 		await sleep(5000)
-		console.log('end sleep');
+		console.log("end sleep")
 
 		// Try old
 		// const transactionId = "0.0.116507@1598054187.112000000"

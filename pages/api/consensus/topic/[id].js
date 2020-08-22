@@ -9,20 +9,20 @@ import UpdateTopicHandler from "app/handler/updateTopicHandler"
 import DeleteTopicHandler from "app/handler/deleteTopicHandler"
 
 const EditTopicResourceHandlers = {
-  [Request.GET]: TopicInfoHandler,
-  [Request.PUT]: UpdateTopicHandler,
-  [Request.DELETE]: DeleteTopicHandler
+	[Request.GET]: TopicInfoHandler,
+	[Request.PUT]: UpdateTopicHandler,
+	[Request.DELETE]: DeleteTopicHandler
 }
 
 function EditTopicResource(req, res) {
-  const selectHandler = EditTopicResourceHandlers[req.method]
+	const selectHandler = EditTopicResourceHandlers[req.method]
 
-  if (selectHandler) {
-    return selectHandler(req, res)
-  }
+	if (selectHandler) {
+		return selectHandler(req, res)
+	}
 
-  // This is the catch all for PATCH and others
-  return Response.methodNotAllowed(res, req.method)
+	// This is the catch all for PATCH and others
+	return Response.methodNotAllowed(res, req.method)
 }
 
 export default prepare(
