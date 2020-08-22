@@ -25,6 +25,10 @@ class mockedHashgraphClient extends HashgraphClientContract {
     return MockHashgraphResponse.newTopic
   }
 
+  async getTopicInfo () {
+    
+  }
+
   // Example response returning the account balance
   async accountBalanceQuery () {
     return MockHashgraphResponse.accountBalance
