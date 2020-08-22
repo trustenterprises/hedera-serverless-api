@@ -5,13 +5,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/project?template=https://github.com/mattsmithies/hedera-serverless-consensus)
 
 
-## Routes
+## TODO
 
-Consensus Service
-
+Consensus Service focus
 CRUD for topics
-
 Check balance
+
+## Notes
+
+- The raw request handler before middleware, validators and injected context
+- All handlers are going to tightly couple the validation
 
 ## Getting Started
 
