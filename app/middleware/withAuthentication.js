@@ -1,6 +1,6 @@
 import Language from "app/constants/language"
 import Validation from "app/validators"
-import Status from "app/constants/status"
+import Response from "app/response"
 
 const {
 	noApikey,
@@ -12,11 +12,11 @@ function withAuthentication(handler) {
 		const apiKey = req.headers && req.headers["x-api-key"]
 
 		if (apiKey === undefined || !apiKey.length) {
-			return res.status(Status.UNAUTHORIZED).send(noApikey)
+			return Response.unauthorised(res, noApikey)
 		}
 
 		if (!Validation.checkAuthenticationKey(apiKey)) {
-			return res.status(Status.UNAUTHORIZED).send(invalidApikey)
+			return Response.unauthorised(res, invalidApikey)
 		}
 
 		return handler(req, res)
