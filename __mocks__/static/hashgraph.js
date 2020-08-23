@@ -23,7 +23,15 @@ const accountBalance = {
   balance: "9995.232"
 }
 
+const showTopic = {
+  topicMemo: "test",
+  adminKey: null,
+  submitKey: null,
+  autoRenewAccount: null
+}
+
 export default {
+  showTopic,
   newTopic,
   newTopicWithPublicKey,
   newTopicWithMemo,
