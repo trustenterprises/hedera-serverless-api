@@ -11,9 +11,7 @@ import {
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import Config from "app/config"
-
-// Put this in utils
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+import sleep from 'app/utils/sleep'
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -44,28 +42,25 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = new ConsensusTopicCreateTransaction()
 
 		if (memo) {
-			transaction.setTopicMemo(memo)
 			transactionResponse.memo = memo
+			transaction.setTopicMemo(memo)
 		}
 
+		// This doesn't seem to be working
 		if (enable_private_submit_key) {
 			const submitKey = await Ed25519PrivateKey.generate()
 			const submitPublicKey = submitKey.publicKey
 
-			transactionResponse.submitPublicKey = submitPublicKey.toString()
 			transaction.setSubmitKey(submitPublicKey)
+
+			// The ordering of this is vital as the toString() method mutates the public key.
+			transactionResponse.submitPublicKey = submitPublicKey.toString()
 		}
 
 		const transactionId = await transaction.execute(client)
 
-		console.log(transactionId)
-		console.log("start sleep")
 		// Is this required?
-		await sleep(5000)
-		console.log("end sleep")
-
-		// Try old
-		// const transactionId = "0.0.116507@1598054187.112000000"
+		await sleep()
 
 		const receipt = await transactionId.getReceipt(client)
 		const topicId = receipt.getConsensusTopicId()
@@ -77,14 +72,13 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
-	// TODO: We might reduce this to
 	async getTopicInfo(topicId) {
-		// const client = this.#client
-		// const topic = await new ConsensusTopicInfoQuery()
-		// 	.setTopicId(topicId)
-		// 	.execute(client)
-		//
-		// return topic;
+		const client = this.#client
+		const topic = await new ConsensusTopicInfoQuery()
+			.setTopicId(topicId)
+			.execute(client)
+
+		return topic;
 	}
 
 	async accountBalanceQuery() {
