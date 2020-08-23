@@ -11,7 +11,7 @@ import {
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import Config from "app/config"
-import sleep from 'app/utils/sleep'
+import sleep from "app/utils/sleep"
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -78,7 +78,7 @@ class HashgraphClient extends HashgraphClientContract {
 			.setTopicId(topicId)
 			.execute(client)
 
-		return topic;
+		return topic
 	}
 
 	async accountBalanceQuery() {
