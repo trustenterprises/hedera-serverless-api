@@ -5,14 +5,17 @@ import MockHashgraphResponse from 'mocks/static/hashgraph'
 import useMockedHashgraphContext from 'mocks/useMockedHashgraphContext'
 import denyPost from "app/middleware/denyPost"
 import withAuthentication from "app/middleware/withAuthentication"
-import createTopicHandler from 'app/handler/createTopicHandler';
 import prepare from 'app/utils/prepare'
+
+function mockTopicHandler(req, res) {
+  return true;
+}
 
 const injectedTopicHandler = prepare(
   denyPost,
   withAuthentication,
   useMockedHashgraphContext
-)(createTopicHandler)
+)(mockTopicHandler)
 
 test("Test methodNotAllowed handler for '/consensus/topic/:id", async () => {
   const { req, res } = createMocks({
