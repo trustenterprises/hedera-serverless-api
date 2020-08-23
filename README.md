@@ -5,11 +5,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/project?template=https://github.com/mattsmithies/hedera-serverless-consensus)
 
 
-## TODO
+## Initial TODO:
 
 Consensus Service focus
-CRUD for topics
-Check balance
+- CRUD for topics & messages
+- Check a transaction
+- Check balance 
+- Webhook management
+- Async/Sync requests
+- Mock and e2e testing for client (not default tests)
 
 ## Notes
 
