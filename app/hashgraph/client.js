@@ -10,6 +10,7 @@ import {
 	ConsensusMessageSubmitTransaction
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
+import HashgraphNodeNetwork from "./network"
 import Config from "app/config"
 import sleep from "app/utils/sleep"
 
@@ -20,11 +21,7 @@ class HashgraphClient extends HashgraphClientContract {
 	constructor() {
 		super()
 
-		// if HEDERA_TESTNET or MAINNET use test net, for now just testnet
-		this.#client = Client.forTestnet().setOperator(
-			Config.accountId,
-			Config.privateKey
-		)
+		this.#client = HashgraphNodeNetwork.getNodeNetworkClient()
 	}
 
 	/**
