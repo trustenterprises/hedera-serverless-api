@@ -3,6 +3,7 @@ const {
 	Client,
 	MirrorClient,
 	MirrorConsensusTopicQuery,
+	TransactionRecordQuery,
 	ConsensusTopicCreateTransaction,
 	ConsensusMessageSubmitTransaction
 } = require("@hashgraph/sdk")
@@ -18,8 +19,6 @@ const testnetNodes = {
 }
 
 async function consensusMessageHandler(req, res) {
-	// const client = Client.forTestnet()
-
 	const client = new Client({ network: testnetNodes })
 
 	client.setOperator(
@@ -27,54 +26,35 @@ async function consensusMessageHandler(req, res) {
 		process.env.HEDERA_PRIVATE_KEY
 	)
 
-	const transactionId = await new ConsensusTopicCreateTransaction().execute(
-		client
-	)
-	// const transactionReceipt = await transactionId.getReceipt(client)
-	// const topicId = transactionReceipt.getConsensusTopicId()
-
 	// We just need
 	const topicId = "0.0.133351"
 
-	// await sleep(5000)
-	//
-	const myMirrorClient = new MirrorClient(
-		"hcs.testnet.mirrornode.hedera.com:5600"
-		// '0.testnet.hedera.com:50211'
-	)
-	// //
-	const subscription = new MirrorConsensusTopicQuery()
+	const transaction = await new ConsensusMessageSubmitTransaction()
 		.setTopicId(topicId)
-		.setLimit(1)
-		// .setStartTime(10)
-		// .setStartTime(19)
-		.subscribe(
-			myMirrorClient,
-			message => {
-				// console.log(message);
-				// subscription.unsubscribe()
+		.setMessage(`Hedera is coolbeans, toad!`)
+		.execute(client)
 
-				console.log("received from mirror: ", message.toString())
+	// const receipt = await transaction.getReceipt(client)
 
-				res.statusCode = 200
-				res.json({ message })
-			},
-			error => {
-				console.log("MirrorConsensusTopicQuery errorroorroo")
-				console.log("Error: ", error.toString())
-			}
-		)
+	// This will be used for the webhook
 
-	const receipt = await (
-		await new ConsensusMessageSubmitTransaction()
-			.setTopicId(topicId)
-			.setMessage(`Hedera is coolbeans, happy.`)
-			.execute(client)
-	).getReceipt(client)
+	await sleep()
 
-	console.log(receipt)
+	const record = await new TransactionRecordQuery()
+		.setTransactionId(transaction)
+		.execute(client)
 
-	// res.json({ receipt })
+	// The response will be here, I may include a wait, if no webhook.
+
+	console.log(record)
+
+	const data = {
+		topicId,
+		consensusTimestamp: record.consensusTimestamp,
+		txId: record.transactionId
+	}
+
+	res.json({ data })
 }
 
 export default consensusMessageHandler
