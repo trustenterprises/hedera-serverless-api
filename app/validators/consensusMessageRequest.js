@@ -5,6 +5,7 @@ const schema = Joi.object({
 		.min(1)
 		.required(),
 	topic_id: Joi.string().required(),
+	reference: Joi.string(),
 	allow_synchronous_consensus: Joi.boolean().sensitive()
 })
 
