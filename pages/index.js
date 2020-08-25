@@ -5,47 +5,131 @@ export default function Home() {
 	return (
 		<div className={styles.container}>
 			<Head>
-				<title>Create Next App</title>
+				<title>Serverless Hashgraph</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
 			<main className={styles.main}>
 				<h1 className={styles.title}>
-					Welcome to <a href="https://nextjs.org">Next.js!</a>
+					Welcome to your{" "}
+					<a
+						target="_blank"
+						href="https://hashgraph.remotesoftwaredevelopment.com/"
+					>
+						Serverless Hashgraph Client!
+					</a>
 				</h1>
 
-				<p className={styles.description}>
-					Get started by editing{" "}
-					<code className={styles.code}>pages/index.js</code>
-				</p>
-
 				<div className={styles.grid}>
-					<a href="https://nextjs.org/docs" className={styles.card}>
+					<a
+						href="https://nextjs.org/docs"
+						target="_blank"
+						className={styles.card}
+					>
 						<h3>Documentation &rarr;</h3>
-						<p>Find in-depth information about Next.js features and API.</p>
+						<p>
+							Find in-depth documentation on how you can utilise this client for
+							your project
+						</p>
 					</a>
 
-					<a href="https://nextjs.org/learn" className={styles.card}>
-						<h3>Learn &rarr;</h3>
-						<p>Learn about Next.js in an interactive course with quizzes!</p>
+					<a href="/api/status" target="_blank" className={styles.card}>
+						<h3>Status Check &rarr;</h3>
+						<p>
+							Check the status of your client, has it been set up correctly?
+							Psst, you can hide this screen.
+						</p>
 					</a>
 
 					<a
-						href="https://github.com/vercel/next.js/tree/master/examples"
+						href="https://github.com/mattsmithies/hedera-serverless-consensus"
+						target="_blank"
 						className={styles.card}
 					>
-						<h3>Examples &rarr;</h3>
+						<h3>The Projec &rarr;</h3>
 						<p>Discover and deploy boilerplate example Next.js projects.</p>
 					</a>
 
 					<a
 						href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+						target="_blank"
 						className={styles.card}
 					>
-						<h3>Deploy &rarr;</h3>
+						<h3>Deploy More! &rarr;</h3>
 						<p>
-							Instantly deploy your Next.js site to a public URL with Vercel.
+							Instantly deploy a new servlerless hashgraph client site to a
+							public URL with Vercel.
 						</p>
+					</a>
+
+					<a
+						href="https://nextjs.org/docs"
+						target="_blank"
+						className={styles.card}
+					>
+						<h3>The Laravel Client &rarr;</h3>
+						<p>Coming soon.</p>
+					</a>
+
+					<a
+						href="https://nextjs.org/docs"
+						target="_blank"
+						className={styles.card}
+					>
+						<h3>About Hedera &rarr;</h3>
+						<p>Find out more about Hedera Hashgraph</p>
+					</a>
+				</div>
+
+				<h3 className={styles.subtitle}>
+					Created by{" "}
+					<a target="_blank" href="https://remotesoftwaredevelopment.com/">
+						Matthew Smithies
+					</a>
+					<br />
+					Find out more about my work & projects
+				</h3>
+
+				<div className={styles.grid}>
+					<a
+						href="https://nextjs.org/docs"
+						target="_blank"
+						className={styles.card}
+					>
+						<h3>Coursematch</h3>
+						<p>
+							Find in-depth documentation on how you can utilise this client for
+							your project
+						</p>
+					</a>
+
+					<a
+						href="https://nextjs.org/docs"
+						target="_blank"
+						className={styles.card}
+					>
+						<h3>DOVU</h3>
+						<p>
+							Find in-depth documentation on how you can utilise this client for
+							your project
+						</p>
+					</a>
+
+					<a href="/api/status" target="_blank" className={styles.card}>
+						<h3>Safe Stream</h3>
+						<p>
+							Check the status of your client, has it been set up correctly?
+							Psst, you can hide this screen.
+						</p>
+					</a>
+
+					<a
+						href="https://github.com/mattsmithies/hedera-serverless-consensus"
+						target="_blank"
+						className={styles.card}
+					>
+						<h3>Envboard</h3>
+						<p>Discover and deploy boilerplate example Next.js projects.</p>
 					</a>
 				</div>
 			</main>
