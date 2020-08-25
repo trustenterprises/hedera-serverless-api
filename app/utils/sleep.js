@@ -2,7 +2,7 @@
  * Sleep to wait for hedera's mirror nodes to catch up.
  */
 
-// Maximum finality for consensus.
+// Maximum expected time for consensus finality.
 const DEFAULT_MS = 5000
 
 function sleep(ms = DEFAULT_MS) {
