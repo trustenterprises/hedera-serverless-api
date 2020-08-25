@@ -6,9 +6,6 @@ async function TopicInfoHandler(req, res) {
 
 	const topic = await hashgraphClient.getTopicInfo(id)
 
-	// const info = await hashgraphClient.accountBalanceQuery()
-	// Response.json(res, info)
-
 	Response.json(res, topic)
 }
 

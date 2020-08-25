@@ -8,8 +8,13 @@ async function CreateConsensusMessageHandler(req, res) {
 		return Response.unprocessibleEntity(res, validationErrors)
 	}
 
-	const { message, allow_synchronous_consensus, topic_id } = req.body
-	const messageOptions = { message, allow_synchronous_consensus, topic_id }
+	const { message, allow_synchronous_consensus, topic_id, reference } = req.body
+	const messageOptions = {
+		message,
+		reference,
+		allow_synchronous_consensus,
+		topic_id
+	}
 
 	const { hashgraphClient } = req.context
 	const consensusMessageResponse = await hashgraphClient.sendConsensusMessage(
