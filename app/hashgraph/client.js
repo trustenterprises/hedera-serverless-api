@@ -7,6 +7,7 @@ import {
 	ConsensusTopicInfoQuery,
 	MirrorConsensusTopicQuery,
 	ConsensusTopicCreateTransaction,
+	ConsensusTopicUpdateTransaction,
 	ConsensusMessageSubmitTransaction,
 	TransactionRecordQuery
 } from "@hashgraph/sdk"
@@ -14,6 +15,7 @@ import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
 import Config from "app/config"
 import sleep from "app/utils/sleep"
+import sendWebhookMessage from "app/utils/sendWebhookMessage"
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -31,8 +33,10 @@ class HashgraphClient extends HashgraphClientContract {
 	async createNewTopic({ memo, enable_private_submit_key }) {
 		const client = this.#client
 		const transactionResponse = {}
-
+		const operatorPrivateKey = Ed25519PrivateKey.fromString(Config.privateKey)
 		const transaction = new ConsensusTopicCreateTransaction()
+
+		transaction.setAdminKey(operatorPrivateKey.publicKey)
 
 		if (memo) {
 			transactionResponse.memo = memo
@@ -40,8 +44,6 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		if (enable_private_submit_key) {
-			const operatorPrivateKey = Ed25519PrivateKey.fromString(Config.privateKey)
-
 			transaction.setSubmitKey(operatorPrivateKey.publicKey)
 		}
 
@@ -56,10 +58,21 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
-	async getTopicInfo(topicId) {
+	async getTopicInfo(topic_id) {
 		const client = this.#client
 		const topic = await new ConsensusTopicInfoQuery()
-			.setTopicId(topicId)
+			.setTopicId(topic_id)
+			.execute(client)
+
+		return topic
+	}
+
+	// Only allow for a topic's memo to be updated
+	async updateTopic({ topic_id, memo }) {
+		const client = this.#client
+		const topic = await new ConsensusTopicUpdateTransaction()
+			.setTopicId(topic_id)
+			.setTopicMemo(memo)
 			.execute(client)
 
 		return topic
@@ -75,49 +88,53 @@ class HashgraphClient extends HashgraphClientContract {
 		return { balance: balance.toString() }
 	}
 
-	// Message, topicId, allow_synchronous_consensus
-	// Private submission is automatically handled
 	async sendConsensusMessage({
+		reference,
 		allow_synchronous_consensus,
 		message,
 		topic_id
 	}) {
 		const client = this.#client
 
-		console.log(topic_id)
-
 		const transaction = await new ConsensusMessageSubmitTransaction()
 			.setTopicId(topic_id)
 			.setMessage(message)
 			.execute(client)
 
-		// const receipt = await transaction.getReceipt(client)
-		// This will be used for the webhook or if allow_synchronous_consensus is set
-
-		// if allow_synchronous_consensus is true skip this
-		if (!allow_synchronous_consensus) {
-			return { transaction_id: transaction }
-		}
-
-		await sleep()
-
-		const record = await new TransactionRecordQuery()
-			.setTransactionId(transaction)
-			.execute(client)
-
-		const { consensusTimestamp, transactionId } = record
-
-		// The response will be here, I may include a wait, if no webhook.
-
-		console.log(record)
-
-		return {
+		// Remember to allow for mainnet links for explorer
+		const messageTransactionResponse = {
+			reference,
 			topic_id,
-			consensus_timestamp: consensusTimestamp,
-			transaction_id: transactionId
+			transaction_id: transaction.toString(),
+			explorer_url: `https://ledger-testnet.hashlog.io/tx/${transaction}`
 		}
 
-		return { transaction_id: transaction }
+		const syncMessageConsensus = async () => {
+			await sleep()
+
+			const record = await new TransactionRecordQuery()
+				.setTransactionId(transaction)
+				.execute(client)
+
+			const consensusResult = {
+				...messageTransactionResponse,
+				consensus_timestamp: record.consensusTimestamp
+			}
+
+			sendWebhookMessage(consensusResult)
+
+			return consensusResult
+		}
+
+		if (allow_synchronous_consensus) {
+			return await syncMessageConsensus()
+		}
+
+		if (Config.webhookUrl) {
+			syncMessageConsensus()
+		}
+
+		return messageTransactionResponse
 	}
 }
 
