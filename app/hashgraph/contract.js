@@ -12,7 +12,7 @@ class HashgraphClientContract {
 		// Handle topic CRUD and other things.
 		throwUnless(this.createNewTopic, "createNewTopic")
 		throwUnless(this.getTopicInfo, "getTopicInfo")
-		// throwUnless(this.updateTopic, "updateTopic")
+		throwUnless(this.updateTopic, "updateTopic")
 		// throwUnless(this.deleteTopic, "deleteTopic")
 
 		// Basic functions for user info.
