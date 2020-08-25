@@ -1,5 +1,6 @@
 import Config from "app/config"
 import { Client } from "@hashgraph/sdk"
+
 /**
  * Provide a list of nodes that are working in the hedera network,
  * there could be some nodes that fail to work, shall we develop
@@ -40,7 +41,8 @@ const previewnetNodes = {
 
 // Testing and development for development only.
 const getNodeNetworkClient = () => {
-	return new Client({ network: testnetNodes }).setOperator(
+	// return new Client({ network: testnetNodes }).setOperator(
+	return new Client({ network: previewnetNodes }).setOperator(
 		Config.accountId,
 		Config.privateKey
 	)
