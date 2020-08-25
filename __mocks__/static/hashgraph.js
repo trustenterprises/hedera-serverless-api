@@ -19,6 +19,21 @@ const newTopicWithMemoAndKey = {
   ...newTopicWithPublicKey
 }
 
+const updateTopic = {
+  topicId: "0.0.134383",
+  accountId: {
+    shard: 0,
+    realm: 0,
+    account: 6616
+  }
+}
+
+const updateTopicWithMemo = {
+  ...updateTopic,
+  topicId: "0.0.134383",
+  memo: "hello"
+}
+
 const accountBalance = {
   balance: "9995.232"
 }
@@ -55,5 +70,7 @@ export default {
   newTopicWithMemoAndKey,
   accountBalance,
   consensusMessageResponse,
-  transactionMessageResponse
+  transactionMessageResponse,
+  updateTopic,
+  updateTopicWithMemo
 }
