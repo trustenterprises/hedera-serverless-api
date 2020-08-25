@@ -7,7 +7,8 @@ import {
 	ConsensusTopicInfoQuery,
 	MirrorConsensusTopicQuery,
 	ConsensusTopicCreateTransaction,
-	ConsensusMessageSubmitTransaction
+	ConsensusMessageSubmitTransaction,
+	TransactionRecordQuery
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -31,11 +32,6 @@ class HashgraphClient extends HashgraphClientContract {
 		const client = this.#client
 		const transactionResponse = {}
 
-		// TODO: This is used for submitting messages to hedera with the recorded public key
-		// const rawPublicKey = "302a300506032b657003210034314146f2f694822547af9007baa32fcc5a6962e7c5141333846a6cf04b64ca"
-		// const submitPublicKey = Ed25519PublicKey.fromString(rawPublicKey)
-		// console.log(submitPublicKey.toString());
-
 		const transaction = new ConsensusTopicCreateTransaction()
 
 		if (memo) {
@@ -43,26 +39,17 @@ class HashgraphClient extends HashgraphClientContract {
 			transaction.setTopicMemo(memo)
 		}
 
-		// This doesn't seem to be working
 		if (enable_private_submit_key) {
-			const submitKey = await Ed25519PrivateKey.generate()
-			const submitPublicKey = submitKey.publicKey
+			const operatorPrivateKey = Ed25519PrivateKey.fromString(Config.privateKey)
 
-			transaction.setSubmitKey(submitPublicKey)
-
-			// The ordering of this is vital as the toString() method mutates the public key.
-			transactionResponse.submitPublicKey = submitPublicKey.toString()
+			transaction.setSubmitKey(operatorPrivateKey.publicKey)
 		}
 
 		const transactionId = await transaction.execute(client)
-
-		// Is this required?
-		await sleep()
-
 		const receipt = await transactionId.getReceipt(client)
 		const topicId = receipt.getConsensusTopicId()
-
 		const { shard, realm, topic } = topicId
+
 		return {
 			...transactionResponse,
 			topic: `${shard}.${realm}.${topic}`
@@ -86,6 +73,51 @@ class HashgraphClient extends HashgraphClientContract {
 			.execute(client)
 
 		return { balance: balance.toString() }
+	}
+
+	// Message, topicId, allow_synchronous_consensus
+	// Private submission is automatically handled
+	async sendConsensusMessage({
+		allow_synchronous_consensus,
+		message,
+		topic_id
+	}) {
+		const client = this.#client
+
+		console.log(topic_id)
+
+		const transaction = await new ConsensusMessageSubmitTransaction()
+			.setTopicId(topic_id)
+			.setMessage(message)
+			.execute(client)
+
+		// const receipt = await transaction.getReceipt(client)
+		// This will be used for the webhook or if allow_synchronous_consensus is set
+
+		// if allow_synchronous_consensus is true skip this
+		if (!allow_synchronous_consensus) {
+			return { transaction_id: transaction }
+		}
+
+		await sleep()
+
+		const record = await new TransactionRecordQuery()
+			.setTransactionId(transaction)
+			.execute(client)
+
+		const { consensusTimestamp, transactionId } = record
+
+		// The response will be here, I may include a wait, if no webhook.
+
+		console.log(record)
+
+		return {
+			topic_id,
+			consensus_timestamp: consensusTimestamp,
+			transaction_id: transactionId
+		}
+
+		return { transaction_id: transaction }
 	}
 }
 
