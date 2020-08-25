@@ -33,6 +33,17 @@ class mockedHashgraphClient extends HashgraphClientContract {
   async accountBalanceQuery () {
     return MockHashgraphResponse.accountBalance
   }
+
+  // Example response returning the account balance
+  async sendConsensusMessage ({
+    allow_synchronous_consensus
+  }) {
+    if (allow_synchronous_consensus) {
+      return MockHashgraphResponse.transactionMessageResponse
+    }
+
+    return MockHashgraphResponse.consensusMessageResponse
+  }
 }
 
 export default mockedHashgraphClient

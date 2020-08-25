@@ -30,11 +30,30 @@ const showTopic = {
   autoRenewAccount: null
 }
 
+const consensusMessageResponse = {
+  data: {
+    topicId: "0.0.134383",
+    consensusTimestamp: {
+      "seconds": 1598306688,
+      "nanos": 750728007
+    },
+    transactionId: "0.0.116507@1598338540.979000000"
+  }
+}
+
+const transactionMessageResponse = {
+  data: {
+    transactionId: "0.0.116507@1598338540.979000000"
+  }
+}
+
 export default {
   showTopic,
   newTopic,
   newTopicWithPublicKey,
   newTopicWithMemo,
   newTopicWithMemoAndKey,
-  accountBalance
+  accountBalance,
+  consensusMessageResponse,
+  transactionMessageResponse
 }
