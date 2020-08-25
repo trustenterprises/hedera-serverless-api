@@ -24,6 +24,11 @@ test("Check that validation fails for incorrect boolean 'allow_synchronous_conse
 	expect(validation[0]).toBe('\"allow_synchronous_consensus\" must be a boolean')
 })
 
+test("Check that validation fails for reference", () => {
+	const validation = consensusMessageRequest({ message: "This is recorded", topic_id: '123', reference: 1 })
+
+	expect(validation[0]).toBe('"reference" must be a string')
+})
 
 test("Validation works for basic requirements", () => {
 	const validation = consensusMessageRequest({ message: "This is recorded", topic_id: '123' })
