@@ -10,13 +10,19 @@ export default function Home() {
 			</Head>
 
 			<main className={styles.main}>
+				<img
+					src="/decentralized-on-HH_black.jpg"
+					alt="Vercel Logo"
+					className={styles.supportIcon}
+				/>
+
 				<h1 className={styles.title}>
 					Welcome to your{" "}
 					<a
 						target="_blank"
 						href="https://hashgraph.remotesoftwaredevelopment.com/"
 					>
-						Serverless Hashgraph Client!
+						Serverless Hashgraph Beta Client! 🚀
 					</a>
 				</h1>
 
@@ -26,28 +32,19 @@ export default function Home() {
 						target="_blank"
 						className={styles.card}
 					>
-						<h3>Documentation &rarr;</h3>
+						<h4>Documentation &rarr;</h4>
 						<p>
-							Find in-depth documentation on how you can utilise this client for
-							your project
+							Find in-depth documentation on how you can record and audit trust
+							in your your project.
 						</p>
 					</a>
 
 					<a href="/api/status" target="_blank" className={styles.card}>
-						<h3>Status Check &rarr;</h3>
+						<h4>Status Check &rarr;</h4>
 						<p>
 							Check the status of your client, has it been set up correctly?
 							Psst, you can hide this screen.
 						</p>
-					</a>
-
-					<a
-						href="https://github.com/mattsmithies/hedera-serverless-consensus"
-						target="_blank"
-						className={styles.card}
-					>
-						<h3>The Projec &rarr;</h3>
-						<p>Discover and deploy boilerplate example Next.js projects.</p>
 					</a>
 
 					<a
@@ -55,71 +52,10 @@ export default function Home() {
 						target="_blank"
 						className={styles.card}
 					>
-						<h3>Deploy More! &rarr;</h3>
+						<h4>Deploy More! &rarr;</h4>
 						<p>
-							Instantly deploy a new servlerless hashgraph client site to a
+							Deploy a new secure serverless hashgraph REST API client site to a
 							public URL with Vercel.
-						</p>
-					</a>
-
-					<a
-						href="https://nextjs.org/docs"
-						target="_blank"
-						className={styles.card}
-					>
-						<h3>The Laravel Client &rarr;</h3>
-						<p>Coming soon.</p>
-					</a>
-
-					<a
-						href="https://nextjs.org/docs"
-						target="_blank"
-						className={styles.card}
-					>
-						<h3>About Hedera &rarr;</h3>
-						<p>Find out more about Hedera Hashgraph</p>
-					</a>
-				</div>
-
-				<h3 className={styles.subtitle}>
-					Created by{" "}
-					<a target="_blank" href="https://remotesoftwaredevelopment.com/">
-						Matthew Smithies
-					</a>
-					<br />
-					Find out more about my work & projects
-				</h3>
-
-				<div className={styles.grid}>
-					<a
-						href="https://nextjs.org/docs"
-						target="_blank"
-						className={styles.card}
-					>
-						<h3>Coursematch</h3>
-						<p>
-							Find in-depth documentation on how you can utilise this client for
-							your project
-						</p>
-					</a>
-
-					<a
-						href="https://nextjs.org/docs"
-						target="_blank"
-						className={styles.card}
-					>
-						<h3>DOVU</h3>
-						<p>
-							Find in-depth documentation on how you can utilise this client for
-							your project
-						</p>
-					</a>
-
-					<a href="/api/status" target="_blank" className={styles.card}>
-						<h3>Safe Stream</h3>
-						<p>
-							Check the status of your client, has it been set up correctly?
-							Psst, you can hide this screen.
 						</p>
 					</a>
 
@@ -128,10 +64,63 @@ export default function Home() {
 						target="_blank"
 						className={styles.card}
 					>
-						<h3>Envboard</h3>
-						<p>Discover and deploy boilerplate example Next.js projects.</p>
+						<h4>The Github Code &rarr;</h4>
+						<p>
+							Make a contribution, raise an issue or simply peek at our code
+							with the curiosity of a thousand toads.
+						</p>
+					</a>
+
+					<a target="_blank" className={styles.card}>
+						<h4>The Laravel Client (coming soon)</h4>
+						<p>
+							Add trust events to your SaaS. Webhooks and storage for all audit
+							logs are all automatically handled.
+						</p>
+					</a>
+
+					<a
+						href="https://www.hedera.com/"
+						target="_blank"
+						className={styles.card}
+					>
+						<h4>About Hedera &rarr;</h4>
+						<p>
+							Find out more about Hedera Hashgraph and what it can offer you.
+						</p>
 					</a>
 				</div>
+
+				<h2 className={styles.subtitle}>
+					Created by{" "}
+					<a target="_blank" href="https://remotesoftwaredevelopment.com/">
+						Matthew Smithies
+					</a>
+					<br />
+					Find out more about my work with{" "}
+					<a target="_blank" href="https://coursematch.io/">
+						Coursematch
+					</a>{" "}
+					and{" "}
+					<a target="_blank" href="https://dovu.io/">
+						DOVU
+					</a>
+					.
+					<br />
+					Alternatively, take a peek at my{" "}
+					<a target="_blank" href="https://worldclassremote.com/">
+						blog for remote startup teams
+					</a>
+					,{" "}
+					<a target="_blank" href="https://safestream.info/">
+						Safe Stream
+					</a>{" "}
+					or{" "}
+					<a target="_blank" href="https://envboard.dev/">
+						Envboard
+					</a>
+					.
+				</h2>
 			</main>
 
 			<footer className={styles.footer}>

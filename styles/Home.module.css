@@ -51,13 +51,13 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 2rem;
 }
 
 .subtitle {
   margin: 0;
-  line-height: 2;
-  font-size: 1.5rem;
+  line-height: 1.5;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -76,7 +76,7 @@
   background: #fafafa;
   border-radius: 5px;
   padding: 0.75rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
@@ -88,7 +88,8 @@
   flex-wrap: wrap;
 
   max-width: 800px;
-  margin-top: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .card {
@@ -98,7 +99,7 @@
   text-align: left;
   color: inherit;
   text-decoration: none;
-  border: 1px solid #eaeaea;
+  border: 1px solid #eaeaea80;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
@@ -107,7 +108,7 @@
 .card:focus,
 .card:active {
   color: #0070f3;
-  border-color: #0070f3;
+  border-color: #0070f380;
 }
 
 .card h3 {
@@ -123,6 +124,9 @@
 
 .logo {
   height: 1em;
+}
+.supportIcon {
+  height: 10em;
 }
 
 @media (max-width: 600px) {
