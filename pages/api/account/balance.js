@@ -1,11 +1,11 @@
-import onlyPost from "app/middleware/onlyPost"
+import onlyGet from "app/middleware/onlyGet"
 import withAuthentication from "app/middleware/withAuthentication"
 import useHashgraphContext from "app/context/useHashgraphContext"
 import prepare from "app/utils/prepare"
-import CreateConsensusMessageHandler from "app/handler/createConsensusMessageHandler"
+import GetAccountBalanceHandler from "app/handler/getAccountBalanceHandler"
 
 export default prepare(
-	onlyPost,
+	onlyGet,
 	withAuthentication,
 	useHashgraphContext
-)(CreateConsensusMessageHandler)
+)(GetAccountBalanceHandler)
