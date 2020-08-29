@@ -11,7 +11,7 @@ import DeleteTopicHandler from "app/handler/deleteTopicHandler"
 const EditTopicResourceHandlers = {
 	[Request.GET]: TopicInfoHandler,
 	[Request.PUT]: UpdateTopicHandler,
-	[Request.DELETE]: DeleteTopicHandler
+	[Request.DELETE]: DeleteTopicHandler // WIP
 }
 
 function EditTopicResource(req, res) {
