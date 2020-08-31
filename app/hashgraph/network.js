@@ -43,7 +43,7 @@ const previewnetNodes = {
 // Need to add option for changing to previewnet/testnet/mainnet
 const getNodeNetworkClient = () => {
 	return new Client({ network: testnetNodes }).setOperator(
-	// return new Client({ network: previewnetNodes }).setOperator(
+		// return new Client({ network: previewnetNodes }).setOperator(
 		Config.accountId,
 		Config.privateKey
 	)
