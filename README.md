@@ -4,6 +4,10 @@
 
 Welcome to the serverless hedera API, you can find out more about the project and running your first client through [reading the docs](https://docs.trust.enterprises).
 
+You can look at our postman docs by clicking the button below.
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/run-collection/e61a0c42e7d572890996)
+
 Currently the API is pointing to testnet nodes, use your testnet credentials as your environment variables.
 
 ## Deploy with 1 click
