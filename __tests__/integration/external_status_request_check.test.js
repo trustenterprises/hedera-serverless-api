@@ -40,3 +40,19 @@ test("Check external '/api/status' returns a valid response, is it ready to be u
   expect(environment_status.hederaPrivateKey).toBe(true)
   expect(environment_status.authenticationKey).toBe(true)
 })
+
+test("Check external '/api/account/balance' returns a valid response, is it ready to be used?", async () => {
+
+  if (!apiUrl) {
+    console.warn("Skipping test as 'API_URL' not found in environment, for these tests to pass your external service needs to be redeployed");
+    return
+  }
+
+  const { data } = await axios.get(`${apiUrl}/api/account/balance`, {
+    headers: {
+      'x-api-key': Config.authenticationKey
+    }
+  })
+
+  expect(data.balance).not.toBe(null)
+})
