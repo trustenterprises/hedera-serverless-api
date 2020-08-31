@@ -19,7 +19,7 @@ async function ExampleWebhookHandler(req, res) {
 		return Response.badRequest(res)
 	}
 
-	Response.json(res, req.body)
+	Response.json(res, req.body.data)
 }
 
 export default ExampleWebhookHandler
