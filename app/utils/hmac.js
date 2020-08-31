@@ -13,22 +13,22 @@ import Crypto from "crypto"
  */
 
 function generateHash(payloadAsString) {
-  if (typeof payloadAsString !== "string") {
-    throw 'Your payload object must be converted in to a string'
-  }
+	if (typeof payloadAsString !== "string") {
+		throw "Your payload object must be converted in to a string"
+	}
 
-  return Crypto.createHmac('sha256', Config.authenticationKey)
-    .update(payloadAsString)
-    .digest('hex');
+	return Crypto.createHmac("sha256", Config.authenticationKey)
+		.update(payloadAsString)
+		.digest("hex")
 }
 
 function validateSignature(payloadAsString, signature) {
-  const hash = generateHash(payloadAsString)
+	const hash = generateHash(payloadAsString)
 
-  return hash === signature
+	return hash === signature
 }
 
 export default {
-  generateHash,
-  validateSignature
+	generateHash,
+	validateSignature
 }

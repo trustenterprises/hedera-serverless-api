@@ -13,7 +13,7 @@ function sendWebhookMessage(data) {
 	const dataAsString = JSON.stringify(data)
 	const config = {
 		headers: {
-			'x-signature': Hmac.generateHash(dataAsString)
+			"x-signature": Hmac.generateHash(dataAsString)
 		}
 	}
 

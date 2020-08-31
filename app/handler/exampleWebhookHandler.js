@@ -6,7 +6,7 @@ async function ExampleWebhookHandler(req, res) {
 		"Example webhook handler for sending consensus responses to your app."
 	)
 
-	const signature = req.headers['x-signature']
+	const signature = req.headers["x-signature"]
 
 	if (!signature) {
 		return Response.badRequest(res)
