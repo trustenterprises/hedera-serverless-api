@@ -1,4 +1,5 @@
 import Config from "app/config"
+import Hmac from "app/utils/hmac"
 import axios from "axios"
 
 function sendWebhookMessage(data) {
@@ -9,8 +10,15 @@ function sendWebhookMessage(data) {
 		return
 	}
 
+	const dataAsString = JSON.stringify(data)
+	const config = {
+		headers: {
+			'x-signature': Hmac.generateHash(dataAsString)
+		}
+	}
+
 	try {
-		axios.post(webhookUrl, { data })
+		axios.post(webhookUrl, { data }, config)
 	} catch (e) {
 		console.error(e)
 	}
