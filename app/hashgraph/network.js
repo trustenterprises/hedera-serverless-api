@@ -61,7 +61,7 @@ const getNodeNetworkClient = () => {
   const network = networkForEnvironment[Config.network]
 
   if (!network || !network.nodes) {
-    throw `Network from environment ${Config.network} could not match for any hedera network`
+    throw `Network from environment ${Config.network} could not match for any hedera network. Change your "HEDERA_NETWORK" environment variable to either: "testnet", "previewnet" or "mainnet"`
   }
 
 	return new Client({ network: network.nodes }).setOperator(

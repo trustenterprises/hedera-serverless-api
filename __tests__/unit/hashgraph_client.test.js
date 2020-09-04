@@ -11,5 +11,5 @@ test("The HashgraphClient should throw if network is in correct", () => {
 	expect(() => {
 		Config.network = 'badnetwork'
 		new HashgraphClient()
-	}).toThrow("Network from environment badnetwork could not match for any hedera network");
+	}).toThrow("Network from environment badnetwork could not match for any hedera network. Change your \"HEDERA_NETWORK\" environment variable to either: \"testnet\", \"previewnet\" or \"mainnet\"");
 })
