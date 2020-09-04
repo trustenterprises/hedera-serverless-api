@@ -1,7 +1,16 @@
-const { HEDERA_ACCOUNT_ID, HEDERA_PRIVATE_KEY, API_SECRET_KEY } = process.env
+const {
+	HEDERA_NETWORK,
+	HEDERA_ACCOUNT_ID,
+	HEDERA_PRIVATE_KEY,
+	API_SECRET_KEY
+} = process.env
 
 test("Make sure that hedera account id exists", () => {
-	expect(HEDERA_ACCOUNT_ID)
+	expect(HEDERA_ACCOUNT_ID.length)
+})
+
+test("Make sure that hedera network exists", () => {
+	expect(HEDERA_NETWORK.length)
 })
 
 test("Make sure that hedera account id matches format", () => {
