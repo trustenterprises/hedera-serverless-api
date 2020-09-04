@@ -1,6 +1,7 @@
 "use strict"
 
 const {
+	HEDERA_NETWORK,
 	HEDERA_ACCOUNT_ID,
 	HEDERA_PRIVATE_KEY,
 	API_SECRET_KEY,
@@ -15,6 +16,7 @@ const authenticationKeyValid = () =>
 
 export default {
 	authenticationKeyValid,
+	network: HEDERA_NETWORK.toLowerCase(),
 	accountId: HEDERA_ACCOUNT_ID,
 	privateKey: HEDERA_PRIVATE_KEY,
 	authenticationKey: API_SECRET_KEY,
