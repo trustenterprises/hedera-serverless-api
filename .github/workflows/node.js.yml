@@ -16,6 +16,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
+      HEDERA_NETWORK: ${{ secrets.HEDERA_NETWORK }}
       HEDERA_ACCOUNT_ID: ${{ secrets.HEDERA_ACCOUNT_ID }}
       HEDERA_PRIVATE_KEY: ${{ secrets.HEDERA_PRIVATE_KEY }}
       API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}

@@ -1,5 +1,8 @@
 import Config from "app/config"
+import Environment from "app/constants/environment"
 import { Client } from "@hashgraph/sdk"
+
+const { TESTNET, PREVIEWNET, MAINNET } = Environment
 
 /**
  * Provide a list of nodes that are working in the hedera network,
@@ -39,19 +42,35 @@ const previewnetNodes = {
 	"3.previewnet.hedera.com:50211": "0.0.6"
 }
 
-// Testing and development for development only.
-// Need to add option for changing to previewnet/testnet/mainnet
+const networkForEnvironment = {
+	[TESTNET]: {
+		name: TESTNET,
+		nodes: testnetNodes
+	},
+	[PREVIEWNET]: {
+		name: PREVIEWNET,
+		nodes: previewnetNodes
+	},
+	[MAINNET]: {
+		name: MAINNET,
+		nodes: mainnetNodes
+	}
+}
+
 const getNodeNetworkClient = () => {
-	return new Client({ network: testnetNodes }).setOperator(
-		// return new Client({ network: previewnetNodes }).setOperator(
+	const network = networkForEnvironment[Config.network]
+
+	if (!network || !network.nodes) {
+		throw `Network from environment ${Config.network} could not match for any hedera network. Change your "HEDERA_NETWORK" environment variable to either: "testnet", "previewnet" or "mainnet"`
+	}
+
+	return new Client({ network: network.nodes }).setOperator(
 		Config.accountId,
 		Config.privateKey
 	)
 }
 
 export default {
-	testnetNodes,
-	mainnetNodes,
-	previewnetNodes,
+	networkForEnvironment,
 	getNodeNetworkClient
 }
