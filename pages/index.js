@@ -18,10 +18,7 @@ export default function Home() {
 
 				<h1 className={styles.title}>
 					Welcome to your{" "}
-					<a
-						target="_blank"
-						href="https://trust.enterprises/"
-					>
+					<a target="_blank" href="https://trust.enterprises/">
 						Serverless Hashgraph Beta Client! 🚀
 					</a>
 				</h1>
