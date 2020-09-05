@@ -20,7 +20,7 @@ export default function Home() {
 					Welcome to your{" "}
 					<a
 						target="_blank"
-						href="https://hashgraph.remotesoftwaredevelopment.com/"
+						href="https://trust.enterprises/"
 					>
 						Serverless Hashgraph Beta Client! 🚀
 					</a>
@@ -28,7 +28,7 @@ export default function Home() {
 
 				<div className={styles.grid}>
 					<a
-						href="https://nextjs.org/docs"
+						href="https://docs.trust.enterprises/"
 						target="_blank"
 						className={styles.card}
 					>
@@ -48,7 +48,7 @@ export default function Home() {
 					</a>
 
 					<a
-						href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+						href="https://vercel.com/import/git?s=https://github.com/mattsmithies/hedera-serverless-consensus&env=HEDERA_NETWORK,HEDERA_ACCOUNT_ID,HEDERA_PRIVATE_KEY,API_SECRET_KEY&envDescription=Enter%20your%20account%20id%20and%20private%20key%20from%20the%20hedera%20portal.%20The%20API%20secret%20is%20your%20authentication%20key%20to%20communicate%20with%20your%20API,%20create%20a%20secure%20string%20of%20at%20least%2010%20characters.&envLink=https%3A%2F%2Fdocs.trust.enterprises%2Fdeployment%2Fenvironment-variables&redirect-url=https%3A%2F%2Fdocs.trust.enterprises%2Frest-api%2Foverview"
 						target="_blank"
 						className={styles.card}
 					>
