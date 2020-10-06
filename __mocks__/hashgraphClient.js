@@ -12,7 +12,7 @@ class mockedHashgraphClient extends HashgraphClientContract {
 	}) {
     if (memo && enable_private_submit_key) {
       return MockHashgraphResponse.newTopicWithMemoAndKey
-    }
+		}
 
     if (memo) {
       return MockHashgraphResponse.newTopicWithMemo

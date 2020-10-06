@@ -118,7 +118,8 @@ class HashgraphClient extends HashgraphClientContract {
 
 			const consensusResult = {
 				...messageTransactionResponse,
-				consensus_timestamp: record.consensusTimestamp
+				consensus_timestamp: record.consensusTimestamp,
+				reference: reference
 			}
 
 			sendWebhookMessage(consensusResult)
