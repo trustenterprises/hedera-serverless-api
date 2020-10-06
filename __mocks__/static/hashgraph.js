@@ -46,14 +46,13 @@ const showTopic = {
 }
 
 const consensusMessageResponse = {
-  data: {
-    topicId: "0.0.134383",
-    consensusTimestamp: {
-      "seconds": 1598306688,
-      "nanos": 750728007
-    },
-    transactionId: "0.0.116507@1598338540.979000000"
-  }
+  reference: "test",
+  topic_id: "0.0.134383",
+  consensus_timestamp: {
+    "seconds": 1598306688,
+    "nanos": 750728007
+  },
+  transaction_id: "0.0.116507@1598338540.979000000"
 }
 
 const transactionMessageResponse = {

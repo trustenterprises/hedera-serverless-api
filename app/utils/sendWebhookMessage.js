@@ -18,7 +18,7 @@ function sendWebhookMessage(data) {
 	}
 
 	try {
-		axios.post(webhookUrl, { data }, config)
+		axios.post(webhookUrl, data, config)
 	} catch (e) {
 		console.error(e)
 	}
