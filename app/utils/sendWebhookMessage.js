@@ -20,7 +20,7 @@ async function sendWebhookMessage(data) {
 	try {
 		await axios.post(webhookUrl, data, config)
 	} catch (e) {
-		throw new Error('Unable to send payload to webhook ' + webhookUrl);
+		throw new Error("Unable to send payload to webhook " + webhookUrl)
 	}
 }
 
