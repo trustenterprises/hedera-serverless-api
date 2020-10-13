@@ -122,7 +122,7 @@ class HashgraphClient extends HashgraphClientContract {
 				reference: reference
 			}
 
-			sendWebhookMessage(consensusResult)
+			await sendWebhookMessage(consensusResult)
 
 			return consensusResult
 		}

@@ -2,7 +2,7 @@ import Config from "app/config"
 import Hmac from "app/utils/hmac"
 import axios from "axios"
 
-function sendWebhookMessage(data) {
+async function sendWebhookMessage(data) {
 	const { webhookUrl } = Config
 
 	if (!webhookUrl || !data) {
@@ -18,9 +18,9 @@ function sendWebhookMessage(data) {
 	}
 
 	try {
-		axios.post(webhookUrl, data, config)
+		await axios.post(webhookUrl, data, config)
 	} catch (e) {
-		console.error(e)
+		throw new Error("Unable to send payload to webhook " + webhookUrl)
 	}
 }
 
