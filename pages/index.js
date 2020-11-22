@@ -57,7 +57,7 @@ export default function Home() {
 					</a>
 
 					<a
-						href="https://github.com/mattsmithies/hedera-serverless-consensus"
+						href="https://github.com/trustenterprises/hedera-serverless-consensus"
 						target="_blank"
 						className={styles.card}
 					>
