@@ -15,6 +15,7 @@ import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
 import Config from "app/config"
 import sleep from "app/utils/sleep"
+import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
 
 class HashgraphClient extends HashgraphClientContract {
@@ -106,7 +107,7 @@ class HashgraphClient extends HashgraphClientContract {
 			reference,
 			topic_id,
 			transaction_id: transaction.toString(),
-			explorer_url: `https://ledger-testnet.hashlog.io/tx/${transaction}`
+			explorer_url: Explorer.getExplorerUrl(transaction)
 		}
 
 		const syncMessageConsensus = async () => {
