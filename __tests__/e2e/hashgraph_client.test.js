@@ -17,7 +17,7 @@ test("The client can create a topic with a memo, then read", async () => {
 	})
 
 	expect(newTopic.memo).toBe(memo)
-	expect(newTopic.topic.split(".").length).toBe(3)
+	expect(newTopic.topic.toString().split(".").length).toBe(3)
 
 	const topicInfo = await client.getTopicInfo(newTopic.topic)
 
@@ -47,12 +47,12 @@ test("The client can create a private topic, send a message and get the tx", asy
 
 	const consensusMessage = await client.sendConsensusMessage({
 		topic_id: newTopic.topic,
-		message: "This is a test message"
+		message: "This is a test message",
+		receipt: newTopic.receipt
 	})
 
 	expect(consensusMessage.transaction_id).not.toBe(null)
 }, 20000)
-
 
 test("The client can update the memo of a private topic", async () => {
 	const memo = "e2e-hedera-client-test"
@@ -64,9 +64,9 @@ test("The client can update the memo of a private topic", async () => {
 	const topicInfo = await client.getTopicInfo(newTopic.topic)
 	expect(topicInfo.topicMemo).toBe(memo)
 
-
 	const newMemo = "This is the updated memo"
-	const consensusMessage = await client.updateTopic({
+
+	await client.updateTopic({
 		topic_id: newTopic.topic,
 		memo: newMemo
 	})
