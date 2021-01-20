@@ -1,14 +1,14 @@
 import {
 	Client,
 	MirrorClient,
-	Ed25519PrivateKey,
-	Ed25519PublicKey,
+	PrivateKey,
+	PublicKey,
 	AccountBalanceQuery,
-	ConsensusTopicInfoQuery,
+	TopicInfoQuery,
 	MirrorConsensusTopicQuery,
-	ConsensusTopicCreateTransaction,
-	ConsensusTopicUpdateTransaction,
-	ConsensusMessageSubmitTransaction,
+	TopicCreateTransaction,
+	TopicUpdateTransaction,
+	TopicMessageSubmitTransaction,
 	TransactionRecordQuery
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
@@ -34,8 +34,8 @@ class HashgraphClient extends HashgraphClientContract {
 	async createNewTopic({ memo, enable_private_submit_key }) {
 		const client = this.#client
 		const transactionResponse = {}
-		const operatorPrivateKey = Ed25519PrivateKey.fromString(Config.privateKey)
-		const transaction = new ConsensusTopicCreateTransaction()
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+		const transaction = new TopicCreateTransaction()
 
 		transaction.setAdminKey(operatorPrivateKey.publicKey)
 
@@ -50,18 +50,17 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const transactionId = await transaction.execute(client)
 		const receipt = await transactionId.getReceipt(client)
-		const topicId = receipt.getConsensusTopicId()
-		const { shard, realm, topic } = topicId
 
 		return {
 			...transactionResponse,
-			topic: `${shard}.${realm}.${topic}`
+			topic: receipt.topicId
 		}
 	}
 
 	async getTopicInfo(topic_id) {
 		const client = this.#client
-		const topic = await new ConsensusTopicInfoQuery()
+
+		const topic = await new TopicInfoQuery()
 			.setTopicId(topic_id)
 			.execute(client)
 
@@ -71,7 +70,7 @@ class HashgraphClient extends HashgraphClientContract {
 	// Only allow for a topic's memo to be updated
 	async updateTopic({ topic_id, memo }) {
 		const client = this.#client
-		const topic = await new ConsensusTopicUpdateTransaction()
+		const topic = await new TopicUpdateTransaction()
 			.setTopicId(topic_id)
 			.setTopicMemo(memo)
 			.execute(client)
@@ -86,7 +85,7 @@ class HashgraphClient extends HashgraphClientContract {
 			.setAccountId(Config.accountId)
 			.execute(client)
 
-		return { balance: balance.toString() }
+		return { balance: parseFloat(balance.hbars.toString()) }
 	}
 
 	async sendConsensusMessage({
@@ -97,10 +96,10 @@ class HashgraphClient extends HashgraphClientContract {
 	}) {
 		const client = this.#client
 
-		const transaction = await new ConsensusMessageSubmitTransaction()
-			.setTopicId(topic_id)
-			.setMessage(message)
-			.execute(client)
+		const transaction = await new TopicMessageSubmitTransaction({
+			topicId: topic_id,
+			message: message
+		}).execute(client)
 
 		// Remember to allow for mainnet links for explorer
 		const messageTransactionResponse = {
