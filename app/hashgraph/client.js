@@ -98,8 +98,8 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const transaction = await new TopicMessageSubmitTransaction({
 			topicId: topic_id,
-			message: message,
-		}).execute(client);
+			message: message
+		}).execute(client)
 
 		// Remember to allow for mainnet links for explorer
 		const messageTransactionResponse = {
