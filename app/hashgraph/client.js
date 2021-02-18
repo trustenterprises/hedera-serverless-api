@@ -1,15 +1,12 @@
 import {
-	Client,
-	MirrorClient,
 	PrivateKey,
-	PublicKey,
 	AccountBalanceQuery,
 	TopicInfoQuery,
-	MirrorConsensusTopicQuery,
 	TopicCreateTransaction,
 	TopicUpdateTransaction,
 	TopicMessageSubmitTransaction,
-	TransactionRecordQuery
+	TransactionRecordQuery,
+	TopicId
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -53,7 +50,7 @@ class HashgraphClient extends HashgraphClientContract {
 
 		return {
 			...transactionResponse,
-			topic: receipt.topicId
+			topic: receipt.topicId.toString()
 		}
 	}
 
@@ -97,7 +94,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const client = this.#client
 
 		const transaction = await new TopicMessageSubmitTransaction({
-			topicId: topic_id,
+			topicId: TopicId.fromString(topic_id),
 			message: message
 		}).execute(client)
 
@@ -105,20 +102,25 @@ class HashgraphClient extends HashgraphClientContract {
 		const messageTransactionResponse = {
 			reference,
 			topic_id,
-			transaction_id: transaction.toString(),
-			explorer_url: Explorer.getExplorerUrl(transaction)
+			transaction_id: transaction.transactionId.toString(),
+			explorer_url: Explorer.getExplorerUrl(transaction.transactionId)
 		}
 
 		const syncMessageConsensus = async () => {
 			await sleep()
 
 			const record = await new TransactionRecordQuery()
-				.setTransactionId(transaction)
+				.setTransactionId(transaction.transactionId)
 				.execute(client)
+
+			const { seconds, nanos } = record.consensusTimestampstamp
 
 			const consensusResult = {
 				...messageTransactionResponse,
-				consensus_timestamp: record.consensusTimestamp,
+				consensus_timestamp: {
+					seconds: seconds.toString(),
+					nanos: nanos.toString()
+				},
 				reference: reference
 			}
 
@@ -132,7 +134,7 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		if (Config.webhookUrl) {
-			syncMessageConsensus()
+			await syncMessageConsensus()
 		}
 
 		return messageTransactionResponse

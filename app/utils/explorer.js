@@ -10,8 +10,8 @@ const ExplorerUrl = {
 function getExplorerUrl(tx) {
 	const network = Config.HEDERA_NETWORK || Environment.TESTNET
 
-	return {
-		explorer_url: ExplorerUrl[network] + tx
+	if (network) {
+		return ExplorerUrl[network] + tx
 	}
 }
 

@@ -8,7 +8,7 @@ test("Ensure that a testnet explorer url returns", () => {
 
   const url = Explorer.getExplorerUrl(placeholderTx)
 
-	expect(url.explorer_url).toBe(`https://ledger-testnet.hashlog.io/tx/${placeholderTx}`)
+	expect(url).toBe(`https://ledger-testnet.hashlog.io/tx/${placeholderTx}`)
 })
 
 test("Ensure that a mainnet explorer url returns", () => {
@@ -16,7 +16,7 @@ test("Ensure that a mainnet explorer url returns", () => {
 
   const url = Explorer.getExplorerUrl(placeholderTx)
 
-  expect(url.explorer_url).toBe(`https://ledger.hashlog.io/tx/${placeholderTx}`)
+  expect(url).toBe(`https://ledger.hashlog.io/tx/${placeholderTx}`)
 })
 
 test("Ensure that a previewnet explorer url returns nothing", () => {
@@ -24,5 +24,5 @@ test("Ensure that a previewnet explorer url returns nothing", () => {
 
   const url = Explorer.getExplorerUrl(placeholderTx)
 
-	expect(!url.explorer_url)
+	expect(!url)
 })
