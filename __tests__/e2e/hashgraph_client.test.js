@@ -77,3 +77,21 @@ test("The client can update the memo of a private topic", async () => {
 	const updatedTopicInfo = await client.getTopicInfo(newTopic.topic)
 	expect(updatedTopicInfo.topicMemo).toBe(newMemo)
 }, 20000)
+
+test("The client can create a token", async () => {
+
+	const tokenData = {
+		supply: "10",
+		name: 'e2e-hedera-token-test',
+		symbol: 'te-e2e',
+		memo: 'THIS IS A MEMO',
+	}
+
+	const token = await client.createToken(tokenData)
+
+	expect(token.tokenId).toBeDefined()
+	expect(token.memo).toBe(tokenData.memo)
+	expect(token.supply).toBe(tokenData.supply)
+	expect(token.symbol).toBe(tokenData.symbol)
+	expect(token.name).toBe(tokenData.name)
+}, 20000)
