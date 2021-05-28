@@ -6,7 +6,10 @@ import {
 	TopicUpdateTransaction,
 	TopicMessageSubmitTransaction,
 	TransactionRecordQuery,
-	TopicId
+	TopicId,
+	TokenCreateTransaction,
+	Hbar,
+	HbarUnit
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -14,6 +17,7 @@ import Config from "app/config"
 import sleep from "app/utils/sleep"
 import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
+import Specification from "app/hashgraph/tokens/specifications"
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -138,6 +142,67 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		return messageTransactionResponse
+	}
+
+	createToken = async tokenCreation => {
+		const {
+			specification = Specification.Fungible,
+			accountId,
+			memo,
+			name,
+			symbol,
+			supply,
+			requires_kyc = false,
+			can_freeze = false
+		} = tokenCreation
+
+		const client = this.#client
+
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+		const supplyPrivateKey = PrivateKey.fromString(Config.privateKey)
+
+		const supplyWithDecimals = supply * 10 ** specification.decimals
+
+		const transaction = new TokenCreateTransaction()
+			.setTokenName(name)
+			.setTokenSymbol(symbol)
+			.setTreasuryAccountId(accountId || Config.accountId)
+			.setInitialSupply(supplyWithDecimals)
+			.setDecimals(specification.decimals)
+			.setFreezeDefault(false)
+			.setMaxTransactionFee(new Hbar(5, HbarUnit.Hbar)) //Change the default max transaction fee
+
+		if (memo) {
+			transaction.setTokenMemo(memo)
+			transaction.setTransactionMemo(memo)
+		}
+
+		if (requires_kyc) {
+			transaction.setKycKey(operatorPrivateKey.publicKey)
+		}
+
+		if (can_freeze) {
+			transaction.setFreezeKey(operatorPrivateKey.publicKey)
+		}
+
+		transaction.freezeWith(client)
+
+		const signTx = await (await transaction.sign(operatorPrivateKey)).sign(
+			supplyPrivateKey
+		)
+
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+
+		return {
+			name,
+			symbol,
+			memo,
+			reference: specification.reference,
+			supply: String(supply),
+			supplyWithDecimals: String(supplyWithDecimals),
+			tokenId: receipt.tokenId.toString()
+		}
 	}
 }
 
