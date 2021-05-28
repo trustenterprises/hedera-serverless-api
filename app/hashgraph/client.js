@@ -6,7 +6,10 @@ import {
 	TopicUpdateTransaction,
 	TopicMessageSubmitTransaction,
 	TransactionRecordQuery,
-	TopicId, TokenCreateTransaction, Hbar, HbarUnit
+	TopicId,
+	TokenCreateTransaction,
+	Hbar,
+	HbarUnit
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -141,7 +144,7 @@ class HashgraphClient extends HashgraphClientContract {
 		return messageTransactionResponse
 	}
 
-	createToken = async (tokenCreation) => {
+	createToken = async tokenCreation => {
 		const {
 			specification = Specification.Fungible,
 			accountId,
@@ -150,7 +153,7 @@ class HashgraphClient extends HashgraphClientContract {
 			symbol,
 			supply,
 			requires_kyc = false,
-			can_freeze = false,
+			can_freeze = false
 		} = tokenCreation
 
 		const client = this.#client
@@ -182,14 +185,14 @@ class HashgraphClient extends HashgraphClientContract {
 			transaction.setFreezeKey(operatorPrivateKey.publicKey)
 		}
 
-		transaction.freezeWith(client);
+		transaction.freezeWith(client)
 
-		const signTx =  await (
-			await transaction.sign(operatorPrivateKey)
-		).sign(supplyPrivateKey);
+		const signTx = await (await transaction.sign(operatorPrivateKey)).sign(
+			supplyPrivateKey
+		)
 
-		const txResponse = await signTx.execute(client);
-		const receipt = await txResponse.getReceipt(client);
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
 
 		return {
 			name,

@@ -27,11 +27,11 @@
  * @type {{decimals: number}}
  */
 const Fungible = {
-  reference: 'basic.fungible',
-  decimals: 6,
-  kyc: false,
-  wipe: false,
-  freeze: false
+	reference: "basic.fungible",
+	decimals: 6,
+	kyc: false,
+	wipe: false,
+	freeze: false
 }
 
 /**
@@ -41,11 +41,11 @@ const Fungible = {
  * @type {{decimals: number}}
  */
 const NonFungible = {
-  reference: 'basic.nonfungible',
-  decimals: 0,
-  kyc: false,
-  wipe: false,
-  freeze: false
+	reference: "basic.nonfungible",
+	decimals: 0,
+	kyc: false,
+	wipe: false,
+	freeze: false
 }
 
 /**
@@ -55,11 +55,11 @@ const NonFungible = {
  * @type {{decimals: number}}
  */
 const CompliantFungible = {
-  ...Fungible,
-  reference: 'compliance.fungible',
-  kyc: true,
-  wipe: true,
-  freeze: true
+	...Fungible,
+	reference: "compliance.fungible",
+	kyc: true,
+	wipe: true,
+	freeze: true
 }
 
 /**
@@ -69,11 +69,11 @@ const CompliantFungible = {
  * @type {{decimals: number}}
  */
 const CompliantNonFungible = {
-  ...NonFungible,
-  reference: 'compliance.nonfungible',
-  kyc: true,
-  wipe: true,
-  freeze: true
+	...NonFungible,
+	reference: "compliance.nonfungible",
+	kyc: true,
+	wipe: true,
+	freeze: true
 }
 
 /**
@@ -84,14 +84,14 @@ const CompliantNonFungible = {
  * @type {{decimals: number}}
  */
 const UnibarLiquidityProviderReceipt = {
-  ...NonFungible,
-  reference: 'lp.reward.receipt',
+	...NonFungible,
+	reference: "lp.reward.receipt"
 }
 
 export default {
-  Fungible,
-  NonFungible,
-  CompliantFungible,
-  CompliantNonFungible,
-  UnibarLiquidityProviderReceipt
+	Fungible,
+	NonFungible,
+	CompliantFungible,
+	CompliantNonFungible,
+	UnibarLiquidityProviderReceipt
 }
