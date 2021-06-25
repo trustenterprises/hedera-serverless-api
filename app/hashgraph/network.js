@@ -14,10 +14,10 @@ const { TESTNET, PREVIEWNET, MAINNET } = Environment
 
 // Currently remove 0.0.3 as it is causing issues
 const testnetNodes = {
-	// "0.testnet.hedera.com:50211": "0.0.3",
-	"1.testnet.hedera.com:50211": "0.0.4",
-	"2.testnet.hedera.com:50211": "0.0.5",
-	"3.testnet.hedera.com:50211": "0.0.6"
+	"0.testnet.hedera.com:50211": "0.0.3",
+	// "1.testnet.hedera.com:50211": "0.0.4",
+	// "2.testnet.hedera.com:50211": "0.0.5",
+	// "3.testnet.hedera.com:50211": "0.0.6"
 }
 
 // This is a direct duplication from hedera-sdk-js
