@@ -1,7 +1,5 @@
 # Trust Enterprises: Serverless Hedera API
 
-> Note: This README and documentation is WIP during beta
-
 Welcome to the serverless hedera API, you can find out more about the project and running your first client through [reading the docs](https://docs.trust.enterprises).
 
 You can look at our postman docs by clicking the button below.
