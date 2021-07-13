@@ -2,7 +2,6 @@ import bequestTokenRequest from "app/validators/bequestTokenRequest"
 import Response from "app/response"
 
 async function BequestTokenHandler(req, res) {
-
 	const validationErrors = bequestTokenRequest(req.body)
 
 	if (validationErrors) {
@@ -10,7 +9,12 @@ async function BequestTokenHandler(req, res) {
 	}
 
 	const { encrypted_receiver_key, token_id, receiver_id, amount } = req.body
-	const bequestPayload = { encrypted_receiver_key, token_id, receiver_id, amount }
+	const bequestPayload = {
+		encrypted_receiver_key,
+		token_id,
+		receiver_id,
+		amount
+	}
 
 	const { hashgraphClient } = req.context
 	const bequestResponse = await hashgraphClient.bequestToken(bequestPayload)

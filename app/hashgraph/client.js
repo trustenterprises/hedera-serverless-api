@@ -150,22 +150,18 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	// Before transferring token to other account association is require
-	async associateToAccount({
-		privateKey,
-	 	tokenIds,
-	 	accountId
-	}) {
+	async associateToAccount({ privateKey, tokenIds, accountId }) {
 		const client = this.#client
 
 		const transaction = await new TokenAssociateTransaction()
 			.setAccountId(accountId)
 			.setTokenIds(tokenIds)
-			.freezeWith(client);
+			.freezeWith(client)
 
 		const accountPrivateKey = PrivateKey.fromString(privateKey)
-		const signTx = await transaction.sign(accountPrivateKey);
+		const signTx = await transaction.sign(accountPrivateKey)
 
-		return await signTx.execute(client);
+		return await signTx.execute(client)
 	}
 
 	bequestToken = async ({
@@ -175,7 +171,6 @@ class HashgraphClient extends HashgraphClientContract {
 		receiver_id,
 		amount
 	}) => {
-
 		const client = this.#client
 
 		// Extract PV from encrypted
@@ -184,13 +179,13 @@ class HashgraphClient extends HashgraphClientContract {
 		// Associate with the token
 		await this.associateToAccount({
 			privateKey,
-			tokenIds: [ token_id ],
+			tokenIds: [token_id],
 			accountId: receiver_id
 		})
 
 		const { tokens } = await new AccountBalanceQuery()
 			.setAccountId(Config.accountId)
-			.execute(client);
+			.execute(client)
 
 		const token = tokens.get(TokenId.fromString(token_id))
 		const adjustedAmountBySpec = amount * 10 ** specification.decimals
