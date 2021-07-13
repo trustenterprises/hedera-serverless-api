@@ -1,0 +1,1641 @@
+{
+	"info": {
+		"_postman_id": "2c026d8f-795d-48c7-8554-4bbc17f797ad",
+		"name": "Serverless Hedera Consensus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Topic",
+			"item": [
+				{
+					"name": "Get Topic Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/consensus/topic/16091",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"topic",
+								"16091"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "[SUCCESS] Get Topic Info",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{domain}}/api/consensus/topic/16091",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"consensus",
+										"topic",
+										"16091"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"453-HOmihGDKMVGlOG3f9jheXTX+1q8\""
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 30 Aug 2020 22:17:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"topicMemo\": \"topic memo information\",\n        \"runningHash\": {\n            \"0\": 0,\n            \"1\": 0,\n            \"2\": 0,\n            \"3\": 0,\n            \"4\": 0,\n            \"5\": 0,\n            \"6\": 0,\n            \"7\": 0,\n            \"8\": 0,\n            \"9\": 0,\n            \"10\": 0,\n            \"11\": 0,\n            \"12\": 0,\n            \"13\": 0,\n            \"14\": 0,\n            \"15\": 0,\n            \"16\": 0,\n            \"17\": 0,\n            \"18\": 0,\n            \"19\": 0,\n            \"20\": 0,\n            \"21\": 0,\n            \"22\": 0,\n            \"23\": 0,\n            \"24\": 0,\n            \"25\": 0,\n            \"26\": 0,\n            \"27\": 0,\n            \"28\": 0,\n            \"29\": 0,\n            \"30\": 0,\n            \"31\": 0,\n            \"32\": 0,\n            \"33\": 0,\n            \"34\": 0,\n            \"35\": 0,\n            \"36\": 0,\n            \"37\": 0,\n            \"38\": 0,\n            \"39\": 0,\n            \"40\": 0,\n            \"41\": 0,\n            \"42\": 0,\n            \"43\": 0,\n            \"44\": 0,\n            \"45\": 0,\n            \"46\": 0,\n            \"47\": 0\n        },\n        \"sequenceNumber\": 0,\n        \"expirationTime\": {\n            \"seconds\": 1606715551,\n            \"nanos\": 990716007\n        },\n        \"adminKey\": {\n            \"_keyData\": {\n                \"0\": 131,\n                \"1\": 251,\n                \"2\": 174,\n                \"3\": 144,\n                \"4\": 113,\n                \"5\": 229,\n                \"6\": 210,\n                \"7\": 141,\n                \"8\": 145,\n                \"9\": 248,\n                \"10\": 251,\n                \"11\": 37,\n                \"12\": 202,\n                \"13\": 148,\n                \"14\": 62,\n                \"15\": 177,\n                \"16\": 33,\n                \"17\": 163,\n                \"18\": 179,\n                \"19\": 55,\n                \"20\": 30,\n                \"21\": 17,\n                \"22\": 136,\n                \"23\": 131,\n                \"24\": 25,\n                \"25\": 85,\n                \"26\": 193,\n                \"27\": 136,\n                \"28\": 21,\n                \"29\": 115,\n                \"30\": 215,\n                \"31\": 122\n            }\n        },\n        \"submitKey\": {\n            \"_keyData\": {\n                \"0\": 131,\n                \"1\": 251,\n                \"2\": 174,\n                \"3\": 144,\n                \"4\": 113,\n                \"5\": 229,\n                \"6\": 210,\n                \"7\": 141,\n                \"8\": 145,\n                \"9\": 248,\n                \"10\": 251,\n                \"11\": 37,\n                \"12\": 202,\n                \"13\": 148,\n                \"14\": 62,\n                \"15\": 177,\n                \"16\": 33,\n                \"17\": 163,\n                \"18\": 179,\n                \"19\": 55,\n                \"20\": 30,\n                \"21\": 17,\n                \"22\": 136,\n                \"23\": 131,\n                \"24\": 25,\n                \"25\": 85,\n                \"26\": 193,\n                \"27\": 136,\n                \"28\": 21,\n                \"29\": 115,\n                \"30\": 215,\n                \"31\": 122\n            }\n        },\n        \"autoRenewPeriod\": 7890000,\n        \"autoRenewAccount\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Topic",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "memo",
+									"value": "Updated memo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/topic/16091",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"topic",
+								"16091"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "[SUCCESS] Update Topic - updated memo",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "memo",
+											"value": "Updated memo",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/consensus/topic/16091",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"consensus",
+										"topic",
+										"16091"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"9a-qJrApCH940SJ4I+EJnZUAItBJ9Y\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "154"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 30 Aug 2020 22:37:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"memo\": \"Updated memo\",\n        \"topic_id\": \"16091\",\n        \"accountId\": {\n            \"shard\": 0,\n            \"realm\": 0,\n            \"account\": 1156\n        },\n        \"validStart\": {\n            \"seconds\": 1598827049,\n            \"nanos\": 719000000\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Topic",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "memo",
+									"value": "topic memo information",
+									"type": "text"
+								},
+								{
+									"key": "enable_private_submit_key",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/topic",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"topic"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "[SUCCESS] Create Topic - Creating with escaped JSON",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "memo",
+											"value": "{\\\"name\\\": \\\"client app\\\",\\\"description\\\": \\\"This would decribe state\\\",\\\"user\\\": \\\"123\\\"}",
+											"type": "text"
+										},
+										{
+											"key": "enable_private_submit_key",
+											"value": "true",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/consensus/topic",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"consensus",
+										"topic"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"9a-/yZ5ptzLhjYYsnbChK91+cIIsOk\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "154"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 30 Aug 2020 21:46:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"memo\": \"{\\\\\\\"name\\\\\\\": \\\\\\\"client app\\\\\\\",\\\\\\\"description\\\\\\\": \\\\\\\"This would decribe state\\\\\\\",\\\\\\\"user\\\\\\\": \\\\\\\"123\\\\\\\"}\",\n        \"topic\": \"0.0.16087\"\n    }\n}"
+						},
+						{
+							"name": "[SUCCESS] Create Topic with memo and private submit",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "memo",
+											"value": "This is a memo",
+											"type": "text"
+										},
+										{
+											"key": "enable_private_submit_key",
+											"value": "true",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/consensus/topic",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"consensus",
+										"topic"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"36-drbqqwYv1FIeM6kd0bsxvU7EPJI\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 30 Aug 2020 21:43:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"memo\": \"This is a memo\",\n        \"topic\": \"0.0.16086\"\n    }\n}"
+						},
+						{
+							"name": "[SUCCESS] Create Topic, no memo, no private",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "memo",
+											"value": "This is a memo",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "enable_private_submit_key",
+											"value": "true",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/consensus/topic",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"consensus",
+										"topic"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"1e-N+MF2a77TC7O6IG4VseYG8iG66Y\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "30"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 30 Aug 2020 21:41:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"topic\": \"0.0.16085\"\n    }\n}"
+						},
+						{
+							"name": "[FAIL] Unauthorised",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "memo",
+											"value": "This is a memo",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "enable_private_submit_key",
+											"value": "true",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/consensus/topic",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"consensus",
+										"topic"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "ETag",
+									"value": "\"34-1QZWPDVQCcukH+wRSsqwZ+VwbwY\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "52"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 30 Aug 2020 21:41:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"reason\": \"Please set \\\"x-api-key\\\" in your header\"\n}"
+						},
+						{
+							"name": "[FAIL] Create Topic - Incorrect params",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "memo",
+											"value": "This is a memo",
+											"type": "text"
+										},
+										{
+											"key": "enable_private_submit_key",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/consensus/topic",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"consensus",
+										"topic"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "ETag",
+									"value": "\"3e-gra5WEXiO5GbCEPyT4Ua7z21AxQ\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "62"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 30 Aug 2020 21:42:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"\\\"enable_private_submit_key\\\" must be a boolean\"\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "Create Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "symbol",
+									"value": "MATT",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Matt token",
+									"type": "text"
+								},
+								{
+									"key": "supply",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "memo",
+									"value": "abc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/token",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bequest Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "encrypted_receiver_key",
+									"value": "6c3e6ac3aef691ee:1f9d752f665870448b293e0478f6ddac3bbe1f050f080eb55353ab6f31ebe7bb88e5bdb4a48cecd706c4c52dc35ea4c99fe3e8c5821db4542d73c64ee38b1b3603266063fb0d55348bea6d0c3774285c93f6c1d03b1586bf65fcc926832b051384df46d18aa5aa0f0581efdb90f50051",
+									"type": "text"
+								},
+								{
+									"key": "token_id",
+									"value": "0.0.2113798",
+									"type": "text"
+								},
+								{
+									"key": "receiver_id",
+									"value": "0.0.2113778",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/token/bequest",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"token",
+								"bequest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/api/status",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Account Balance",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{api_secret_key}}"
+					}
+				],
+				"url": {
+					"raw": "{{domain}}/api/account/balance",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"balance"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "[FAIL] Account Balance",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"type": "text",
+								"value": "{{api_secret_key}}",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/account/balance",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"balance"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "x-nextjs-page",
+							"value": "/api/account/balance"
+						},
+						{
+							"key": "content-length",
+							"value": "52"
+						},
+						{
+							"key": "date",
+							"value": "Sun, 30 Aug 2020 20:58:25 GMT"
+						},
+						{
+							"key": "cache-control",
+							"value": "public, max-age=0, must-revalidate"
+						},
+						{
+							"key": "etag",
+							"value": "\"34-1QZWPDVQCcukH+wRSsqwZ+VwbwY\""
+						},
+						{
+							"key": "x-vercel-cache",
+							"value": "MISS"
+						},
+						{
+							"key": "age",
+							"value": "0"
+						},
+						{
+							"key": "server",
+							"value": "Vercel"
+						},
+						{
+							"key": "x-vercel-id",
+							"value": "lhr1::sfo1::454dl-1598821105449-c8d71dd052a9"
+						},
+						{
+							"key": "strict-transport-security",
+							"value": "max-age=63072000; includeSubDomains; preload"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"reason\": \"Please set \\\"x-api-key\\\" in your header\"\n}"
+				},
+				{
+					"name": "[SUCCESS] Account Balance",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"type": "text",
+								"value": "{{api_secret_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/account/balance",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"balance"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "x-nextjs-page",
+							"value": "/api/account/balance"
+						},
+						{
+							"key": "content-length",
+							"value": "28"
+						},
+						{
+							"key": "date",
+							"value": "Sun, 30 Aug 2020 20:57:51 GMT"
+						},
+						{
+							"key": "cache-control",
+							"value": "public, max-age=0, must-revalidate"
+						},
+						{
+							"key": "etag",
+							"value": "\"1c-r7x724Ft6X+JZcfyzWu/GmhjMH0\""
+						},
+						{
+							"key": "x-vercel-cache",
+							"value": "MISS"
+						},
+						{
+							"key": "age",
+							"value": "0"
+						},
+						{
+							"key": "server",
+							"value": "Vercel"
+						},
+						{
+							"key": "x-vercel-id",
+							"value": "lhr1::sfo1::454dl-1598821071616-ac0a94c46103"
+						},
+						{
+							"key": "strict-transport-security",
+							"value": "max-age=63072000; includeSubDomains; preload"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"balance\": \"10000\"\n    }\n}"
+				},
+				{
+					"name": "[FAIL] Account Balance",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"type": "text",
+								"value": "1"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/account/balance",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"balance"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "x-nextjs-page",
+							"value": "/api/account/balance"
+						},
+						{
+							"key": "content-length",
+							"value": "63"
+						},
+						{
+							"key": "date",
+							"value": "Sun, 30 Aug 2020 20:58:48 GMT"
+						},
+						{
+							"key": "cache-control",
+							"value": "public, max-age=0, must-revalidate"
+						},
+						{
+							"key": "etag",
+							"value": "\"3f-EKMuMyigUeUAlE6scvKxYj1P73Y\""
+						},
+						{
+							"key": "x-vercel-cache",
+							"value": "MISS"
+						},
+						{
+							"key": "age",
+							"value": "0"
+						},
+						{
+							"key": "server",
+							"value": "Vercel"
+						},
+						{
+							"key": "x-vercel-id",
+							"value": "lhr1::sfo1::454dl-1598821128712-45bd26a85ab6"
+						},
+						{
+							"key": "strict-transport-security",
+							"value": "max-age=63072000; includeSubDomains; preload"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"reason\": \"Unable to validate with the supplied \\\"x-api-key\\\"\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Account Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{api_secret_key}}"
+					}
+				],
+				"url": {
+					"raw": "{{domain}}/api/account/create",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Consensus Message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{api_secret_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "message",
+							"value": "this is a message",
+							"type": "text"
+						},
+						{
+							"key": "topic_id",
+							"value": "77484",
+							"type": "text"
+						},
+						{
+							"key": "allow_synchronous_consensus",
+							"value": "true",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "reference",
+							"value": "my reference",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{domain}}/api/consensus/message/",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"consensus",
+						"message",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "[FAIL] Unauthorised",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "memo",
+									"value": "This is a memo",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "enable_private_submit_key",
+									"value": "true",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/topic",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"topic"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "ETag",
+							"value": "\"34-1QZWPDVQCcukH+wRSsqwZ+VwbwY\""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Aug 2020 21:41:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"reason\": \"Please set \\\"x-api-key\\\" in your header\"\n}"
+				},
+				{
+					"name": "[SUCCESS] Create Consensus Message with consensus timestamp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "message",
+									"value": "this is a message",
+									"type": "text"
+								},
+								{
+									"key": "topic_id",
+									"value": "16091",
+									"type": "text"
+								},
+								{
+									"key": "allow_synchronous_consensus",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "reference",
+									"value": "my reference",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/message/",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"message",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"fc-OZd/u8gFvbVRFqGNgstAVqsfyS8\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "252"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Aug 2020 23:01:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"reference\": \"my reference\",\n        \"topic_id\": \"16091\",\n        \"transaction_id\": \"0.0.1156@1598828456.197000000\",\n        \"explorer_url\": \"https://ledger-testnet.hashlog.io/tx/0.0.1156@1598828456.197000000\",\n        \"consensus_timestamp\": {\n            \"seconds\": 1598828466,\n            \"nanos\": 501124002\n        }\n    }\n}"
+				},
+				{
+					"name": "[FAIL] Create Consensus Message - Requires topic id",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "message",
+									"value": "this is a message",
+									"type": "text"
+								},
+								{
+									"key": "topic_id",
+									"value": "16091",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/message/",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"message",
+								""
+							]
+						}
+					},
+					"status": "Unprocessable Entity",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "ETag",
+							"value": "\"27-K5My6islP7za/zI3XakElG1bSIA\""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Aug 2020 22:46:48 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errors\": [\n        \"\\\"topic_id\\\" is required\"\n    ]\n}"
+				},
+				{
+					"name": "[Success] Create Consensus Message",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "message",
+									"value": "this is a message",
+									"type": "text"
+								},
+								{
+									"key": "topic_id",
+									"value": "16091",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/message/",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"message",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a2-50TlMzoonN3pDJ7mLPT2Gna1MHc\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "162"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Aug 2020 22:45:51 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"topic_id\": \"16091\",\n        \"transaction_id\": \"0.0.1156@1598827541.490000000\",\n        \"explorer_url\": \"https://ledger-testnet.hashlog.io/tx/0.0.1156@1598827541.490000000\"\n    }\n}"
+				},
+				{
+					"name": "[SUCCESS] Create Topic, no memo, no private",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "memo",
+									"value": "This is a memo",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "enable_private_submit_key",
+									"value": "true",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/topic",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"topic"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"1e-N+MF2a77TC7O6IG4VseYG8iG66Y\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "30"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Aug 2020 21:41:06 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"topic\": \"0.0.16085\"\n    }\n}"
+				},
+				{
+					"name": "[Fail] Create Consensus Message - no message",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "message",
+									"value": "this is a message",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "topic_id",
+									"value": "16091",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/consensus/message/",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"consensus",
+								"message",
+								""
+							]
+						}
+					},
+					"status": "Unprocessable Entity",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "ETag",
+							"value": "\"26-Nt69iUJpWCCtqVBhhyMv1z9K2UI\""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Aug 2020 22:47:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errors\": [\n        \"\\\"message\\\" is required\"\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Example Webhook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-signature",
+						"value": "12cd627672dab4619c3c8be02c3aa56b534c7614d9c9e56afafa0fb760627978",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"topicId\": \"0.0.134383\",\n        \"consensusTimestamp\": { \"seconds\": 1598306688, \"nanos\": 750728007 },\n        \"transactionId\": \"0.0.116507@1598338540.979000000\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/webhook",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"webhook"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "[FAIL] - Example Webhook - Method not allowed",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/api/webhook",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"webhook"
+							]
+						}
+					},
+					"status": "Not Allowed",
+					"code": 405,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "x-nextjs-page",
+							"value": "/api/webhook"
+						},
+						{
+							"key": "content-length",
+							"value": "52"
+						},
+						{
+							"key": "date",
+							"value": "Mon, 31 Aug 2020 13:33:31 GMT"
+						},
+						{
+							"key": "cache-control",
+							"value": "public, max-age=0, must-revalidate"
+						},
+						{
+							"key": "etag",
+							"value": "\"34-9ZtOcc/iHJy0tpwVLnAMsgMSKtY\""
+						},
+						{
+							"key": "x-vercel-cache",
+							"value": "MISS"
+						},
+						{
+							"key": "age",
+							"value": "0"
+						},
+						{
+							"key": "server",
+							"value": "Vercel"
+						},
+						{
+							"key": "x-vercel-id",
+							"value": "lhr1::sfo1::7hjwn-1598880810803-4a2854fcf17f"
+						},
+						{
+							"key": "strict-transport-security",
+							"value": "max-age=63072000; includeSubDomains; preload"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"reason\": \"Method GET is not allowed on this route\"\n}"
+				}
+			]
+		}
+	]
+}
