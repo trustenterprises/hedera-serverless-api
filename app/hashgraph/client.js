@@ -9,12 +9,17 @@ import {
 	TopicId,
 	TokenCreateTransaction,
 	Hbar,
-	HbarUnit
+	HbarUnit,
+	AccountCreateTransaction,
+	TokenAssociateTransaction,
+	TokenId,
+	TransferTransaction
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
 import Config from "app/config"
 import sleep from "app/utils/sleep"
+import Encryption from "app/utils/encryption"
 import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
 import Specification from "app/hashgraph/tokens/specifications"
@@ -142,6 +147,87 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		return messageTransactionResponse
+	}
+
+	// Before transferring token to other account association is require
+	async associateToAccount({
+		privateKey,
+	 	tokenIds,
+	 	accountId
+	}) {
+		const client = this.#client
+
+		const transaction = await new TokenAssociateTransaction()
+			.setAccountId(accountId)
+			.setTokenIds(tokenIds)
+			.freezeWith(client);
+
+		const accountPrivateKey = PrivateKey.fromString(privateKey)
+		const signTx = await transaction.sign(accountPrivateKey);
+
+		return await signTx.execute(client);
+	}
+
+	bequestToken = async ({
+		specification = Specification.Fungible,
+		encrypted_receiver_key,
+		token_id,
+		receiver_id,
+		amount
+	}) => {
+
+		const client = this.#client
+
+		// Extract PV from encrypted
+		const privateKey = await Encryption.decrypt(encrypted_receiver_key)
+
+		// Associate with the token
+		await this.associateToAccount({
+			privateKey,
+			tokenIds: [ token_id ],
+			accountId: receiver_id
+		})
+
+		const { tokens } = await new AccountBalanceQuery()
+			.setAccountId(Config.accountId)
+			.execute(client);
+
+		const token = tokens.get(TokenId.fromString(token_id))
+		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+
+		if (token.low < adjustedAmountBySpec) {
+			return false
+		}
+
+		await new TransferTransaction()
+			.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
+			.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
+			.execute(client)
+
+		return {
+			amount,
+			receiver_id
+		}
+	}
+
+	createAccount = async () => {
+		const privateKey = await PrivateKey.generate()
+		const publicKey = privateKey.publicKey
+		const client = this.#client
+		const transaction = new AccountCreateTransaction()
+			.setKey(publicKey)
+			.setInitialBalance(0.1)
+
+		const txResponse = await transaction.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+		const accountId = receipt.accountId.toString()
+		const encryptedKey = await Encryption.encrypt(privateKey.toString())
+
+		return {
+			accountId,
+			encryptedKey,
+			publicKey: publicKey.toString()
+		}
 	}
 
 	createToken = async tokenCreation => {
