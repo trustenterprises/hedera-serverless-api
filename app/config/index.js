@@ -7,7 +7,8 @@ const {
 	API_SECRET_KEY,
 	API_URL,
 	HIDE_STATUS,
-	WEBHOOK_URL
+	WEBHOOK_URL,
+	ENCRYPTION_KEY
 } = process.env
 
 const AUTH_KEY_MIN_LENGTH = 10
@@ -20,6 +21,7 @@ export default {
 	accountId: HEDERA_ACCOUNT_ID,
 	privateKey: HEDERA_PRIVATE_KEY,
 	authenticationKey: API_SECRET_KEY,
+	encryptionKey: ENCRYPTION_KEY,
 	apiUrl: API_URL,
 	hideStatus: HIDE_STATUS,
 	webhookUrl: WEBHOOK_URL

@@ -95,3 +95,35 @@ test("The client can create a token", async () => {
 	expect(token.symbol).toBe(tokenData.symbol)
 	expect(token.name).toBe(tokenData.name)
 }, 20000)
+
+test("The client can create an account", async () => {
+	const account = await client.createAccount()
+
+	expect(account.accountId).toBeDefined()
+	expect(account.encryptedKey).toBeDefined()
+	expect(account.publicKey).toBeDefined()
+}, 20000)
+
+
+test("The client can bequest an account with tokens", async () => {
+
+	const tokenData = {
+		supply: "10",
+		name: 'e2e-hedera-token-test',
+		symbol: 'te-e2e',
+		memo: 'BEQUEST TOKEN ACCOUNT TEST',
+	}
+
+	const token = await client.createToken(tokenData)
+	const account = await client.createAccount()
+
+	const bequest = await client.bequestToken({
+		encrypted_receiver_key: account.encryptedKey,
+		token_id: token.tokenId,
+		receiver_id: account.accountId,
+		amount: 1
+	})
+
+	expect(bequest.amount).toBeDefined()
+	expect(bequest.receiver_id).toBeDefined()
+}, 20000)
