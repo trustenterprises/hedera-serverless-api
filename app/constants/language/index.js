@@ -5,6 +5,9 @@ module.exports = {
 			noApikey: 'Please set "x-api-key" in your header',
 			invalidApikey: 'Unable to validate with the supplied "x-api-key"'
 		},
+		ensureEncryptionKey: {
+			noEncryptionKey: 'Unable to process encryption action, 32 character length "ENCRYPTION_KEY" not set in config',
+		},
 		onlyPostResponse: {
 			notAllowed: method => `Method ${method} is not allowed on this route`
 		}
