@@ -251,7 +251,7 @@ class HashgraphClient extends HashgraphClientContract {
 			.setInitialSupply(supplyWithDecimals)
 			.setDecimals(specification.decimals)
 			.setFreezeDefault(false)
-			.setMaxTransactionFee(new Hbar(5, HbarUnit.Hbar)) //Change the default max transaction fee
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
 
 		if (memo) {
 			transaction.setTokenMemo(memo)
