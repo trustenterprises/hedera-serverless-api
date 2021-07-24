@@ -187,10 +187,10 @@ class HashgraphClient extends HashgraphClientContract {
 			.setAccountId(Config.accountId)
 			.execute(client)
 
-		const token = tokens.get(TokenId.fromString(token_id))
+		const token = JSON.parse(tokens.toString())[token_id]
 		const adjustedAmountBySpec = amount * 10 ** specification.decimals
 
-		if (token.low < adjustedAmountBySpec) {
+		if (token < adjustedAmountBySpec) {
 			return false
 		}
 
