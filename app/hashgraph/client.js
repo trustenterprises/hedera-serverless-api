@@ -14,7 +14,8 @@ import {
 	TokenAssociateTransaction,
 	TransferTransaction,
 	TokenMintTransaction,
-	Status, TokenBurnTransaction
+	Status,
+	TokenBurnTransaction
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -306,13 +307,9 @@ class HashgraphClient extends HashgraphClientContract {
 			.setInitialSupply(supplyWithDecimals)
 			.setDecimals(specification.decimals)
 			.setFreezeDefault(false)
-<<<<<<< Updated upstream
-			.setMaxTransactionFee(new Hbar(5, HbarUnit.Hbar)) //Change the default max transaction fee
-=======
 			.setFeeScheduleKey(operatorPrivateKey)
 			.setSupplyKey(operatorPrivateKey)
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
->>>>>>> Stashed changes
 
 		if (memo) {
 			transaction.setTokenMemo(memo)
