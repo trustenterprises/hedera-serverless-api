@@ -12,8 +12,10 @@ import {
 	HbarUnit,
 	AccountCreateTransaction,
 	TokenAssociateTransaction,
-	TokenId,
-	TransferTransaction
+	TransferTransaction,
+	TokenMintTransaction,
+	Status,
+	TokenBurnTransaction
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -225,6 +227,60 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
+	mintTokens = async ({
+		specification = Specification.Fungible,
+		tokenId,
+		amount
+	}) => {
+		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+
+		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+
+		const transaction = await new TokenMintTransaction()
+			.setTokenId(tokenId)
+			.setAmount(adjustedAmountBySpec)
+			.freezeWith(client)
+
+		const signTx = await transaction.sign(operatorPrivateKey)
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+		const supply = receipt.totalSupply.low / 10 ** specification.decimals
+
+		return {
+			supply,
+			tokenId,
+			amount
+		}
+	}
+
+	burnTokens = async ({
+		specification = Specification.Fungible,
+		tokenId,
+		amount
+	}) => {
+		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+
+		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+
+		const transaction = await new TokenBurnTransaction()
+			.setTokenId(tokenId)
+			.setAmount(adjustedAmountBySpec)
+			.freezeWith(client)
+
+		const signTx = await transaction.sign(operatorPrivateKey)
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+		const supply = receipt.totalSupply.low / 10 ** specification.decimals
+
+		return {
+			supply,
+			tokenId,
+			amount
+		}
+	}
+
 	createToken = async tokenCreation => {
 		const {
 			specification = Specification.Fungible,
@@ -251,6 +307,8 @@ class HashgraphClient extends HashgraphClientContract {
 			.setInitialSupply(supplyWithDecimals)
 			.setDecimals(specification.decimals)
 			.setFreezeDefault(false)
+			.setFeeScheduleKey(operatorPrivateKey)
+			.setSupplyKey(operatorPrivateKey)
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
 
 		if (memo) {
