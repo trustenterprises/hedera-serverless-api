@@ -194,14 +194,15 @@ class HashgraphClient extends HashgraphClientContract {
 			return false
 		}
 
-		await new TransferTransaction()
+		const transfer = await new TransferTransaction()
 			.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
 			.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
 			.execute(client)
 
 		return {
 			amount,
-			receiver_id
+			receiver_id,
+			transaction_id: transfer.transactionId.toString()
 		}
 	}
 
