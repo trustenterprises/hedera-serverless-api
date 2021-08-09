@@ -160,4 +160,5 @@ test("The client can bequest an account with tokens", async () => {
 
 	expect(bequest.amount).toBeDefined()
 	expect(bequest.receiver_id).toBeDefined()
+	expect(bequest.transaction_id).toBeDefined()
 }, 20000)
