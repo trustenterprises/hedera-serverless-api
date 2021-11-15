@@ -11,8 +11,9 @@ const { TESTNET, PREVIEWNET, MAINNET } = Environment
  *
  * Lots of questions.
  */
-
-const testnetNodes = Client.forTestnet()
+const testnetNodes = {
+	"0.testnet.hedera.com:50211": "0.0.3",
+}
 
 const mainnetNodes = Client.forMainnet()
 
