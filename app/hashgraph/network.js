@@ -11,9 +11,13 @@ const { TESTNET, PREVIEWNET, MAINNET } = Environment
  *
  * Lots of questions.
  */
+
 const testnetNodes = {
-	"0.testnet.hedera.com:50211": "0.0.3",
+	network: {
+		"0.testnet.hedera.com:50211": "0.0.3",
+	}
 }
+
 
 const mainnetNodes = Client.forMainnet()
 
