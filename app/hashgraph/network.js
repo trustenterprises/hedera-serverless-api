@@ -1,6 +1,6 @@
 import Config from "app/config"
 import Environment from "app/constants/environment"
-import { Client } from "@hashgraph/sdk"
+import { AccountId, Client } from "@hashgraph/sdk"
 
 const { TESTNET, PREVIEWNET, MAINNET } = Environment
 
@@ -12,12 +12,19 @@ const { TESTNET, PREVIEWNET, MAINNET } = Environment
  * Lots of questions.
  */
 
-const testnetNodes = {
-	network: {
-		"0.testnet.hedera.com:50211": "0.0.3",
-	}
-}
+// Current testnet nodes from Greg, via discord
+const nodes = {
+	//"0.testnet.hedera.com:50211": new AccountId(3),
+	"1.testnet.hedera.com:50211": new AccountId(4),
+	"2.testnet.hedera.com:50211": new AccountId(5),
+	"3.testnet.hedera.com:50211": new AccountId(6),
+	"4.testnet.hedera.com:50211": new AccountId(7),
+	"5.testnet.hedera.com:50211": new AccountId(8),
+	"6.testnet.hedera.com:50211": new AccountId(9),
+};
 
+// const testnetNodes = Client.forTestnet()
+const testnetNodes = Client.forNetwork(nodes)
 
 const mainnetNodes = Client.forMainnet()
 

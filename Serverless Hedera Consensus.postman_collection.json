@@ -709,6 +709,210 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Send Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token_id",
+									"value": "0.0.15647345",
+									"type": "text"
+								},
+								{
+									"key": "receiver_id",
+									"value": "0.0.13283221",
+									"type": "text"
+								},
+								{
+									"key": "amounts",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/token/send",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"token",
+								"send"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Amount required.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token_id",
+											"value": "0.0.15647345",
+											"type": "text"
+										},
+										{
+											"key": "receiver_id",
+											"value": "0.0.13283221",
+											"type": "text"
+										},
+										{
+											"key": "amounts",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/token/send",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"token",
+										"send"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "ETag",
+									"value": "\"25-H+qcV2Vy5dsh2tbUUQOzI11DCIs\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 25 Nov 2021 17:21:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"\\\"amount\\\" is required\"\n    ]\n}"
+						},
+						{
+							"name": "Transfer failed, miscellaneous",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token_id",
+											"value": "0.0.15647345",
+											"type": "text"
+										},
+										{
+											"key": "receiver_id",
+											"value": "0.0.13283221ss",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/token/send",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"token",
+										"send"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"70-Op8zRv9q6UprO+T8ozv5jGKB7ZQ\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "112"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 25 Nov 2021 17:27:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"error\": \"Transfer failed, ensure that the recipient account is valid and has associated to the token\"\n    }\n}"
+						}
+					]
 				}
 			]
 		},
@@ -995,6 +1199,32 @@
 			]
 		},
 		{
+			"name": "Account Token Balance",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{api_secret_key}}"
+					}
+				],
+				"url": {
+					"raw": "{{domain}}/api/account/0.0.13283221/0.0.15647345",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"0.0.13283221",
+						"0.0.15647345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Account Create",
 			"request": {
 				"method": "POST",
@@ -1005,6 +1235,10 @@
 						"value": "{{api_secret_key}}"
 					}
 				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
 				"url": {
 					"raw": "{{domain}}/api/account/create",
 					"host": [

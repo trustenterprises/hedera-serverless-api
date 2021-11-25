@@ -162,3 +162,36 @@ test("The client can bequest an account with tokens", async () => {
 	expect(bequest.receiver_id).toBeDefined()
 	expect(bequest.transaction_id).toBeDefined()
 }, 20000)
+
+// Venly test
+test("The client can send a token to venly", async () => {
+
+	const tokenData = {
+		supply: "10",
+		name: 'e2e-hedera-DOVst',
+		symbol: 'dov-e2e',
+		memo: 'SEND TOKEN ACCOUNT TEST',
+	}
+
+	const token = await client.createToken(tokenData)
+
+	const bequest = await client.sendTokens({
+		token_id: token.tokenId,
+		receiver_id: "0.0.13283221", // This is a specific venly wallet
+		amount: 2
+	})
+
+	// Ensure that the balance can be read
+	await sleep(2000)
+
+	const balance = await client.getTokenBalance({
+		account_id: "0.0.13283221",
+		token_id: token.tokenId,
+	})
+
+	expect(balance.amount).toBe(2)
+
+	expect(bequest.amount).toBeDefined()
+	expect(bequest.receiver_id).toBeDefined()
+	expect(bequest.transaction_id).toBeDefined()
+}, 20000)

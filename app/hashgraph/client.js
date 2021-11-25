@@ -228,6 +228,72 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
+	getTokenBalance = async ({
+		specification = Specification.Fungible,
+		account_id,
+		token_id
+	}) => {
+
+		const client = this.#client
+		const { tokens } = await new AccountBalanceQuery()
+			.setAccountId(account_id)
+			.execute(client)
+
+		const token = JSON.parse(tokens.toString())[token_id]
+
+		const expectedValue = token / 10 ** specification.decimals
+
+		return {
+			token_id,
+			amount: expectedValue,
+			raw_amount: token,
+			decimals: specification.decimals
+		}
+	}
+
+	// TODO: check for general failures and token assoc issues (using Venly)
+	sendTokens = async ({
+			specification = Specification.Fungible,
+			token_id,
+			receiver_id,
+			amount
+		}) => {
+
+		const client = this.#client
+
+		const { tokens } = await new AccountBalanceQuery()
+			.setAccountId(Config.accountId)
+			.execute(client)
+
+		const token = JSON.parse(tokens.toString())[token_id]
+		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+
+		if (token < adjustedAmountBySpec) {
+			return false
+		}
+
+		try {
+			const transfer = await new TransferTransaction()
+				.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
+				.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
+				.execute(client)
+
+			// Why can't I
+			return {
+				amount,
+				receiver_id,
+				transaction_id: transfer.transactionId.toString()
+			}
+
+		} catch (e) {
+
+			// TODO: Different error for association errors.
+			return {
+				error: 'Transfer failed, ensure that the recipient account is valid and has associated to the token'
+			}
+		}
+	}
+
 	mintTokens = async ({
 		specification = Specification.Fungible,
 		tokenId,
