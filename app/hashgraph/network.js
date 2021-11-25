@@ -20,8 +20,8 @@ const nodes = {
 	"3.testnet.hedera.com:50211": new AccountId(6),
 	"4.testnet.hedera.com:50211": new AccountId(7),
 	"5.testnet.hedera.com:50211": new AccountId(8),
-	"6.testnet.hedera.com:50211": new AccountId(9),
-};
+	"6.testnet.hedera.com:50211": new AccountId(9)
+}
 
 // const testnetNodes = Client.forTestnet()
 const testnetNodes = Client.forNetwork(nodes)

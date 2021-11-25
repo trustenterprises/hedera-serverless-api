@@ -233,7 +233,6 @@ class HashgraphClient extends HashgraphClientContract {
 		account_id,
 		token_id
 	}) => {
-
 		const client = this.#client
 		const { tokens } = await new AccountBalanceQuery()
 			.setAccountId(account_id)
@@ -253,12 +252,11 @@ class HashgraphClient extends HashgraphClientContract {
 
 	// TODO: check for general failures and token assoc issues (using Venly)
 	sendTokens = async ({
-			specification = Specification.Fungible,
-			token_id,
-			receiver_id,
-			amount
-		}) => {
-
+		specification = Specification.Fungible,
+		token_id,
+		receiver_id,
+		amount
+	}) => {
 		const client = this.#client
 
 		const { tokens } = await new AccountBalanceQuery()
@@ -284,12 +282,11 @@ class HashgraphClient extends HashgraphClientContract {
 				receiver_id,
 				transaction_id: transfer.transactionId.toString()
 			}
-
 		} catch (e) {
-
 			// TODO: Different error for association errors.
 			return {
-				error: 'Transfer failed, ensure that the recipient account is valid and has associated to the token'
+				error:
+					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
 			}
 		}
 	}

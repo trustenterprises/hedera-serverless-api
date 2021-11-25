@@ -1,12 +1,11 @@
 import Response from "app/response"
 
 async function CheckBalanceTokenHandler(req, res) {
-
 	const { id, token_id } = req.query
 
 	const balancePayload = {
 		account_id: id,
-		token_id,
+		token_id
 	}
 
 	const { hashgraphClient } = req.context

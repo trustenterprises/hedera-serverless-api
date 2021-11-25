@@ -2,7 +2,6 @@ import Response from "app/response"
 import sendTokenRequest from "app/validators/sendTokenRequest"
 
 async function SendTokenHandler(req, res) {
-
 	const validationErrors = sendTokenRequest(req.body)
 
 	if (validationErrors) {
