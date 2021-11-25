@@ -9,7 +9,7 @@ const schema = Joi.object({
 	amount: Joi.number().required()
 })
 
-function consensusMessageRequest(candidate = {}) {
+function bequestTokenRequest(candidate = {}) {
 	const validation = schema.validate(candidate || {})
 
 	if (validation.error) {
@@ -17,4 +17,4 @@ function consensusMessageRequest(candidate = {}) {
 	}
 }
 
-export default consensusMessageRequest
+export default bequestTokenRequest
