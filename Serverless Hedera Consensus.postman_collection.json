@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2c026d8f-795d-48c7-8554-4bbc17f797ad",
-		"name": "Serverless Hedera Consensus",
+		"name": "Serverless Hedera API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
