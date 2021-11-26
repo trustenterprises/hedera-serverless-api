@@ -267,7 +267,9 @@ class HashgraphClient extends HashgraphClientContract {
 		const adjustedAmountBySpec = amount * 10 ** specification.decimals
 
 		if (token < adjustedAmountBySpec) {
-			return false
+			return {
+				error: "Not enough token balance to send to recipient"
+			}
 		}
 
 		try {
@@ -276,17 +278,17 @@ class HashgraphClient extends HashgraphClientContract {
 				.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
 				.execute(client)
 
-			// Why can't I
+			// Wait for receipt, successful transaction
+			await transfer.getReceipt(client)
+
 			return {
 				amount,
 				receiver_id,
 				transaction_id: transfer.transactionId.toString()
 			}
 		} catch (e) {
-			// TODO: Different error for association errors.
 			return {
-				error:
-					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
+				error: "Transfer failed, ensure that the recipient account is valid and has associated to the token"
 			}
 		}
 	}
