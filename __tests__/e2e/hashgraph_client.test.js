@@ -1,5 +1,6 @@
 import HashgraphClient from "app/hashgraph/client"
 import sleep from "app/utils/sleep"
+import balance from "../../pages/api/account/balance"
 
 const client = new HashgraphClient()
 
@@ -169,6 +170,11 @@ test("The client can send a token to venly", async () => {
 	const tokenId = '0.0.15657534'
 	const accountId = '0.0.15657776'
 
+	const initialBalance = await client.getTokenBalance({
+		account_id: accountId,
+		token_id: tokenId,
+	})
+
 	// TODO: This test will fail one day.
 	const bequest = await client.sendTokens({
 		token_id: tokenId,
@@ -176,15 +182,15 @@ test("The client can send a token to venly", async () => {
 		amount: 0.00001
 	})
 
-	// Ensure that the balance can be read
-	await sleep(2000)
-
-	const balance = await client.getTokenBalance({
+	const newBalance = await client.getTokenBalance({
 		account_id: accountId,
 		token_id: tokenId,
 	})
 
+	expect(initialBalance.amount + 0.00001).toBeLessThanOrEqual(newBalance.amount) // floaty hack.
+
 	expect(bequest.amount).toBeDefined()
 	expect(bequest.receiver_id).toBeDefined()
 	expect(bequest.transaction_id).toBeDefined()
+
 }, 20000)
