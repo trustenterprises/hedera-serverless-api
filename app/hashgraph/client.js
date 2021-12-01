@@ -244,8 +244,8 @@ class HashgraphClient extends HashgraphClientContract {
 
 		return {
 			token_id,
-			amount: expectedValue,
-			raw_amount: token,
+			amount: expectedValue || 0,
+			raw_amount: token || 0,
 			decimals: specification.decimals
 		}
 	}
