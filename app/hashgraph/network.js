@@ -26,7 +26,14 @@ const nodes = {
 // const testnetNodes = Client.forTestnet()
 const testnetNodes = Client.forNetwork(nodes)
 
-const mainnetNodes = Client.forMainnet()
+// Current testnet nodes from Greg, via discord
+const nodesForMain = {
+	// "35.186.191.247:50211": new AccountId(4),
+	"35.204.86.32:50211": new AccountId(12),
+}
+
+// const mainnetNodes = Client.forMainnet()
+const mainnetNodes = Client.forNetwork(nodesForMain)
 
 const previewnetNodes = Client.forPreviewnet()
 
