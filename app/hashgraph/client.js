@@ -60,6 +60,8 @@ class HashgraphClient extends HashgraphClientContract {
 		const transactionId = await transaction.execute(client)
 		const receipt = await transactionId.getReceipt(client)
 
+		await sleep(3000)
+
 		return {
 			...transactionResponse,
 			topic: receipt.topicId.toString()
