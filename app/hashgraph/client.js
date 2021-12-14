@@ -46,6 +46,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = new TopicCreateTransaction()
 
 		transaction.setAdminKey(operatorPrivateKey.publicKey)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 
 		if (memo) {
 			transactionResponse.memo = memo
@@ -81,6 +82,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const topic = await new TopicUpdateTransaction()
 			.setTopicId(topic_id)
 			.setTopicMemo(memo)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.execute(client)
 
 		return topic
@@ -107,7 +109,8 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = await new TopicMessageSubmitTransaction({
 			topicId: TopicId.fromString(topic_id),
 			message: message
-		}).execute(client)
+		}).setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+			.execute(client)
 
 		// Remember to allow for mainnet links for explorer
 		const messageTransactionResponse = {
@@ -158,6 +161,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = await new TokenAssociateTransaction()
 			.setAccountId(accountId)
 			.setTokenIds(tokenIds)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.freezeWith(client)
 
 		const accountPrivateKey = PrivateKey.fromString(privateKey)
@@ -199,6 +203,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const transfer = await new TransferTransaction()
 			.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
 			.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.execute(client)
 
 		return {
@@ -276,6 +281,7 @@ class HashgraphClient extends HashgraphClientContract {
 			const transfer = await new TransferTransaction()
 				.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
 				.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
+				.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 				.execute(client)
 
 			// Wait for receipt, successful transaction
@@ -306,6 +312,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = await new TokenMintTransaction()
 			.setTokenId(tokenId)
 			.setAmount(adjustedAmountBySpec)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.freezeWith(client)
 
 		const signTx = await transaction.sign(operatorPrivateKey)
