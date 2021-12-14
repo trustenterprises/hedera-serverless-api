@@ -129,7 +129,7 @@ class HashgraphClient extends HashgraphClientContract {
 				.setTransactionId(transaction.transactionId)
 				.execute(client)
 
-			const { seconds, nanos } = record.consensusTimestampstamp
+			const { seconds, nanos } = record.consensusTimestamp
 
 			const consensusResult = {
 				...messageTransactionResponse,
@@ -145,9 +145,10 @@ class HashgraphClient extends HashgraphClientContract {
 			return consensusResult
 		}
 
-		if (allow_synchronous_consensus) {
-			return await syncMessageConsensus()
-		}
+		// TODO: This is problematic.
+		// if (allow_synchronous_consensus) {
+		// 	return await syncMessageConsensus()
+		// }
 
 		if (Config.webhookUrl) {
 			await syncMessageConsensus()
