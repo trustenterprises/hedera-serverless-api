@@ -169,8 +169,12 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const accountPrivateKey = PrivateKey.fromString(privateKey)
 		const signTx = await transaction.sign(accountPrivateKey)
+		const executeTx = await signTx.execute(client)
 
-		return await signTx.execute(client)
+		// Wait to finish for consensus
+		await executeTx.getReceipt(client)
+
+		return executeTx
 	}
 
 	bequestToken = async ({
