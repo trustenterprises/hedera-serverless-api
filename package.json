@@ -10,7 +10,8 @@
     "test:all": "jest --coverage --runInBand --detectOpenHandles",
     "lint": "npx prettier --check 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
     "lint:fix": "npx prettier --write 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
-    "start": "next start"
+    "start": "next start",
+    "start-server": "next start -H 0.0.0.0 -p ${PORT:-8080}"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
