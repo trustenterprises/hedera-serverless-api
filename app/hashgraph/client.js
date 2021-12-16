@@ -45,7 +45,8 @@ class HashgraphClient extends HashgraphClientContract {
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 		const transaction = new TopicCreateTransaction()
 
-		transaction.setAdminKey(operatorPrivateKey.publicKey)
+		transaction
+			.setAdminKey(operatorPrivateKey.publicKey)
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 
 		if (memo) {
@@ -111,8 +112,11 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = await new TopicMessageSubmitTransaction({
 			topicId: TopicId.fromString(topic_id),
 			message: message
-		}).setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+		})
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.execute(client)
+
+		await transaction.getReceipt(client)
 
 		// Remember to allow for mainnet links for explorer
 		const messageTransactionResponse = {
@@ -123,7 +127,7 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		const syncMessageConsensus = async () => {
-			await sleep()
+			// await sleep()
 
 			const record = await new TransactionRecordQuery()
 				.setTransactionId(transaction.transactionId)
@@ -301,7 +305,8 @@ class HashgraphClient extends HashgraphClientContract {
 			}
 		} catch (e) {
 			return {
-				error: "Transfer failed, ensure that the recipient account is valid and has associated to the token"
+				error:
+					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
 			}
 		}
 	}
