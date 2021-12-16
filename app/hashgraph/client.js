@@ -179,7 +179,9 @@ class HashgraphClient extends HashgraphClientContract {
 		try {
 			await executeTx.getReceipt(client)
 		} catch (_) {
-			console.warn(`Account: ${accountId} already associated to token - ${tokenIds}` )
+			console.warn(
+				`Account: ${accountId} already associated to token - ${tokenIds}`
+			)
 		}
 
 		return executeTx
