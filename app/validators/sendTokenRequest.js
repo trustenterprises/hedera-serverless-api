@@ -1,15 +1,12 @@
 const Joi = require("@hapi/joi")
 
 const schema = Joi.object({
-	encrypted_receiver_key: Joi.string()
-		.length(241)
-		.required(),
 	token_id: Joi.string().required(),
 	receiver_id: Joi.string().required(),
 	amount: Joi.number().required()
 })
 
-function bequestTokenRequest(candidate = {}) {
+function sendTokenRequest(candidate = {}) {
 	const validation = schema.validate(candidate || {})
 
 	if (validation.error) {
@@ -17,4 +14,4 @@ function bequestTokenRequest(candidate = {}) {
 	}
 }
 
-export default bequestTokenRequest
+export default sendTokenRequest

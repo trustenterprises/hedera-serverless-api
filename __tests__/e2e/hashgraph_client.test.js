@@ -1,5 +1,6 @@
 import HashgraphClient from "app/hashgraph/client"
 import sleep from "app/utils/sleep"
+import balance from "../../pages/api/account/balance"
 
 const client = new HashgraphClient()
 
@@ -96,6 +97,40 @@ test("The client can create a token", async () => {
 	expect(token.name).toBe(tokenData.name)
 }, 20000)
 
+test("The client can mint a token and increase supply", async () => {
+
+	const tokenData = {
+		supply: "10",
+		name: 'e2e-hedera-mint-more-tokens',
+		symbol: 'te-e2e',
+		memo: 'THIS IS A MEMO',
+	}
+
+	const token = await client.createToken(tokenData)
+	const tokenMint = await client.mintTokens({ tokenId: token.tokenId, amount: 1 })
+
+	expect(tokenMint.supply).toBe(11)
+	expect(tokenMint.amount).toBe(1)
+	expect(tokenMint.tokenId).toBe(token.tokenId)
+
+}, 20000)
+
+test("The client can mint a token and decrease supply", async () => {
+	const tokenData = {
+		supply: "10",
+		name: 'e2e-hedera-mint-more-tokens',
+		symbol: 'te-e2e',
+		memo: 'THIS IS A MEMO',
+	}
+
+	const token = await client.createToken(tokenData)
+	const tokenMint = await client.burnTokens({ tokenId: token.tokenId, amount: 1 })
+
+	expect(tokenMint.supply).toBe(9)
+	expect(tokenMint.amount).toBe(1)
+	expect(tokenMint.tokenId).toBe(token.tokenId)
+}, 20000)
+
 test("The client can create an account", async () => {
 	const account = await client.createAccount()
 
@@ -126,4 +161,36 @@ test("The client can bequest an account with tokens", async () => {
 
 	expect(bequest.amount).toBeDefined()
 	expect(bequest.receiver_id).toBeDefined()
+	expect(bequest.transaction_id).toBeDefined()
+}, 20000)
+
+// Venly test
+test("The client can send a token to venly", async () => {
+
+	const tokenId = '0.0.15657534'
+	const accountId = '0.0.15657776'
+
+	const initialBalance = await client.getTokenBalance({
+		account_id: accountId,
+		token_id: tokenId,
+	})
+
+	// TODO: This test will fail one day.
+	const bequest = await client.sendTokens({
+		token_id: tokenId,
+		receiver_id: accountId, // This is a specific venly wallet
+		amount: 0.00001
+	})
+
+	const newBalance = await client.getTokenBalance({
+		account_id: accountId,
+		token_id: tokenId,
+	})
+
+	expect(initialBalance.amount + 0.00001).toBeLessThanOrEqual(newBalance.amount) // floaty hack.
+
+	expect(bequest.amount).toBeDefined()
+	expect(bequest.receiver_id).toBeDefined()
+	expect(bequest.transaction_id).toBeDefined()
+
 }, 20000)
