@@ -162,6 +162,14 @@ test("The client can bequest an account with tokens", async () => {
 	expect(bequest.amount).toBeDefined()
 	expect(bequest.receiver_id).toBeDefined()
 	expect(bequest.transaction_id).toBeDefined()
+
+	// Send more tokens, as a user is associated, catch the issue.
+	await client.bequestToken({
+		encrypted_receiver_key: account.encryptedKey,
+		token_id: token.tokenId,
+		receiver_id: account.accountId,
+		amount: 1
+	})
 }, 20000)
 
 // Venly test

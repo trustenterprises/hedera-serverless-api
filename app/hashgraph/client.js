@@ -175,8 +175,14 @@ class HashgraphClient extends HashgraphClientContract {
 		const signTx = await transaction.sign(accountPrivateKey)
 		const executeTx = await signTx.execute(client)
 
-		// Wait to finish for consensus
-		await executeTx.getReceipt(client)
+		// Wait to finish for consensus and catch if association has already happened
+		try {
+			await executeTx.getReceipt(client)
+		} catch (_) {
+			console.warn(
+				`Account: ${accountId} already associated to token - ${tokenIds}`
+			)
+		}
 
 		return executeTx
 	}
