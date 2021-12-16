@@ -12,8 +12,10 @@ import {
 	HbarUnit,
 	AccountCreateTransaction,
 	TokenAssociateTransaction,
-	TokenId,
-	TransferTransaction
+	TransferTransaction,
+	TokenMintTransaction,
+	Status,
+	TokenBurnTransaction
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -43,7 +45,9 @@ class HashgraphClient extends HashgraphClientContract {
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 		const transaction = new TopicCreateTransaction()
 
-		transaction.setAdminKey(operatorPrivateKey.publicKey)
+		transaction
+			.setAdminKey(operatorPrivateKey.publicKey)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 
 		if (memo) {
 			transactionResponse.memo = memo
@@ -56,6 +60,8 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const transactionId = await transaction.execute(client)
 		const receipt = await transactionId.getReceipt(client)
+
+		await sleep(3000)
 
 		return {
 			...transactionResponse,
@@ -79,6 +85,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const topic = await new TopicUpdateTransaction()
 			.setTopicId(topic_id)
 			.setTopicMemo(memo)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.execute(client)
 
 		return topic
@@ -105,7 +112,11 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = await new TopicMessageSubmitTransaction({
 			topicId: TopicId.fromString(topic_id),
 			message: message
-		}).execute(client)
+		})
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+			.execute(client)
+
+		await transaction.getReceipt(client)
 
 		// Remember to allow for mainnet links for explorer
 		const messageTransactionResponse = {
@@ -116,13 +127,13 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		const syncMessageConsensus = async () => {
-			await sleep()
+			// await sleep()
 
 			const record = await new TransactionRecordQuery()
 				.setTransactionId(transaction.transactionId)
 				.execute(client)
 
-			const { seconds, nanos } = record.consensusTimestampstamp
+			const { seconds, nanos } = record.consensusTimestamp
 
 			const consensusResult = {
 				...messageTransactionResponse,
@@ -138,9 +149,10 @@ class HashgraphClient extends HashgraphClientContract {
 			return consensusResult
 		}
 
-		if (allow_synchronous_consensus) {
-			return await syncMessageConsensus()
-		}
+		// TODO: This is problematic.
+		// if (allow_synchronous_consensus) {
+		// 	return await syncMessageConsensus()
+		// }
 
 		if (Config.webhookUrl) {
 			await syncMessageConsensus()
@@ -156,12 +168,17 @@ class HashgraphClient extends HashgraphClientContract {
 		const transaction = await new TokenAssociateTransaction()
 			.setAccountId(accountId)
 			.setTokenIds(tokenIds)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.freezeWith(client)
 
 		const accountPrivateKey = PrivateKey.fromString(privateKey)
 		const signTx = await transaction.sign(accountPrivateKey)
+		const executeTx = await signTx.execute(client)
 
-		return await signTx.execute(client)
+		// Wait to finish for consensus
+		await executeTx.getReceipt(client)
+
+		return executeTx
 	}
 
 	bequestToken = async ({
@@ -194,14 +211,16 @@ class HashgraphClient extends HashgraphClientContract {
 			return false
 		}
 
-		await new TransferTransaction()
+		const transfer = await new TransferTransaction()
 			.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
 			.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.execute(client)
 
 		return {
 			amount,
-			receiver_id
+			receiver_id,
+			transaction_id: transfer.transactionId.toString()
 		}
 	}
 
@@ -222,6 +241,128 @@ class HashgraphClient extends HashgraphClientContract {
 			accountId,
 			encryptedKey,
 			publicKey: publicKey.toString()
+		}
+	}
+
+	getTokenBalance = async ({
+		specification = Specification.Fungible,
+		account_id,
+		token_id
+	}) => {
+		const client = this.#client
+		const { tokens } = await new AccountBalanceQuery()
+			.setAccountId(account_id)
+			.execute(client)
+
+		const token = JSON.parse(tokens.toString())[token_id]
+
+		const expectedValue = token / 10 ** specification.decimals
+
+		return {
+			token_id,
+			amount: expectedValue || 0,
+			raw_amount: token || 0,
+			decimals: specification.decimals
+		}
+	}
+
+	// TODO: check for general failures and token assoc issues (using Venly)
+	sendTokens = async ({
+		specification = Specification.Fungible,
+		token_id,
+		receiver_id,
+		amount
+	}) => {
+		const client = this.#client
+
+		const { tokens } = await new AccountBalanceQuery()
+			.setAccountId(Config.accountId)
+			.execute(client)
+
+		const token = JSON.parse(tokens.toString())[token_id]
+		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+
+		if (token < adjustedAmountBySpec) {
+			return {
+				error: "Not enough token balance to send to recipient"
+			}
+		}
+
+		try {
+			const transfer = await new TransferTransaction()
+				.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
+				.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
+				.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+				.execute(client)
+
+			// Wait for receipt, successful transaction
+			await transfer.getReceipt(client)
+
+			return {
+				amount,
+				receiver_id,
+				transaction_id: transfer.transactionId.toString()
+			}
+		} catch (e) {
+			return {
+				error:
+					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
+			}
+		}
+	}
+
+	mintTokens = async ({
+		specification = Specification.Fungible,
+		tokenId,
+		amount
+	}) => {
+		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+
+		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+
+		const transaction = await new TokenMintTransaction()
+			.setTokenId(tokenId)
+			.setAmount(adjustedAmountBySpec)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+			.freezeWith(client)
+
+		const signTx = await transaction.sign(operatorPrivateKey)
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+		const supply = receipt.totalSupply.low / 10 ** specification.decimals
+
+		return {
+			supply,
+			tokenId,
+			amount
+		}
+	}
+
+	burnTokens = async ({
+		specification = Specification.Fungible,
+		tokenId,
+		amount
+	}) => {
+		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+
+		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+
+		const transaction = await new TokenBurnTransaction()
+			.setTokenId(tokenId)
+			.setAmount(adjustedAmountBySpec)
+			.freezeWith(client)
+
+		const signTx = await transaction.sign(operatorPrivateKey)
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+		const supply = receipt.totalSupply.low / 10 ** specification.decimals
+
+		return {
+			supply,
+			tokenId,
+			amount
 		}
 	}
 
@@ -251,7 +392,9 @@ class HashgraphClient extends HashgraphClientContract {
 			.setInitialSupply(supplyWithDecimals)
 			.setDecimals(specification.decimals)
 			.setFreezeDefault(false)
-			.setMaxTransactionFee(new Hbar(5, HbarUnit.Hbar)) //Change the default max transaction fee
+			.setFeeScheduleKey(operatorPrivateKey)
+			.setSupplyKey(operatorPrivateKey)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
 
 		if (memo) {
 			transaction.setTokenMemo(memo)

@@ -10,16 +10,17 @@
     "test:all": "jest --coverage --runInBand --detectOpenHandles",
     "lint": "npx prettier --check 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
     "lint:fix": "npx prettier --write 'app/**/*.js' 'test/**/*.js' 'pages/**/*.js'",
-    "start": "next start"
+    "start": "next start",
+    "start-server": "next start -H 0.0.0.0 -p ${PORT:-8080}"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "@hashgraph/sdk": "^2.0.23",
+    "@hashgraph/sdk": "^2.6.0",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
-    "next": "^9.5.5",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "next": "^12.0.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
