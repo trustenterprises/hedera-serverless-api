@@ -56,7 +56,6 @@ const networkForEnvironment = {
 let hederaNetworkClient = null
 
 const getNodeNetworkClient = () => {
-
 	const network = networkForEnvironment[Config.network]
 
 	if (!network || !network.nodes) {
@@ -64,10 +63,9 @@ const getNodeNetworkClient = () => {
 	}
 
 	if (hederaNetworkClient === null) {
-		hederaNetworkClient = new Client({ network: network.nodes.network }).setOperator(
-			Config.accountId,
-			Config.privateKey
-		)
+		hederaNetworkClient = new Client({
+			network: network.nodes.network
+		}).setOperator(Config.accountId, Config.privateKey)
 	}
 
 	return hederaNetworkClient
