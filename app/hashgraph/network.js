@@ -52,7 +52,7 @@ const networkForEnvironment = {
 	}
 }
 
-const getNodeNetworkClient = () => {
+const createHederaClient = () => {
 	const network = networkForEnvironment[Config.network]
 
 	if (!network || !network.nodes) {
@@ -63,6 +63,17 @@ const getNodeNetworkClient = () => {
 		Config.accountId,
 		Config.privateKey
 	)
+}
+
+// Remove memory leak of creating a new network client
+let hederaNetworkClient = null;
+
+const getNodeNetworkClient = () => {
+	if (hederaNetworkClient === null) {
+		hederaNetworkClient = createHederaClient();
+	}
+
+	return hederaNetworkClient;
 }
 
 export default {
