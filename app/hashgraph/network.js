@@ -52,6 +52,9 @@ const networkForEnvironment = {
 	}
 }
 
+// Remove memory leak of creating a new network client
+let hederaNetworkClient = null
+
 const getNodeNetworkClient = () => {
 	const network = networkForEnvironment[Config.network]
 
@@ -59,10 +62,13 @@ const getNodeNetworkClient = () => {
 		throw `Network from environment ${Config.network} could not match for any hedera network. Change your "HEDERA_NETWORK" environment variable to either: "testnet", "previewnet" or "mainnet"`
 	}
 
-	return new Client({ network: network.nodes.network }).setOperator(
-		Config.accountId,
-		Config.privateKey
-	)
+	if (hederaNetworkClient === null) {
+		hederaNetworkClient = new Client({
+			network: network.nodes.network
+		}).setOperator(Config.accountId, Config.privateKey)
+	}
+
+	return hederaNetworkClient
 }
 
 export default {
