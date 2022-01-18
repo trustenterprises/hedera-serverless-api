@@ -66,14 +66,14 @@ const createHederaClient = () => {
 }
 
 // Remove memory leak of creating a new network client
-let hederaNetworkClient = null;
+let hederaNetworkClient = null
 
 const getNodeNetworkClient = () => {
 	if (hederaNetworkClient === null) {
-		hederaNetworkClient = createHederaClient();
+		hederaNetworkClient = createHederaClient()
 	}
 
-	return hederaNetworkClient;
+	return hederaNetworkClient
 }
 
 export default {
