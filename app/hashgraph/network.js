@@ -23,8 +23,8 @@ const nodes = {
 	//"6.testnet.hedera.com:50211": new AccountId(9)
 }
 
-//const testnetNodes = Client.forTestnet()
-const testnetNodes = Client.forNetwork(nodes)
+const testnetNodes = Client.forTestnet()
+//const testnetNodes = Client.forNetwork(nodes)
 //
 // Current testnet nodes from Greg, via discord
 const nodesForMain = {
