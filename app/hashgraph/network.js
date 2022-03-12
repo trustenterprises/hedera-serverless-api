@@ -14,7 +14,7 @@ const { TESTNET, PREVIEWNET, MAINNET } = Environment
 
 // Current testnet nodes from Greg, via discord
 const nodes = {
-	"0.testnet.hedera.com:50211": new AccountId(3),
+	"0.testnet.hedera.com:50211": new AccountId(3)
 	//"1.testnet.hedera.com:50211": new AccountId(4),
 	//"2.testnet.hedera.com:50211": new AccountId(5),
 	//"3.testnet.hedera.com:50211": new AccountId(6),
