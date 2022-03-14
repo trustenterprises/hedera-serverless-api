@@ -28,7 +28,7 @@
  */
 const Fungible = {
 	reference: "basic.fungible",
-	decimals: 6,
+	decimals: 8, // Quick fix for live staking
 	kyc: false,
 	wipe: false,
 	freeze: false
