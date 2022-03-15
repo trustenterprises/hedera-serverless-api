@@ -188,7 +188,7 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	bequestToken = async ({
-		specification = Specification.Fungible,
+		specification = Specification.DovuAssetFungible,
 		encrypted_receiver_key,
 		token_id,
 		receiver_id,

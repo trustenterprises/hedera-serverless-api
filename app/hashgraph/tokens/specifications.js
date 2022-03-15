@@ -34,6 +34,16 @@ const Fungible = {
 	freeze: false
 }
 
+// TODO: This is a requirement as an issue.
+// This is used for bequesting tokens
+const DovuAssetFungible = {
+	reference: "basic.dovu.asset_fungible",
+	decimals: 6,
+	kyc: false,
+	wipe: false,
+	freeze: false
+}
+
 /**
  * When creating NFT representations of tokens we require a token to be unique
  * and non fungible, it cannot be divided.
@@ -89,6 +99,7 @@ const UnibarLiquidityProviderReceipt = {
 }
 
 export default {
+	DovuAssetFungible,
 	Fungible,
 	NonFungible,
 	CompliantFungible,
