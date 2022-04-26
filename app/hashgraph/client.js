@@ -272,10 +272,7 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
-	hasTokenHoldings = async ({
-		account_id,
-		token_ids
-	}) => {
+	hasTokenHoldings = async ({ account_id, token_ids }) => {
 		const client = this.#client
 		const { tokens } = await new AccountBalanceQuery()
 			.setAccountId(account_id)
@@ -283,8 +280,7 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const allTokens = JSON.parse(tokens.toString())
 
-		const amountOfTokensHeld = token_ids
-			.filter(token_id => allTokens[token_id])
+		const amountOfTokensHeld = token_ids.filter(token_id => allTokens[token_id])
 			.length
 
 		return {

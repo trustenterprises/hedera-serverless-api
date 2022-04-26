@@ -5,11 +5,13 @@ async function CheckHoldingsTokenHandler(req, res) {
 
 	const holdingsPayload = {
 		account_id: id,
-		token_ids: token_ids.split(',')
+		token_ids: token_ids.split(",")
 	}
 
 	const { hashgraphClient } = req.context
-	const balanceResponse = await hashgraphClient.hasTokenHoldings(holdingsPayload)
+	const balanceResponse = await hashgraphClient.hasTokenHoldings(
+		holdingsPayload
+	)
 
 	if (balanceResponse) {
 		return Response.json(res, balanceResponse)
