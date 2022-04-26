@@ -272,6 +272,27 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
+	hasTokenHoldings = async ({
+		account_id,
+		token_ids
+	}) => {
+		const client = this.#client
+		const { tokens } = await new AccountBalanceQuery()
+			.setAccountId(account_id)
+			.execute(client)
+
+		const allTokens = JSON.parse(tokens.toString())
+
+		const amountOfTokensHeld = token_ids
+			.filter(token_id => allTokens[token_id])
+			.length
+
+		return {
+			token_ids,
+			has_tokens: amountOfTokensHeld === token_ids.length
+		}
+	}
+
 	// TODO: check for general failures and token assoc issues (using Venly)
 	sendTokens = async ({
 		specification = Specification.Fungible,
