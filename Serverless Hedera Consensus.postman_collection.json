@@ -726,17 +726,17 @@
 							"urlencoded": [
 								{
 									"key": "token_id",
-									"value": "0.0.15647345",
+									"value": "0.0.15657534",
 									"type": "text"
 								},
 								{
 									"key": "receiver_id",
-									"value": "0.0.13283221",
+									"value": "0.0.15657776",
 									"type": "text"
 								},
 								{
-									"key": "amounts",
-									"value": "5",
+									"key": "amount",
+									"value": "3",
 									"type": "text"
 								}
 							]
@@ -1225,6 +1225,33 @@
 			"response": []
 		},
 		{
+			"name": "Account Token Holdings",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"type": "text",
+						"value": "{{api_secret_key}}"
+					}
+				],
+				"url": {
+					"raw": "{{domain}}/api/account/0.0.13283221/holdings/0.0.15647345,0.0.15647345",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"0.0.13283221",
+						"holdings",
+						"0.0.15647345,0.0.15647345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Account Create",
 			"request": {
 				"method": "POST",
@@ -1269,25 +1296,23 @@
 					"urlencoded": [
 						{
 							"key": "message",
-							"value": "this is a message",
+							"value": "334",
 							"type": "text"
 						},
 						{
 							"key": "topic_id",
-							"value": "77484",
+							"value": "617080",
 							"type": "text"
 						},
 						{
 							"key": "allow_synchronous_consensus",
 							"value": "true",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
 							"key": "reference",
 							"value": "my reference",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						}
 					]
 				},

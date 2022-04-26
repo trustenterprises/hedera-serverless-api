@@ -202,3 +202,47 @@ test("The client can send a token to venly", async () => {
 	expect(bequest.transaction_id).toBeDefined()
 
 }, 20000)
+
+test("This test will check if a wallet holds different tokens", async () => {
+
+	const tokenData = {
+		supply: "10",
+		name: 'example token',
+		symbol: 'te-e2e',
+		memo: 'DIFFERENT TOKEN ACCOUNT TEST',
+	}
+
+	const token = await client.createToken(tokenData)
+	const token2 = await client.createToken(tokenData)
+
+	const account = await client.createAccount()
+
+	await client.bequestToken({
+		encrypted_receiver_key: account.encryptedKey,
+		token_id: token.tokenId,
+		receiver_id: account.accountId,
+		amount: 1
+	})
+
+	const hasTokensFalse = await client.hasTokenHoldings({
+		account_id: account.accountId,
+		token_ids: [ token2.tokenId, token.tokenId ]
+	})
+
+	expect(hasTokensFalse.has_tokens).toBeFalsy()
+
+	await client.bequestToken({
+		encrypted_receiver_key: account.encryptedKey,
+		token_id: token2.tokenId,
+		receiver_id: account.accountId,
+		amount: 1
+	})
+
+	const hasTokensTrue = await client.hasTokenHoldings({
+		account_id: account.accountId,
+		token_ids: [ token2.tokenId, token.tokenId ]
+	})
+
+	expect(hasTokensTrue.has_tokens).toBeTruthy()
+
+}, 20000)
