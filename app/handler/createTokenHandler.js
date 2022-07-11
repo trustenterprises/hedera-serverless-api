@@ -21,7 +21,7 @@ async function CreateTokenHandler(req, res) {
 	const { hashgraphClient } = req.context
 
 	const token = await hashgraphClient.createToken({
-		specification: Specification.Fungible,
+		specification: Specification.DovuAssetFungible,
 		memo,
 		name,
 		symbol,
