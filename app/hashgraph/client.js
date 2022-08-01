@@ -14,8 +14,10 @@ import {
 	TokenAssociateTransaction,
 	TransferTransaction,
 	TokenMintTransaction,
-	Status,
-	TokenBurnTransaction
+	TokenBurnTransaction,
+	TokenType,
+	CustomRoyaltyFee,
+	CustomFixedFee, TokenSupplyType
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -449,6 +451,102 @@ class HashgraphClient extends HashgraphClientContract {
 			supply: String(supply),
 			supplyWithDecimals: String(supplyWithDecimals),
 			tokenId: receipt.tokenId.toString()
+		}
+	}
+
+	// TODO: Inject
+	createNonFungibleToken = async nftCreation => {
+		const {
+			accountId = Config.accountId,
+			name = 'example_name',
+			symbol = 'EXAMPLE',
+			maxSupply = 100,
+			allowCustomFees = true,
+			royaltyAccountId = accountId,
+			royaltyFee = 0.05,
+			fallbackFee = 10,
+		} = nftCreation
+
+		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+
+		const transaction = new TokenCreateTransaction()
+			.setTokenName(name)
+			.setTokenType(TokenType.NonFungibleUnique)
+			.setSupplyType(TokenSupplyType.Finite)
+			.setSupplyKey(operatorPrivateKey)
+			.setTokenSymbol(symbol)
+			.setTreasuryAccountId(accountId)
+			.setMaxSupply(maxSupply)
+			.setInitialSupply(0)
+			.setDecimals(0)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
+
+		transaction.freezeWith(client)
+
+		if (allowCustomFees) {
+			transaction.setCustomFees(
+				new CustomRoyaltyFee()
+					.setNumerator(1)
+					.setDenominator(1 / royaltyFee)
+					.setFeeCollectorAccountId(royaltyAccountId)
+					.setFallbackFee(
+						new CustomFixedFee()
+							.setHbarAmount(new Hbar(fallbackFee))
+							.setFeeCollectorAccountId(royaltyAccountId)
+					)
+			)
+		}
+
+		const signTx = await transaction.sign(operatorPrivateKey)
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+
+		return {
+			name,
+			symbol,
+			tokenId: receipt.tokenId.toString(),
+		}
+	}
+
+	mintNonFungibleToken = async ({
+		token_id,
+		amount
+	}) => {
+		const client = this.#client
+
+		// Basic metadata// upload to IPFS
+		// const metadata = {
+		// 	"name": "Example NFT",
+		// 	"creator": "John Doe",
+		// 	"description": "This is an example NFT metadata",
+		// 	"image": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
+		// 	"type": "image/png",
+		// 	"format": "none",
+		// 	"properties": {
+		// 		"license": "MIT-0",
+		// 		"collection": "Generic Collection Name",
+		// 		"website": "www.johndoe.com"
+		// 	}
+		// }
+
+		// const buffer = Buffer.from(JSON.stringify(metadata), "utf-8");
+		const buffer = Buffer.from('bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxc', "utf-8");
+
+		const transaction = await new TokenMintTransaction()
+			.setTokenId(token_id)
+			// .setAmount(amount)
+			.setMetadata([buffer])
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+			.freezeWith(client)
+
+		const txResponse = await transaction.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+		// const supply = receipt.totalSupply.low / 10 ** specification.decimals
+
+		return {
+			// supply,
+			receipt
 		}
 	}
 }
