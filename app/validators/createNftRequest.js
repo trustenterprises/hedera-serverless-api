@@ -1,27 +1,30 @@
 const Joi = require("@hapi/joi")
 
-const TRILLION = 10 ** 12
+const MAXIMUM_POWER = 10 ** 18
 
 const schema = Joi.object({
+	collection_name: Joi.string()
+		.max(100)
+		.required(),
 	symbol: Joi.string()
 		.max(100)
 		.required(),
-	name: Joi.string()
-		.max(100)
-		.required(),
-	memo: Joi.string()
-		.max(100)
-		.optional(),
 	supply: Joi.number()
 		.positive()
-		.max(TRILLION)
+		.max(MAXIMUM_POWER)
 		.min(1)
 		.required(),
-	requires_kyc: Joi.bool().default(false),
-	can_freeze: Joi.bool().default(false)
+
+	// Optional fields
+	allow_custom_fees: Joi.bool().default(true),
+	royalty_fee: Joi.number().precision(2).default(0.05),
+	fallback_fee: Joi.number().max(10000).default(0),
+
+	// 🚨 Danger Will Robinson 🚨
+	enable_unsafe_keys: Joi.bool().default(false)
 }).options({ allowUnknown: true })
 
-function createTokenRequest(candidate = {}) {
+function createNftRequest(candidate = {}) {
 	const validation = schema.validate(candidate || {})
 
 	if (validation.error) {
@@ -29,4 +32,4 @@ function createTokenRequest(candidate = {}) {
 	}
 }
 
-export default createTokenRequest
+export default createNftRequest
