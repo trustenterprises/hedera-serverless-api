@@ -543,12 +543,12 @@ class HashgraphClient extends HashgraphClientContract {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
-		// TODO: Separate NFT storage from mint
+		// TODO: Separate NFT storage from mint (demo image)
 		const metadata = {
 			"name": "Example NFT",
 			"creator": "John Doe",
 			"description": "This is an example NFT metadata",
-			"image": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
+			"image": "ipfs://bafybeicluq6cqutdvdbwr27ppw6jqbgdu2wrlmxtxys5oeowneuvi5n4ve",
 			"type": "image/png",
 			"format": "none",
 			"properties": {
@@ -559,7 +559,7 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		const cid = await NftStorage.storeData(metadata)
-		const buffer = Buffer.from(cid, "utf-8");
+		const buffer = Buffer.from(`ipfs://${cid}`, "utf-8");
 
 		// Mints one at a time
 		const transaction = await new TokenMintTransaction()
