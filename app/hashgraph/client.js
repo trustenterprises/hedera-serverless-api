@@ -25,6 +25,7 @@ import Config from "app/config"
 import sleep from "app/utils/sleep"
 import Encryption from "app/utils/encryption"
 import Explorer from "app/utils/explorer"
+import NftStorage from "app/utils/nftStorage"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
 import Specification from "app/hashgraph/tokens/specifications"
 
@@ -535,42 +536,48 @@ class HashgraphClient extends HashgraphClientContract {
 
 	mintNonFungibleToken = async ({
 		token_id,
-		amount
+		amount,
+		//
+		// cid
 	}) => {
 		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
-		// Basic metadata// upload to IPFS
-		// const metadata = {
-		// 	"name": "Example NFT",
-		// 	"creator": "John Doe",
-		// 	"description": "This is an example NFT metadata",
-		// 	"image": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
-		// 	"type": "image/png",
-		// 	"format": "none",
-		// 	"properties": {
-		// 		"license": "MIT-0",
-		// 		"collection": "Generic Collection Name",
-		// 		"website": "www.johndoe.com"
-		// 	}
-		// }
+		// TODO: Separate NFT storage from mint
+		const metadata = {
+			"name": "Example NFT",
+			"creator": "John Doe",
+			"description": "This is an example NFT metadata",
+			"image": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
+			"type": "image/png",
+			"format": "none",
+			"properties": {
+				"license": "MIT-0",
+				"collection": "Generic Collection Name",
+				"website": "www.johndoe.com"
+			}
+		}
 
-		// const buffer = Buffer.from(JSON.stringify(metadata), "utf-8");
-		const buffer = Buffer.from('bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxc', "utf-8");
+		const cid = await NftStorage.storeData(metadata)
+		const buffer = Buffer.from(cid, "utf-8");
 
+		// Mints one at a time
 		const transaction = await new TokenMintTransaction()
 			.setTokenId(token_id)
-			// .setAmount(amount)
 			.setMetadata([buffer])
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.freezeWith(client)
 
-		const txResponse = await transaction.execute(client)
+		const signedTx = await transaction.sign(operatorPrivateKey)
+		const txResponse = await signedTx.execute(client)
+
+		// TODO: Tidy!
 		const receipt = await txResponse.getReceipt(client)
 		// const supply = receipt.totalSupply.low / 10 ** specification.decimals
 
 		return {
-			// supply,
-			receipt
+			token_id,
+			amount
 		}
 	}
 }
