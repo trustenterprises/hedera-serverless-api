@@ -454,58 +454,82 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
-	// TODO: Inject
 	createNonFungibleToken = async nftCreation => {
+		const account_id = Config.accountId
+
 		const {
-			accountId = Config.accountId,
-			name = 'example_name',
+			// Required parameters (TODO: Remove defaults)
+			collection_name = 'example_collection_name',
 			symbol = 'EXAMPLE',
-			maxSupply = 100,
-			allowCustomFees = true,
-			royaltyAccountId = accountId,
-			royaltyFee = 0.05,
-			fallbackFee = 10,
+			supply = 100,
+
+			// Enable custom fees, default to 5% to API treasury account
+			allow_custom_fees = true,
+			royalty_account_id = account_id,
+			royalty_fee = 0.05,
+
+			// Optional fallback for custom fees
+			fallback_fee = 0,
+
+			// Considered dangerous and opt-in only
+			enable_unsafe_keys = false
 		} = nftCreation
 
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
 		const transaction = new TokenCreateTransaction()
-			.setTokenName(name)
+			.setTokenName(collection_name)
 			.setTokenType(TokenType.NonFungibleUnique)
 			.setSupplyType(TokenSupplyType.Finite)
 			.setSupplyKey(operatorPrivateKey)
 			.setTokenSymbol(symbol)
-			.setTreasuryAccountId(accountId)
-			.setMaxSupply(maxSupply)
+			.setTreasuryAccountId(account_id)
+			.setMaxSupply(supply)
 			.setInitialSupply(0)
 			.setDecimals(0)
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
 
-		transaction.freezeWith(client)
 
-		if (allowCustomFees) {
-			transaction.setCustomFees(
-				new CustomRoyaltyFee()
-					.setNumerator(1)
-					.setDenominator(1 / royaltyFee)
-					.setFeeCollectorAccountId(royaltyAccountId)
-					.setFallbackFee(
-						new CustomFixedFee()
-							.setHbarAmount(new Hbar(fallbackFee))
-							.setFeeCollectorAccountId(royaltyAccountId)
-					)
-			)
+		if (allow_custom_fees) {
+			const customFee = new CustomRoyaltyFee()
+				.setNumerator(1)
+				.setDenominator(1 / royalty_fee)
+				.setFeeCollectorAccountId(royalty_account_id)
+
+			// Ensure that a fallback fee in HBARs is optional
+			if (fallback_fee) {
+				customFee.setFallbackFee(
+					new CustomFixedFee()
+						.setHbarAmount(new Hbar(fallback_fee))
+						.setFeeCollectorAccountId(royalty_account_id)
+				)
+			}
+
+			transaction.setCustomFees([customFee])
 		}
+
+		// WARN: enable these at your own risk!
+		if (enable_unsafe_keys) {
+			transaction.setAdminKey(operatorPrivateKey)
+			transaction.setFreezeKey(operatorPrivateKey)
+			transaction.setWipeKey(operatorPrivateKey)
+		}
+
+		// The final countdown... brr 🥶
+		transaction.freezeWith(client)
 
 		const signTx = await transaction.sign(operatorPrivateKey)
 		const txResponse = await signTx.execute(client)
 		const receipt = await txResponse.getReceipt(client)
 
 		return {
-			name,
+			collection_name,
 			symbol,
-			tokenId: receipt.tokenId.toString(),
+			max_supply: supply,
+			treasury_id: account_id,
+			token_id: receipt.tokenId.toString(),
+			collection_considered_unsafe: !!enable_unsafe_keys
 		}
 	}
 
