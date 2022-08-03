@@ -1,37 +1,22 @@
+import mintNftRequest from "app/validators/mintNftRequest"
 import Response from "app/response"
 
 async function MintNftHandler(req, res) {
-	// Change to NFT specific
-	// const validationErrors = createNftRequest(req.body)
-	//
-	// if (validationErrors) {
-	// 	return Response.unprocessibleEntity(res, validationErrors)
-	// }
 
-	const { token_id, amount } = req.query
+	const validationErrors = mintNftRequest(req.query)
 
-	// TODO:
-	// const {
-	// 	symbol,
-	// 	name,
-	// 	supply,
-	// 	memo,
-	// 	requires_kyc = false,
-	// 	can_freeze = false
-	// } = req.body
-	//
+	if (validationErrors) {
+		return Response.unprocessibleEntity(res, validationErrors)
+	}
+
+	const { token_id, amount, cid } = req.query
+
 	const { hashgraphClient } = req.context
 
-	// TODO:
 	const token = await hashgraphClient.mintNonFungibleToken({
 		token_id,
-		amount
-		// memo,
-		// name,
-		// symbol,
-		// supply,
-		// requires_kyc,
-		// can_freeze
+		amount,
+		cid
 	})
 
 	Response.json(res, token)
