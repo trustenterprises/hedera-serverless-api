@@ -540,9 +540,6 @@ class HashgraphClient extends HashgraphClientContract {
 	}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
-
-
-
 		const buffer = Buffer.from(`ipfs://${cid}`, "utf-8");
 
 		// Batch up to 10 NFT mints at a time, need to parseInt as it thinks its a string.
