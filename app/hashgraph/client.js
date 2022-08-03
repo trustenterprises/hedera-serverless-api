@@ -25,7 +25,6 @@ import Config from "app/config"
 import sleep from "app/utils/sleep"
 import Encryption from "app/utils/encryption"
 import Explorer from "app/utils/explorer"
-import NftStorage from "app/utils/nftStorage"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
 import Specification from "app/hashgraph/tokens/specifications"
 
@@ -537,43 +536,29 @@ class HashgraphClient extends HashgraphClientContract {
 	mintNonFungibleToken = async ({
 		token_id,
 		amount,
-		//
-		// cid
+		cid
 	}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
-		// TODO: Separate NFT storage from mint (demo image)
-		const metadata = {
-			"name": "Example NFT",
-			"creator": "John Doe",
-			"description": "This is an example NFT metadata",
-			"image": "ipfs://bafybeicluq6cqutdvdbwr27ppw6jqbgdu2wrlmxtxys5oeowneuvi5n4ve",
-			"type": "image/png",
-			"format": "none",
-			"properties": {
-				"license": "MIT-0",
-				"collection": "Generic Collection Name",
-				"website": "www.johndoe.com"
-			}
-		}
 
-		const cid = await NftStorage.storeData(metadata)
+
 		const buffer = Buffer.from(`ipfs://${cid}`, "utf-8");
 
-		// Mints one at a time
+		// Batch up to 10 NFT mints at a time, need to parseInt as it thinks its a string.
+		const nftBatchBuffer = Array(parseInt(amount)).fill(buffer)
+
+		// Mints up to ten as a batch at a time
 		const transaction = await new TokenMintTransaction()
 			.setTokenId(token_id)
-			.setMetadata([buffer])
+			.setMetadata(nftBatchBuffer)
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.freezeWith(client)
 
 		const signedTx = await transaction.sign(operatorPrivateKey)
-		const txResponse = await signedTx.execute(client)
 
-		// TODO: Tidy!
-		const receipt = await txResponse.getReceipt(client)
-		// const supply = receipt.totalSupply.low / 10 ** specification.decimals
+		// TODO: If there are issues in the future we may need to await the receipt to check.
+		await signedTx.execute(client)
 
 		return {
 			token_id,
