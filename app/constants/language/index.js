@@ -9,6 +9,10 @@ module.exports = {
 			noEncryptionKey:
 				'Unable to process encryption action, 32 character length "ENCRYPTION_KEY" not set in config'
 		},
+		ensureNftStorageToken: {
+			noKey:
+				'Before creating metadata please create and set a "NFT_STORAGE_TOKEN" from "nft.storage"'
+		},
 		onlyPostResponse: {
 			notAllowed: method => `Method ${method} is not allowed on this route`
 		}
