@@ -13,7 +13,11 @@ async function storeData(payload) {
 	])
 
 	// Assume that metadata storage, like images is already handled
-	return await storage.storeBlob(asBlob)
+	try {
+		return await storage.storeBlob(asBlob)
+	} catch (e) {
+		return false
+	}
 }
 
 export default {
