@@ -917,6 +917,149 @@
 			]
 		},
 		{
+			"name": "NFT",
+			"item": [
+				{
+					"name": "Create NFT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "symbol",
+									"value": "MATT",
+									"type": "text"
+								},
+								{
+									"key": "collection_name",
+									"value": "Matt token",
+									"type": "text"
+								},
+								{
+									"key": "supply",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "enable_unsafe_keys",
+									"value": "true",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/nft",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"nft"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate CID from Metadata",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n\t\t\"name\": \"Example NFT\",\n\t\t\"creator\": \"John Doe\",\n\t\t\"description\": \"This is an example NFT metadata\",\n\t\t\"image\": \"ipfs://bafybeicluq6cqutdvdbwr27ppw6jqbgdu2wrlmxtxys5oeowneuvi5n4ve\",\n\t\t\"type\": \"image/png\",\n\t\t\"format\": \"none\",\n\t\t\"properties\": {\n\t\t\t\"license\": \"MIT-0\",\n\t\t\t\"collection\": \"Generic Collection Name\",\n\t\t\t\"website\": \"www.johndoe.com\"\n\t\t}\n\t}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/api/nft/metadata",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"nft",
+								"metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mint NFT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "symbol",
+									"value": "MATT",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Matt token",
+									"type": "text"
+								},
+								{
+									"key": "supply",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "memo",
+									"value": "abc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/nft/0.0.47817425/mint/1/cid/bafkreih4foivhmvlxsfvxgi2xxfbq2pd4vgkzpso2wb4jsfwak5wgnmu4q",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"nft",
+								"0.0.47817425",
+								"mint",
+								"1",
+								"cid",
+								"bafkreih4foivhmvlxsfvxgi2xxfbq2pd4vgkzpso2wb4jsfwak5wgnmu4q"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Status",
 			"request": {
 				"method": "GET",
