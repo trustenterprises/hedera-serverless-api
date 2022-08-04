@@ -10,17 +10,14 @@ async function CreateMetadataHandler(req, res) {
 		return Response.unprocessibleEntity(res, validationErrors)
 	}
 
-	// TODO: Separate NFT storage from mint (demo image)
+	const cid = await NftStorage.storeData(req.body)
 
-	console.log(req.body)
+	if (cid) {
+		return Response.json(res, { cid } )
+	}
 
-	const metadata = req.body
-
-	return 	Response.json(res, { metadata } )
-
-	const cid = await NftStorage.storeData(metadata)
-
-	Response.json(res, { cid } )
+	// 🚨 Catch any other errors, like if a token is invalid.
+	return Response.badRequest(res)
 }
 
 export default CreateMetadataHandler
