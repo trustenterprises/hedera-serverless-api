@@ -1,8 +1,6 @@
 const Joi = require("@hapi/joi")
 
 const schema = Joi.object({
-	token_id: Joi.string()
-		.required(),
 	cid: Joi.string()
 		.min(20)
 		.required(),
@@ -11,11 +9,11 @@ const schema = Joi.object({
 		.min(1)
 		.max(10)
 		.default(1)
-		.required(),
+		.optional(),
 }).options({ allowUnknown: false })
 
 function mintNftRequest(candidate = {}) {
-	const validation = schema.validate(candidate || {})
+	const validation = schema.validate(candidate || {}, { abortEarly: false })
 
 	if (validation.error) {
 		return validation.error.details.map(error => error.message)
