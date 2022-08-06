@@ -17,7 +17,9 @@ import {
 	TokenBurnTransaction,
 	TokenType,
 	CustomRoyaltyFee,
-	CustomFixedFee, TokenSupplyType
+	CustomFixedFee,
+	TokenSupplyType,
+	NftId
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -26,6 +28,7 @@ import sleep from "app/utils/sleep"
 import Encryption from "app/utils/encryption"
 import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
+import Mirror from "app/utils/mirrornode"
 import Specification from "app/hashgraph/tokens/specifications"
 
 class HashgraphClient extends HashgraphClientContract {
@@ -104,11 +107,11 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	async sendConsensusMessage({
-		reference,
-		allow_synchronous_consensus,
-		message,
-		topic_id
-	}) {
+															 reference,
+															 allow_synchronous_consensus,
+															 message,
+															 topic_id
+														 }) {
 		const client = this.#client
 
 		const transaction = await new TopicMessageSubmitTransaction({
@@ -190,12 +193,12 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	bequestToken = async ({
-		specification = Specification.DovuAssetFungible,
-		encrypted_receiver_key,
-		token_id,
-		receiver_id,
-		amount
-	}) => {
+													specification = Specification.DovuAssetFungible,
+													encrypted_receiver_key,
+													token_id,
+													receiver_id,
+													amount
+												}) => {
 		const client = this.#client
 
 		// Extract PV from encrypted
@@ -253,10 +256,10 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	getTokenBalance = async ({
-		specification = Specification.Fungible,
-		account_id,
-		token_id
-	}) => {
+														 specification = Specification.Fungible,
+														 account_id,
+														 token_id
+													 }) => {
 		const client = this.#client
 		const { tokens } = await new AccountBalanceQuery()
 			.setAccountId(account_id)
@@ -293,11 +296,11 @@ class HashgraphClient extends HashgraphClientContract {
 
 	// TODO: check for general failures and token assoc issues (using Venly)
 	sendTokens = async ({
-		specification = Specification.Fungible,
-		token_id,
-		receiver_id,
-		amount
-	}) => {
+												specification = Specification.Fungible,
+												token_id,
+												receiver_id,
+												amount
+											}) => {
 		const client = this.#client
 
 		const { tokens } = await new AccountBalanceQuery()
@@ -337,10 +340,10 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	mintTokens = async ({
-		specification = Specification.Fungible,
-		tokenId,
-		amount
-	}) => {
+												specification = Specification.Fungible,
+												tokenId,
+												amount
+											}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
@@ -365,10 +368,10 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	burnTokens = async ({
-		specification = Specification.Fungible,
-		tokenId,
-		amount
-	}) => {
+												specification = Specification.Fungible,
+												tokenId,
+												amount
+											}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
@@ -535,7 +538,7 @@ class HashgraphClient extends HashgraphClientContract {
 
 	mintNonFungibleToken = async ({
 		token_id,
-		amount,
+		amount = 1,
 		cid
 	}) => {
 		const client = this.#client
@@ -560,6 +563,56 @@ class HashgraphClient extends HashgraphClientContract {
 		return {
 			token_id,
 			amount
+		}
+	}
+
+	/**
+	 * Attempt to transfer a single NFT via a serial number from the
+	 * connected treasury to an external account.
+	 *
+	 * We have basic detection for whether a treasury holds the NFT before transfer
+	 * through the mirrornode.
+	 *
+	 * @param token_id
+	 * @param receiver_id
+	 * @param serial_number
+	 * @returns {Promise<{error: string}|{transaction_id: string, amount: (number|*), receiver_id}>}
+	 */
+	transferNft = async ({
+		 token_id,
+		 receiver_id,
+		 serial_number
+	 }) => {
+		const client = this.#client
+
+		const hasNft = await Mirror.checkTreasuryHasNft(token_id, serial_number)
+
+		if (!hasNft) {
+			return {
+				error: `The treasury does not hold the token ${token_id} of serial ${serial_number}`
+			}
+		}
+
+		try {
+			const transfer = await new TransferTransaction()
+				.addNftTransfer(new NftId(token_id, serial_number), Config.accountId, receiver_id)
+				.execute(client)
+
+			// Wait for receipt, successful transaction
+			await transfer.getReceipt(client)
+
+			return {
+				token_id,
+				serial_number,
+				receiver_id,
+				transaction_id: transfer.transactionId.toString()
+			}
+		} catch (e) {
+			return {
+				token_id,
+				error:
+					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
+			}
 		}
 	}
 }
