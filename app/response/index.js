@@ -13,8 +13,9 @@ function unauthorised(res, reason) {
 	return res.status(Status.UNAUTHORIZED).send({ reason })
 }
 
-function unprocessibleEntity(res, errors) {
-	return res.status(Status.UNPROCESSIBLE_ENTITY).send({ errors })
+function unprocessibleEntity(res, errors, meta) {
+	const withOptionalMetadata = meta ? { errors, meta } : { errors }
+	return res.status(Status.UNPROCESSIBLE_ENTITY).send(withOptionalMetadata)
 }
 
 function badRequest(res) {
