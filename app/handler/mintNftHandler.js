@@ -3,13 +3,14 @@ import Response from "app/response"
 
 async function MintNftHandler(req, res) {
 
-	const validationErrors = mintNftRequest(req.query)
+	const validationErrors = mintNftRequest(req.body)
 
 	if (validationErrors) {
 		return Response.unprocessibleEntity(res, validationErrors)
 	}
 
-	const { token_id, amount, cid } = req.query
+	const { token_id } = req.query
+	const { amount, cid } = req.body
 
 	const { hashgraphClient } = req.context
 
