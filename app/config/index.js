@@ -9,7 +9,8 @@ const {
 	HIDE_STATUS,
 	WEBHOOK_URL,
 	ENCRYPTION_KEY,
-	NFT_STORAGE_TOKEN
+	NFT_STORAGE_TOKEN,
+	MIRROR_NODE_URL
 } = process.env
 
 const AUTH_KEY_MIN_LENGTH = 10
@@ -26,5 +27,6 @@ export default {
 	apiUrl: API_URL,
 	hideStatus: HIDE_STATUS,
 	webhookUrl: WEBHOOK_URL,
-	nftStorageToken: NFT_STORAGE_TOKEN
+	nftStorageToken: NFT_STORAGE_TOKEN,
+	mirrornodeUrl: MIRROR_NODE_URL
 }
