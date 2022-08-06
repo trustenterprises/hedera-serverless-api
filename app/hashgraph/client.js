@@ -587,6 +587,10 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const hasNft = await Mirror.checkTreasuryHasNft(token_id, serial_number)
 
+		if (hasNft?.error) {
+			return hasNft
+		}
+
 		if (!hasNft) {
 			return {
 				error: `The treasury does not hold the token ${token_id} of serial ${serial_number}`
