@@ -50,7 +50,7 @@ const schema = Joi.object().keys({
 }).options({ allowUnknown: false })
 
 function createNftRequest(candidate = {}) {
-	const validation = schema.validate(candidate || {})
+	const validation = schema.validate(candidate || {}, { abortEarly: false })
 
 	if (validation.error) {
 		return validation.error.details.map(error => error.message)
