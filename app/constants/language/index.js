@@ -34,5 +34,13 @@ module.exports = {
 		message: "Your environment status for your client",
 		meta_hint:
 			'Hide this status endpoint by setting "HIDE_STATUS=TRUE" in your environment'
+	},
+
+	// Hashgraph client related functions
+	hashgraphClient: {
+		claimNft: {
+			doesNotOwnNftPass: 'Unfortunately this account does not own the NFT pass required',
+			ownsMultipleNftPasses: 'This account owns multiple NFT passes, explicitly set "nft_pass_token_id" in your request'
+		}
 	}
 }

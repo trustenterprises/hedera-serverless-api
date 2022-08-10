@@ -30,6 +30,7 @@ import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
 import Mirror from "app/utils/mirrornode"
 import Specification from "app/hashgraph/tokens/specifications"
+import Language from "app/constants/language"
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -618,6 +619,81 @@ class HashgraphClient extends HashgraphClientContract {
 					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
 			}
 		}
+	}
+
+	/**
+	 * Given an account that wishes to claim a child NFT for a given project, which is derived from the
+	 * Ownership of a specific parents NFT pass serial such as "Inky's art club", allow the account to claim a child NFT.
+	 *
+	 * We want to ensure the steps:
+	 *
+	 * 0. That an account holds ownership of a parent "NFT pass"
+	 * 1. That a given child NFT Is transferable, or has been fully "pre-minted"
+	 * 2. That the Treasury has current ownership of an asset
+	 * 3. Attempt a transfer of child NFT to the account
+	 *
+	 * @param token_id The child NFT that relates to a "parent" pass NFT
+	 * @param receiver_id The accounts claiming to be transferred a given serial number for a pass
+	 * @param nft_pass_token_id The token id of the parent NFT pass
+	 */
+	claimNft = async ({
+		 token_id,
+		 receiver_id,
+     nft_pass_token_id,
+		 serial_number
+	 }) => {
+		const client = this.#client
+
+		const nftHoldings = await Mirror.getSerialNumbersOfOwnedNft(nft_pass_token_id, receiver_id)
+		const { doesNotOwnNftPass, ownsMultipleNftPasses } = Language.hashgraphClient.claimNft
+
+		// Firstly, infer that an account has an NFT pass
+		if (!nftHoldings.owns_nfts) {
+			return { error: doesNotOwnNftPass }
+		}
+
+		// Second, check that if a child NFT hasn't been selected, reject those with multiple passes
+		if (!nft_pass_token_id && nftHoldings.has_multiple_nfts) {
+			return { error: ownsMultipleNftPasses }
+		}
+
+		// Use the serial number provided or the first serial of owned NFTs
+		const candidate_serial_number = serial_number || nftHoldings.serial_numbers[0]
+
+		// Confirm that serial match
+		const hasNft = await Mirror.checkTreasuryHasNft(token_id, serial_number)
+
+		if (hasNft?.error) {
+			return hasNft
+		}
+
+		if (!hasNft) {
+			return {
+				error: `The treasury does not hold the token ${token_id} of serial ${serial_number}`
+			}
+		}
+
+		// try {
+		// 	const transfer = await new TransferTransaction()
+		// 		.addNftTransfer(new NftId(token_id, serial_number), Config.accountId, receiver_id)
+		// 		.execute(client)
+		//
+		// 	// Wait for receipt, successful transaction
+		// 	await transfer.getReceipt(client)
+		//
+		// 	return {
+		// 		token_id,
+		// 		serial_number,
+		// 		receiver_id,
+		// 		transaction_id: transfer.transactionId.toString()
+		// 	}
+		// } catch (e) {
+		// 	return {
+		// 		token_id,
+		// 		error:
+		// 			"Transfer failed, ensure that the recipient account is valid and has associated to the token"
+		// 	}
+		// }
 	}
 }
 

@@ -19,6 +19,10 @@ async function TransferNftHandler(req, res) {
 	const { hashgraphClient } = req.context
 	const sendResponse = await hashgraphClient.transferNft(transferPayload)
 
+	if (sendResponse.error) {
+		return Response.unprocessibleEntity(res, sendResponse)
+	}
+
 	if (sendResponse) {
 		return Response.json(res, sendResponse)
 	}

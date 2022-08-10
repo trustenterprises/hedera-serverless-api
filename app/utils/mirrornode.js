@@ -3,11 +3,19 @@ import axios from "axios"
 import sleep from "app/utils/sleep"
 
 const mirrornode = Config.mirrornodeUrl;
+
+const queryTokenInfo = (token_id) => `${mirrornode}/api/v1/tokens/${token_id}`
 const queryNftAccountOwner = (token_id, serial) => `${mirrornode}/api/v1/tokens/${token_id}/nfts/${serial}`
+const queryNftForOwner = (token_id, account_id) => `${mirrornode}/api/v1/tokens/${token_id}/nfts/?account.id=${account_id}`
 
 const MIRRORNODE_WAIT_MS = 500;
 const MIRRORNODE_TRIES = 5;
 
+/**
+ * @param {string} query
+ * @param {number} tries
+ * @param {number} attempts
+ */
 const retryableMirrorQuery = async (query, tries = MIRRORNODE_TRIES, attempts = 1) => {
 	try {
 		return await axios.get(query)
@@ -30,13 +38,13 @@ const retryableMirrorQuery = async (query, tries = MIRRORNODE_TRIES, attempts = 
  * the API has a given NFT for a serial number, however the expected account to
  * check against can be changed.
  *
- * @param token_id
+ * @param nft_id
  * @param serial
  * @param expected
  * @returns {Promise<boolean>}
  */
-async function checkTreasuryHasNft(token_id, serial, expected = Config.accountId) {
-	const result = await retryableMirrorQuery(queryNftAccountOwner(token_id, serial))
+async function checkTreasuryHasNft(nft_id, serial, expected = Config.accountId) {
+	const result = await retryableMirrorQuery(queryNftAccountOwner(nft_id, serial))
 
 	if (result?.error) {
 		return result
@@ -45,6 +53,76 @@ async function checkTreasuryHasNft(token_id, serial, expected = Config.accountId
 	return result.data.account_id === expected;
 }
 
+/**
+ * Check if a given account ID has ownership of an NFT, returned is the list of serial numbers of the
+ * NFT they own, as well as a reference to links for whale owners 🐳
+ *
+ * The context here is we can prove if a given account has ownership of a special "NFT pass", and we can
+ * map their specific serial to pre-minted NFTs (of atleast the same supply) relating to a project.
+ *
+ * @param nft_id
+ * @param account_id
+ */
+async function getSerialNumbersOfOwnedNft(nft_id, account_id) {
+	const result = await retryableMirrorQuery(queryNftForOwner(nft_id, account_id))
+
+	if (result?.error) {
+		return result
+	}
+
+	const serial_numbers = result.data.nfts.map(nft => nft.serial_number)
+
+	return {
+		serial_numbers,
+		owns_nfts: !!serial_numbers.length,
+		has_multiple_nfts: serial_numbers.length > 1, // We will be using this logic in other parts of the app.
+		links: result.data.links
+	}
+}
+
+async function fetchTokenInformation(token_id) {
+	const result = await retryableMirrorQuery(queryTokenInfo(token_id))
+
+	if (result?.error) {
+		return result
+	}
+
+	return result.data
+}
+
+/**
+ * Ensure that an NFT with a given serial number is mintable and the max_supply is
+ * equal to the parent projects "NFT pass"
+ *
+ * There are some outcomes from this:
+ *
+ * - If an NFT has a maximum supply different the expected it will rejected
+ * - If an NFT's total supply does not match the maximum supply it is in a "pre-mint" phase
+ *
+ * @param token_id
+ * @param maximum_parent_supply
+ */
+async function ensureClaimableChildNftIsTransferable(token_id, maximum_parent_supply) {
+	const token = await fetchTokenInformation(token_id)
+
+	if (token?.error) {
+		return token
+	}
+
+	const supply = Number.parseInt(token.max_supply)
+	const hasExpectedSupply = supply === maximum_supply
+	const hasMintedSupply = supply === Number.parseInt(token.total_supply)
+
+	return {
+		token_id,
+		hasExpectedSupply,
+		hasMintedSupply
+	}
+}
+
 export default {
-	checkTreasuryHasNft
+	checkTreasuryHasNft,
+	getSerialNumbersOfOwnedNft,
+	fetchTokenInformation,
+	ensureClaimableChildNftIsTransferable
 }
