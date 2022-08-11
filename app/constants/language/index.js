@@ -39,6 +39,11 @@ module.exports = {
 	// Hashgraph client related functions
 	hashgraphClient: {
 		claimNft: {
+			treasuryDoesNotHold: (serial) => `Unfortunately the treasury does not own the expected NFT of serial of ${serial}`,
+			doesNotOwnSerial: (serial) => `Unfortunately this account does not own the NFT pass serial of ${serial}`,
+			tokenTreasuryInvalid: 'The treasury account of the claimable token does not match the project',
+			tokenSupplyDoesNotMatch: 'The claimable token supply does not match the expected NFT pass',
+			tokenHasNotBeenPreminted: 'The claimable token has not been preminted yet',
 			doesNotOwnNftPass: 'Unfortunately this account does not own the NFT pass required',
 			ownsMultipleNftPasses: 'This account owns multiple NFT passes, explicitly set "nft_pass_token_id" in your request'
 		}
