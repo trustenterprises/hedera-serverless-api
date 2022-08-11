@@ -1,6 +1,7 @@
 import Config from "app/config"
 import axios from "axios"
 import sleep from "app/utils/sleep"
+import Status from "app/constants/status"
 
 const mirrornode = Config.mirrornodeUrl;
 
@@ -20,6 +21,13 @@ const retryableMirrorQuery = async (query, tries = MIRRORNODE_TRIES, attempts = 
 	try {
 		return await axios.get(query)
 	} catch (e) {
+
+		if (e.response.status === Status.NOT_FOUND) {
+			return {
+				error: "Expected resource was not found, did you include a parameter like an NFT ID that isn't on ledger?"
+			}
+		}
+
 		if (attempts > tries) {
 			return {
 				error: `Hedera Mirrornode Overloaded after ${tries} attempts, unable to process query`
@@ -110,13 +118,15 @@ async function ensureClaimableChildNftIsTransferable(token_id, maximum_parent_su
 	}
 
 	const supply = Number.parseInt(token.max_supply)
-	const hasExpectedSupply = supply === maximum_supply
+	const hasExpectedSupply = supply === maximum_parent_supply
 	const hasMintedSupply = supply === Number.parseInt(token.total_supply)
+	const isTreasuryValid = token.treasury_account_id === Config.accountId
 
 	return {
 		token_id,
 		hasExpectedSupply,
-		hasMintedSupply
+		hasMintedSupply,
+		isTreasuryValid
 	}
 }
 
