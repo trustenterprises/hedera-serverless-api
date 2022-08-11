@@ -1,5 +1,6 @@
 import Response from "app/response"
 import claimNftRequest from "app/validators/claimNftRequest"
+import claimableTokenCheck from "app/validators/mirrornode/claimableTokenCheck"
 
 async function ClaimNftHandler(req, res) {
 	const validationErrors = claimNftRequest(req.body)
@@ -17,12 +18,14 @@ async function ClaimNftHandler(req, res) {
 		serial_number
 	}
 
-	const { hashgraphClient } = req.context
-	const sendResponse = await hashgraphClient.claimNft(claimPayload)
+	const claimablePayload = await claimableTokenCheck(claimPayload)
 
-	if (sendResponse.error) {
-		return Response.unprocessibleEntity(res, sendResponse.error)
+	if(claimablePayload.error) {
+		return Response.unprocessibleEntity(res, claimablePayload.error)
 	}
+
+	const { hashgraphClient } = req.context
+	const sendResponse = await hashgraphClient.transferNft(claimPayload)
 
 	if (sendResponse) {
 		return Response.json(res, sendResponse)
