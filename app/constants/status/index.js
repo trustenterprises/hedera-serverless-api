@@ -11,6 +11,9 @@ module.exports = {
 	// Catch requests to valid endpoints not using a valid method
 	METHOD_NOT_ALLOWED: 405,
 
+	// Catch mirrornode not found issues
+	NOT_FOUND: 404,
+
 	// Focused on validation, if a check fails this is used
 	UNPROCESSIBLE_ENTITY: 422
 }
