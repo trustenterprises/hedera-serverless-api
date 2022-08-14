@@ -21,6 +21,8 @@ jobs:
       API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}
       API_URL: ${{ secrets.API_URL }}
       HIDE_STATUS: ${{ secrets.HIDE_STATUS }}
+      NFT_STORAGE_TOKEN: ${{ secrets.NFT_STORAGE_TOKEN }}
+      MIRROR_NODE_URL: ${{ secrets.MIRROR_NODE_URL }}
     strategy:
       matrix:
         node-version: [16.x]
@@ -34,4 +36,4 @@ jobs:
     - run: yarn install --frozen-lockfile
     - run: yarn run build
     - run: yarn lint
-    - run: yarn test
+    - run: yarn test:all
