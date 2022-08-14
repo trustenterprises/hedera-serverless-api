@@ -19,7 +19,9 @@ This API provides a simple but opinionated functionality layer between the Heder
 
 In turn, you can create a surprisingly large amount of applications from marketplaces, staking platforms, low/no-code apps, and more.
 
-This project isn't for everyone, if you require more granular control it is likely you'll write your own calls to your respective SDK. However, we encourage using (or forking) this project to begin tour adventures with Hedera the architecture of this API is scalable, tested, as CI/CD, and used in production by multiple flagship Hedera applications.  
+This project isn't for everyone, if you require more granular control it is likely you'll write your own calls to your respective SDK. 
+
+However, we encourage using (or forking) this project to begin your adventures with Hedera the architecture of this API is scalable, tested, as CI/CD, and used in production by multiple flagship Hedera applications.  
 
 ## Deploy with 1 click
 
