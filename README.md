@@ -8,7 +8,7 @@ You can look at our postman docs by clicking the button below.
 
 ## What does it do?
 
-This API provides a simple but opinionated functionality layer between the Hedera JS client, We have cherry-picked a number of capabilities including:
+This API provides a simple but opinionated functionality layer between the Hedera JS client, we have cherry-picked and enhanced a number of capabilities including:
 
 - Consensus logging 
 - Token creation 
