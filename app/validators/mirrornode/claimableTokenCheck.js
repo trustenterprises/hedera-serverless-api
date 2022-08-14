@@ -134,8 +134,14 @@ async function claimableTokenCheck({
 		return hasAccountHoldSerial
 	}
 
-	// Config this up.
-	const nftPassSupply = 2
+	const tokenPassInfo = await Mirror.fetchTokenInformation(nft_pass_token_id)
+
+	if (tokenPassInfo?.error) {
+		return tokenPassInfo
+	}
+
+	// Get max supply of pass via mirrornode
+	const nftPassSupply = Number.parseInt(tokenPassInfo.total_supply)
 
 	// Ensure that the claimable child token is in a claimable state
 	const isTokenTransferable = await confirmChildTokenIsTransferable(token_id, nftPassSupply)
