@@ -14,8 +14,12 @@ import {
 	TokenAssociateTransaction,
 	TransferTransaction,
 	TokenMintTransaction,
-	Status,
-	TokenBurnTransaction
+	TokenBurnTransaction,
+	TokenType,
+	CustomRoyaltyFee,
+	CustomFixedFee,
+	TokenSupplyType,
+	NftId
 } from "@hashgraph/sdk"
 import HashgraphClientContract from "./contract"
 import HashgraphNodeNetwork from "./network"
@@ -24,7 +28,9 @@ import sleep from "app/utils/sleep"
 import Encryption from "app/utils/encryption"
 import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
+import Mirror from "app/utils/mirrornode"
 import Specification from "app/hashgraph/tokens/specifications"
+import Language from "app/constants/language"
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -449,6 +455,164 @@ class HashgraphClient extends HashgraphClientContract {
 			supply: String(supply),
 			supplyWithDecimals: String(supplyWithDecimals),
 			tokenId: receipt.tokenId.toString()
+		}
+	}
+
+	createNonFungibleToken = async nftCreation => {
+		const account_id = Config.accountId
+
+		const {
+			// Required parameters (TODO: Remove defaults)
+			collection_name = "example_collection_name",
+			symbol = "EXAMPLE",
+			supply = 100,
+
+			// Enable custom fees, default to 5% to API treasury account
+			allow_custom_fees = true,
+			royalty_account_id = account_id,
+			royalty_fee = 0.05,
+
+			// Optional fallback for custom fees
+			fallback_fee = 0,
+
+			// Considered dangerous and opt-in only
+			enable_unsafe_keys = false
+		} = nftCreation
+
+		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+
+		const transaction = new TokenCreateTransaction()
+			.setTokenName(collection_name)
+			.setTokenType(TokenType.NonFungibleUnique)
+			.setSupplyType(TokenSupplyType.Finite)
+			.setSupplyKey(operatorPrivateKey)
+			.setTokenSymbol(symbol)
+			.setTreasuryAccountId(account_id)
+			.setMaxSupply(supply)
+			.setInitialSupply(0)
+			.setDecimals(0)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
+
+		if (allow_custom_fees) {
+			const customFee = new CustomRoyaltyFee()
+				.setNumerator(1)
+				.setDenominator(1 / royalty_fee)
+				.setFeeCollectorAccountId(royalty_account_id)
+
+			// Ensure that a fallback fee in HBARs is optional
+			if (fallback_fee) {
+				customFee.setFallbackFee(
+					new CustomFixedFee()
+						.setHbarAmount(new Hbar(fallback_fee))
+						.setFeeCollectorAccountId(royalty_account_id)
+				)
+			}
+
+			transaction.setCustomFees([customFee])
+		}
+
+		// WARN: enable these at your own risk!
+		if (enable_unsafe_keys) {
+			transaction.setAdminKey(operatorPrivateKey)
+			transaction.setFreezeKey(operatorPrivateKey)
+			transaction.setWipeKey(operatorPrivateKey)
+		}
+
+		// The final countdown... brr 🥶
+		transaction.freezeWith(client)
+
+		const signTx = await transaction.sign(operatorPrivateKey)
+		const txResponse = await signTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+
+		return {
+			collection_name,
+			symbol,
+			max_supply: supply,
+			treasury_id: account_id,
+			token_id: receipt.tokenId.toString(),
+			collection_considered_unsafe: !!enable_unsafe_keys
+		}
+	}
+
+	mintNonFungibleToken = async ({ token_id, amount = 1, cid }) => {
+		const client = this.#client
+		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
+		const buffer = Buffer.from(`ipfs://${cid}`, "utf-8")
+
+		// Batch up to 10 NFT mints at a time, need to parseInt as it thinks its a string.
+		const nftBatchBuffer = Array(parseInt(amount)).fill(buffer)
+
+		// Mints up to ten as a batch at a time
+		const transaction = await new TokenMintTransaction()
+			.setTokenId(token_id)
+			.setMetadata(nftBatchBuffer)
+			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+			.freezeWith(client)
+
+		const signedTx = await transaction.sign(operatorPrivateKey)
+
+		// TODO: If there are issues in the future we may need to await the receipt to check.
+		await signedTx.execute(client)
+
+		return {
+			token_id,
+			amount
+		}
+	}
+
+	/**
+	 * Attempt to transfer a single NFT via a serial number from the
+	 * connected treasury to an external account.
+	 *
+	 * We have basic detection for whether a treasury holds the NFT before transfer
+	 * through the mirrornode.
+	 *
+	 * @param token_id
+	 * @param receiver_id
+	 * @param serial_number
+	 * @returns {Promise<{error: string}|{transaction_id: string, amount: (number|*), receiver_id}>}
+	 */
+	transferNft = async ({ token_id, receiver_id, serial_number }) => {
+		const client = this.#client
+
+		const hasNft = await Mirror.checkTreasuryHasNft(token_id, serial_number)
+
+		if (hasNft?.error) {
+			return hasNft
+		}
+
+		if (!hasNft) {
+			return {
+				error: `The treasury does not hold the token ${token_id} of serial ${serial_number}`
+			}
+		}
+
+		try {
+			const transfer = await new TransferTransaction()
+				.addNftTransfer(
+					new NftId(token_id, serial_number),
+					Config.accountId,
+					receiver_id
+				)
+				.execute(client)
+
+			// Wait for receipt, successful transaction
+			await transfer.getReceipt(client)
+
+			return {
+				token_id,
+				serial_number,
+				receiver_id,
+				transaction_id: transfer.transactionId.toString()
+			}
+		} catch (e) {
+			return {
+				token_id,
+				error:
+					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
+			}
 		}
 	}
 }
