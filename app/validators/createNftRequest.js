@@ -17,15 +17,19 @@ const schema = Joi.object({
 
 	// Optional fields
 	allow_custom_fees: Joi.bool().default(true),
-	royalty_fee: Joi.number().precision(2).default(0.05),
-	fallback_fee: Joi.number().max(10000).default(0),
+	royalty_fee: Joi.number()
+		.precision(2)
+		.default(0.05),
+	fallback_fee: Joi.number()
+		.max(10000)
+		.default(0),
 
 	// 🚨 Danger Will Robinson 🚨
 	enable_unsafe_keys: Joi.bool().default(false)
 }).options({ allowUnknown: true })
 
 function createNftRequest(candidate = {}) {
-	const validation = schema.validate(candidate || {},  { abortEarly: false })
+	const validation = schema.validate(candidate || {}, { abortEarly: false })
 
 	if (validation.error) {
 		return validation.error.details.map(error => error.message)

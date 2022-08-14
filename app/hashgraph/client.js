@@ -108,11 +108,11 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	async sendConsensusMessage({
-															 reference,
-															 allow_synchronous_consensus,
-															 message,
-															 topic_id
-														 }) {
+		reference,
+		allow_synchronous_consensus,
+		message,
+		topic_id
+	}) {
 		const client = this.#client
 
 		const transaction = await new TopicMessageSubmitTransaction({
@@ -194,12 +194,12 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	bequestToken = async ({
-													specification = Specification.DovuAssetFungible,
-													encrypted_receiver_key,
-													token_id,
-													receiver_id,
-													amount
-												}) => {
+		specification = Specification.DovuAssetFungible,
+		encrypted_receiver_key,
+		token_id,
+		receiver_id,
+		amount
+	}) => {
 		const client = this.#client
 
 		// Extract PV from encrypted
@@ -257,10 +257,10 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	getTokenBalance = async ({
-														 specification = Specification.Fungible,
-														 account_id,
-														 token_id
-													 }) => {
+		specification = Specification.Fungible,
+		account_id,
+		token_id
+	}) => {
 		const client = this.#client
 		const { tokens } = await new AccountBalanceQuery()
 			.setAccountId(account_id)
@@ -297,11 +297,11 @@ class HashgraphClient extends HashgraphClientContract {
 
 	// TODO: check for general failures and token assoc issues (using Venly)
 	sendTokens = async ({
-												specification = Specification.Fungible,
-												token_id,
-												receiver_id,
-												amount
-											}) => {
+		specification = Specification.Fungible,
+		token_id,
+		receiver_id,
+		amount
+	}) => {
 		const client = this.#client
 
 		const { tokens } = await new AccountBalanceQuery()
@@ -341,10 +341,10 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	mintTokens = async ({
-												specification = Specification.Fungible,
-												tokenId,
-												amount
-											}) => {
+		specification = Specification.Fungible,
+		tokenId,
+		amount
+	}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
@@ -369,10 +369,10 @@ class HashgraphClient extends HashgraphClientContract {
 	}
 
 	burnTokens = async ({
-												specification = Specification.Fungible,
-												tokenId,
-												amount
-											}) => {
+		specification = Specification.Fungible,
+		tokenId,
+		amount
+	}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
@@ -463,8 +463,8 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const {
 			// Required parameters (TODO: Remove defaults)
-			collection_name = 'example_collection_name',
-			symbol = 'EXAMPLE',
+			collection_name = "example_collection_name",
+			symbol = "EXAMPLE",
 			supply = 100,
 
 			// Enable custom fees, default to 5% to API treasury account
@@ -493,7 +493,6 @@ class HashgraphClient extends HashgraphClientContract {
 			.setInitialSupply(0)
 			.setDecimals(0)
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar)) //Change the default max transaction fee
-
 
 		if (allow_custom_fees) {
 			const customFee = new CustomRoyaltyFee()
@@ -537,14 +536,10 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
-	mintNonFungibleToken = async ({
-		token_id,
-		amount = 1,
-		cid
-	}) => {
+	mintNonFungibleToken = async ({ token_id, amount = 1, cid }) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
-		const buffer = Buffer.from(`ipfs://${cid}`, "utf-8");
+		const buffer = Buffer.from(`ipfs://${cid}`, "utf-8")
 
 		// Batch up to 10 NFT mints at a time, need to parseInt as it thinks its a string.
 		const nftBatchBuffer = Array(parseInt(amount)).fill(buffer)
@@ -579,11 +574,7 @@ class HashgraphClient extends HashgraphClientContract {
 	 * @param serial_number
 	 * @returns {Promise<{error: string}|{transaction_id: string, amount: (number|*), receiver_id}>}
 	 */
-	transferNft = async ({
-		 token_id,
-		 receiver_id,
-		 serial_number
-	 }) => {
+	transferNft = async ({ token_id, receiver_id, serial_number }) => {
 		const client = this.#client
 
 		const hasNft = await Mirror.checkTreasuryHasNft(token_id, serial_number)
@@ -600,7 +591,11 @@ class HashgraphClient extends HashgraphClientContract {
 
 		try {
 			const transfer = await new TransferTransaction()
-				.addNftTransfer(new NftId(token_id, serial_number), Config.accountId, receiver_id)
+				.addNftTransfer(
+					new NftId(token_id, serial_number),
+					Config.accountId,
+					receiver_id
+				)
 				.execute(client)
 
 			// Wait for receipt, successful transaction

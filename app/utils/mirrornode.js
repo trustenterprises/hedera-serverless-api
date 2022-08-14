@@ -3,28 +3,34 @@ import axios from "axios"
 import sleep from "app/utils/sleep"
 import Status from "app/constants/status"
 
-const mirrornode = Config.mirrornodeUrl;
+const mirrornode = Config.mirrornodeUrl
 
-const queryTokenInfo = (token_id) => `${mirrornode}/api/v1/tokens/${token_id}`
-const queryNftAccountOwner = (token_id, serial) => `${mirrornode}/api/v1/tokens/${token_id}/nfts/${serial}`
-const queryNftForOwner = (token_id, account_id) => `${mirrornode}/api/v1/tokens/${token_id}/nfts/?account.id=${account_id}`
+const queryTokenInfo = token_id => `${mirrornode}/api/v1/tokens/${token_id}`
+const queryNftAccountOwner = (token_id, serial) =>
+	`${mirrornode}/api/v1/tokens/${token_id}/nfts/${serial}`
+const queryNftForOwner = (token_id, account_id) =>
+	`${mirrornode}/api/v1/tokens/${token_id}/nfts/?account.id=${account_id}`
 
-const MIRRORNODE_WAIT_MS = 500;
-const MIRRORNODE_TRIES = 5;
+const MIRRORNODE_WAIT_MS = 500
+const MIRRORNODE_TRIES = 5
 
 /**
  * @param {string} query
  * @param {number} tries
  * @param {number} attempts
  */
-const retryableMirrorQuery = async (query, tries = MIRRORNODE_TRIES, attempts = 1) => {
+const retryableMirrorQuery = async (
+	query,
+	tries = MIRRORNODE_TRIES,
+	attempts = 1
+) => {
 	try {
 		return await axios.get(query)
 	} catch (e) {
-
 		if (e.response.status === Status.NOT_FOUND) {
 			return {
-				error: "Expected resource was not found, did you include a parameter like an NFT ID that isn't on ledger?"
+				error:
+					"Expected resource was not found, did you include a parameter like an NFT ID that isn't on ledger?"
 			}
 		}
 
@@ -34,7 +40,9 @@ const retryableMirrorQuery = async (query, tries = MIRRORNODE_TRIES, attempts = 
 			}
 		}
 
-		console.warn(`mirrornode overloaded, retrying in ${MIRRORNODE_WAIT_MS} ms, current attempt ${attempts} of ${tries} tries`)
+		console.warn(
+			`mirrornode overloaded, retrying in ${MIRRORNODE_WAIT_MS} ms, current attempt ${attempts} of ${tries} tries`
+		)
 		await sleep(MIRRORNODE_WAIT_MS)
 
 		return retryableMirrorQuery(query, tries, ++attempts)
@@ -51,14 +59,20 @@ const retryableMirrorQuery = async (query, tries = MIRRORNODE_TRIES, attempts = 
  * @param expected
  * @returns {Promise<boolean>}
  */
-async function checkTreasuryHasNft(nft_id, serial, expected = Config.accountId) {
-	const result = await retryableMirrorQuery(queryNftAccountOwner(nft_id, serial))
+async function checkTreasuryHasNft(
+	nft_id,
+	serial,
+	expected = Config.accountId
+) {
+	const result = await retryableMirrorQuery(
+		queryNftAccountOwner(nft_id, serial)
+	)
 
 	if (result?.error) {
 		return result
 	}
 
-	return result.data.account_id === expected;
+	return result.data.account_id === expected
 }
 
 /**
@@ -72,7 +86,9 @@ async function checkTreasuryHasNft(nft_id, serial, expected = Config.accountId) 
  * @param account_id
  */
 async function getSerialNumbersOfOwnedNft(nft_id, account_id) {
-	const result = await retryableMirrorQuery(queryNftForOwner(nft_id, account_id))
+	const result = await retryableMirrorQuery(
+		queryNftForOwner(nft_id, account_id)
+	)
 
 	if (result?.error) {
 		return result
@@ -110,7 +126,10 @@ async function fetchTokenInformation(token_id) {
  * @param token_id
  * @param maximum_parent_supply
  */
-async function ensureClaimableChildNftIsTransferable(token_id, maximum_parent_supply) {
+async function ensureClaimableChildNftIsTransferable(
+	token_id,
+	maximum_parent_supply
+) {
 	const token = await fetchTokenInformation(token_id)
 
 	if (token?.error) {

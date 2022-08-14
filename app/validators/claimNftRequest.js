@@ -4,7 +4,7 @@ const schema = Joi.object({
 	token_id: Joi.string().required(),
 	receiver_id: Joi.string().required(),
 	nft_pass_token_id: Joi.string().required(),
-	serial_number: Joi.number().optional(),
+	serial_number: Joi.number().optional()
 })
 
 function claimNftRequest(candidate = {}) {

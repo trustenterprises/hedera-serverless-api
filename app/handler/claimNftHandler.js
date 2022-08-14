@@ -20,7 +20,7 @@ async function ClaimNftHandler(req, res) {
 
 	const claimablePayload = await claimableTokenCheck(claimPayload)
 
-	if(claimablePayload.error) {
+	if (claimablePayload.error) {
 		return Response.unprocessibleEntity(res, claimablePayload.error)
 	}
 

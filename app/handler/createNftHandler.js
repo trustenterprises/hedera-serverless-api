@@ -2,7 +2,6 @@ import createNftRequest from "app/validators/createNftRequest"
 import Response from "app/response"
 
 async function CreateNftHandler(req, res) {
-
 	const validationErrors = createNftRequest(req.body)
 
 	if (validationErrors) {
@@ -31,7 +30,7 @@ async function CreateNftHandler(req, res) {
 		enable_unsafe_keys
 	})
 
-	Response.json(res, token )
+	Response.json(res, token)
 }
 
 export default CreateNftHandler

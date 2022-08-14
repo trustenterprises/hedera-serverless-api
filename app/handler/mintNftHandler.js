@@ -2,7 +2,6 @@ import mintNftRequest from "app/validators/mintNftRequest"
 import Response from "app/response"
 
 async function MintNftHandler(req, res) {
-
 	const validationErrors = mintNftRequest(req.body)
 
 	if (validationErrors) {

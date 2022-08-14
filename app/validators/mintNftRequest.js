@@ -9,7 +9,7 @@ const schema = Joi.object({
 		.min(1)
 		.max(10)
 		.default(1)
-		.optional(),
+		.optional()
 }).options({ allowUnknown: false })
 
 function mintNftRequest(candidate = {}) {

@@ -4,16 +4,25 @@ import Language from "app/constants/language"
 /**
  * Breaking down step one: That an account holds ownership of a parent "NFT pass"
  */
-const ensureAccountHoldsPassSerial = async (receiver_id, nft_pass_token_id, serialNumbers) => {
-
-	const nftHoldings = await Mirror.getSerialNumbersOfOwnedNft(nft_pass_token_id, receiver_id)
+const ensureAccountHoldsPassSerial = async (
+	receiver_id,
+	nft_pass_token_id,
+	serialNumbers
+) => {
+	const nftHoldings = await Mirror.getSerialNumbersOfOwnedNft(
+		nft_pass_token_id,
+		receiver_id
+	)
 
 	// Catch all for timeouts
 	if (nftHoldings?.error) {
 		return nftHoldings
 	}
 
-	const { doesNotOwnNftPass, ownsMultipleNftPasses } = Language.hashgraphClient.claimNft
+	const {
+		doesNotOwnNftPass,
+		ownsMultipleNftPasses
+	} = Language.hashgraphClient.claimNft
 
 	// Firstly, infer that an account has an NFT pass
 	if (!nftHoldings.owns_nfts) {
@@ -31,8 +40,16 @@ const ensureAccountHoldsPassSerial = async (receiver_id, nft_pass_token_id, seri
 /**
  * Breaking down step two: That an account holds ownership of a pass of a particular serial.
  */
-const confirmAccountHoldsActualSerial = async (pass_id, serial_number, receiver_id)=> {
-	const hasNftSerial = await Mirror.checkTreasuryHasNft(pass_id, serial_number, receiver_id)
+const confirmAccountHoldsActualSerial = async (
+	pass_id,
+	serial_number,
+	receiver_id
+) => {
+	const hasNftSerial = await Mirror.checkTreasuryHasNft(
+		pass_id,
+		serial_number,
+		receiver_id
+	)
 
 	// Catch all for timeouts
 	if (hasNftSerial?.error) {
@@ -48,8 +65,14 @@ const confirmAccountHoldsActualSerial = async (pass_id, serial_number, receiver_
 	return true
 }
 
-const confirmChildTokenIsTransferable = async (token_id, maximum_parent_supply) => {
-	const childTokenState = await Mirror.ensureClaimableChildNftIsTransferable(token_id, maximum_parent_supply)
+const confirmChildTokenIsTransferable = async (
+	token_id,
+	maximum_parent_supply
+) => {
+	const childTokenState = await Mirror.ensureClaimableChildNftIsTransferable(
+		token_id,
+		maximum_parent_supply
+	)
 
 	// Catch all for timeouts
 	if (childTokenState?.error) {
@@ -80,7 +103,7 @@ const confirmChildTokenIsTransferable = async (token_id, maximum_parent_supply) 
 /**
  * Breaking down step two: That an account holds ownership of a pass of a particular serial.
  */
-const confirmTreasuryHoldsChild = async (token_id, serial_number)=> {
+const confirmTreasuryHoldsChild = async (token_id, serial_number) => {
 	const hasNftSerial = await Mirror.checkTreasuryHasNft(token_id, serial_number)
 
 	// Catch all for timeouts
@@ -90,13 +113,14 @@ const confirmTreasuryHoldsChild = async (token_id, serial_number)=> {
 
 	if (!hasNftSerial) {
 		return {
-			error: Language.hashgraphClient.claimNft.treasuryDoesNotHold(serial_number)
+			error: Language.hashgraphClient.claimNft.treasuryDoesNotHold(
+				serial_number
+			)
 		}
 	}
 
 	return true
 }
-
 
 /**
  * Given an account that wishes to claim a child NFT for a given project, which is derived from the
@@ -111,13 +135,17 @@ const confirmTreasuryHoldsChild = async (token_id, serial_number)=> {
  *
  */
 async function claimableTokenCheck({
- token_id,
- receiver_id,
- nft_pass_token_id,
- serial_number
+	token_id,
+	receiver_id,
+	nft_pass_token_id,
+	serial_number
 }) {
 	// Validate user owns NFT
-	const serialNumbers = await ensureAccountHoldsPassSerial(receiver_id, nft_pass_token_id, serial_number)
+	const serialNumbers = await ensureAccountHoldsPassSerial(
+		receiver_id,
+		nft_pass_token_id,
+		serial_number
+	)
 
 	if (serialNumbers?.error) {
 		return serialNumbers
@@ -126,9 +154,12 @@ async function claimableTokenCheck({
 	// Grab the inputed serial or pulled from mirrornode
 	const candidate_serial_number = serial_number || serialNumbers[0]
 
-
 	// Confirm that the account holds the expected serial, could be considered overkill
-	const hasAccountHoldSerial = await confirmAccountHoldsActualSerial(nft_pass_token_id, candidate_serial_number, receiver_id)
+	const hasAccountHoldSerial = await confirmAccountHoldsActualSerial(
+		nft_pass_token_id,
+		candidate_serial_number,
+		receiver_id
+	)
 
 	if (hasAccountHoldSerial?.error) {
 		return hasAccountHoldSerial
@@ -144,14 +175,20 @@ async function claimableTokenCheck({
 	const nftPassSupply = Number.parseInt(tokenPassInfo.total_supply)
 
 	// Ensure that the claimable child token is in a claimable state
-	const isTokenTransferable = await confirmChildTokenIsTransferable(token_id, nftPassSupply)
+	const isTokenTransferable = await confirmChildTokenIsTransferable(
+		token_id,
+		nftPassSupply
+	)
 
 	if (isTokenTransferable?.error) {
 		return isTokenTransferable
 	}
 
 	// Finally check that the treasury holds the expected child token_id
-	const ensureChildIsInTreasury = await confirmTreasuryHoldsChild(token_id, serial_number)
+	const ensureChildIsInTreasury = await confirmTreasuryHoldsChild(
+		token_id,
+		serial_number
+	)
 
 	if (ensureChildIsInTreasury?.error) {
 		return ensureChildIsInTreasury
