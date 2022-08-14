@@ -6,6 +6,7 @@ You can look at our postman docs by clicking the button below.
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/run-collection/e61a0c42e7d572890996)
 
+
 ## What does it do?
 
 This API provides a simple but opinionated functionality layer between the Hedera JS client, we have cherry-picked and enhanced a number of capabilities including:
@@ -21,7 +22,13 @@ In turn, you can create a surprisingly large amount of applications from marketp
 
 This project isn't for everyone, if you require more granular control it is likely you'll write your own calls to your respective SDK. 
 
-However, we encourage using (or forking) this project to begin your adventures with Hedera the architecture of this API is scalable, tested, as CI/CD, and used in production by multiple flagship Hedera applications.  
+However, we encourage using (or forking) this project to begin your adventures with Hedera the architecture of this API is scalable, tested, as CI/CD, and used in production by multiple flagship Hedera applications.
+
+## Versioning requirements, major version release.
+
+For version 2 of the API, which includes the NFT flow you need to use **node 16** or higher.
+
+We have removed GitHub Actions CI checks for Node 12 & 14.
 
 ## Deploy with 1 click
 
