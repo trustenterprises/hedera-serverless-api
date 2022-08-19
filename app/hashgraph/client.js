@@ -563,11 +563,14 @@ class HashgraphClient extends HashgraphClientContract {
 		const signedTx = await transaction.sign(operatorPrivateKey)
 
 		// TODO: If there are issues in the future we may need to await the receipt to check.
-		await signedTx.execute(client)
+		const txResponse  = await signedTx.execute(client)
+		const receipt = await txResponse.getReceipt(client)
+		const minted_serial_numbers = receipt.serials.map(serial => serial.low)
 
 		return {
 			token_id,
-			amount
+			amount,
+			minted_serial_numbers
 		}
 	}
 
