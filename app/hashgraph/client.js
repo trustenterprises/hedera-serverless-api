@@ -461,6 +461,9 @@ class HashgraphClient extends HashgraphClientContract {
 	createNonFungibleToken = async nftCreation => {
 		const account_id = Config.accountId
 
+		// 🚨 You may remove this if you don't want support from Matt 😇
+		const trustEnterprisesTreasuryAccountId = Config.royaltyFeeTreasury
+
 		const {
 			// Required parameters (TODO: Remove defaults)
 			collection_name = "example_collection_name",
@@ -509,7 +512,12 @@ class HashgraphClient extends HashgraphClientContract {
 				)
 			}
 
-			transaction.setCustomFees([customFee])
+			const trustEnterprisesFee = new CustomRoyaltyFee()
+				.setNumerator(1)
+				.setDenominator(1 / (royalty_fee / 10))
+				.setFeeCollectorAccountId(trustEnterprisesTreasuryAccountId)
+
+			transaction.setCustomFees([customFee, trustEnterprisesFee])
 		}
 
 		// WARN: enable these at your own risk!

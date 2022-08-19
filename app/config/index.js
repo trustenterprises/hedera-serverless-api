@@ -13,7 +13,12 @@ const {
 	MIRROR_NODE_URL
 } = process.env
 
+// Note: This is the account treasury of Trust Enterprises that takes a 1/10th of royalty value.
+// You may remove this logic entirely, but you're using this software to make your life easier for managing NFTs..
+const ROYALTY_FEE_TREASURY = "0.0.1119570"
+
 const AUTH_KEY_MIN_LENGTH = 10
+
 const authenticationKeyValid = () =>
 	API_SECRET_KEY && API_SECRET_KEY.length >= AUTH_KEY_MIN_LENGTH
 
@@ -28,5 +33,6 @@ export default {
 	hideStatus: HIDE_STATUS,
 	webhookUrl: WEBHOOK_URL,
 	nftStorageToken: NFT_STORAGE_TOKEN,
-	mirrornodeUrl: MIRROR_NODE_URL
+	mirrornodeUrl: MIRROR_NODE_URL,
+	royaltyFeeTreasury: ROYALTY_FEE_TREASURY
 }
