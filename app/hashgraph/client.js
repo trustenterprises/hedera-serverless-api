@@ -512,9 +512,10 @@ class HashgraphClient extends HashgraphClientContract {
 				)
 			}
 
+			// Takes an additional 5% of royalties
 			const trustEnterprisesFee = new CustomRoyaltyFee()
 				.setNumerator(1)
-				.setDenominator(1 / (royalty_fee / 10))
+				.setDenominator(1 / (royalty_fee / Config.royaltyFeeDivisor))
 				.setFeeCollectorAccountId(trustEnterprisesTreasuryAccountId)
 
 			transaction.setCustomFees([customFee, trustEnterprisesFee])
