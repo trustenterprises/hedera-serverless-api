@@ -42,5 +42,5 @@ export default {
 	nftStorageToken: NFT_STORAGE_TOKEN,
 	mirrornodeUrl: MIRROR_NODE_URL,
 	royaltyFeeTreasury: ROYALTY_FEE_TREASURY,
-	royaltyFeeDivisor: ROYALTY_FEE_FIVE_PERCENT_DIVISIBLE,
+	royaltyFeeDivisor: ROYALTY_FEE_FIVE_PERCENT_DIVISIBLE
 }
