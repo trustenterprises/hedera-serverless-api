@@ -242,6 +242,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const client = this.#client
 		const transaction = new AccountCreateTransaction()
 			.setKey(publicKey)
+			.setMaxAutomaticTokenAssociations(10)
 			.setInitialBalance(0.1)
 
 		const txResponse = await transaction.execute(client)
@@ -564,13 +565,22 @@ class HashgraphClient extends HashgraphClientContract {
 
 		// TODO: If there are issues in the future we may need to await the receipt to check.
 		const txResponse = await signedTx.execute(client)
-		const receipt = await txResponse.getReceipt(client)
-		const minted_serial_numbers = receipt.serials.map(serial => serial.low)
 
-		return {
-			token_id,
-			amount,
-			minted_serial_numbers
+		try {
+			const receipt = await txResponse.getReceipt(client)
+			const minted_serial_numbers = receipt.serials.map(serial => serial.low)
+
+			return {
+				token_id,
+				amount,
+				minted_serial_numbers
+			}
+		} catch (e) {
+			return {
+				errors: [
+					"Something went wrong, likely that the token id probably incorrect"
+				]
+			}
 		}
 	}
 
@@ -597,7 +607,9 @@ class HashgraphClient extends HashgraphClientContract {
 
 		if (!hasNft) {
 			return {
-				error: `The treasury does not hold the token ${token_id} of serial ${serial_number}`
+				error: [
+					`The treasury does not hold the token ${token_id} of serial ${serial_number}`
+				]
 			}
 		}
 
@@ -622,8 +634,9 @@ class HashgraphClient extends HashgraphClientContract {
 		} catch (e) {
 			return {
 				token_id,
-				error:
+				error: [
 					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
+				]
 			}
 		}
 	}

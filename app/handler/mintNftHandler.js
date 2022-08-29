@@ -19,6 +19,10 @@ async function MintNftHandler(req, res) {
 		cid
 	})
 
+	if (token.errors) {
+		return Response.unprocessibleEntity(res, token.errors)
+	}
+
 	Response.json(res, token)
 }
 

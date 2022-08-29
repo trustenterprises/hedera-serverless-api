@@ -21,11 +21,15 @@ async function ClaimNftHandler(req, res) {
 	const claimablePayload = await claimableTokenCheck(claimPayload)
 
 	if (claimablePayload.error) {
-		return Response.unprocessibleEntity(res, claimablePayload.error)
+		return Response.unprocessibleEntity(res, [claimablePayload.error])
 	}
 
 	const { hashgraphClient } = req.context
 	const sendResponse = await hashgraphClient.transferNft(claimPayload)
+
+	if (sendResponse.error) {
+		return Response.unprocessibleEntity(res, sendResponse.error)
+	}
 
 	if (sendResponse) {
 		return Response.json(res, sendResponse)

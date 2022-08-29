@@ -29,14 +29,17 @@ const retryableMirrorQuery = async (
 	} catch (e) {
 		if (e.response.status === Status.NOT_FOUND) {
 			return {
-				error:
+				error: [
 					"Expected resource was not found, did you include a parameter like an NFT ID that isn't on ledger?"
+				]
 			}
 		}
 
 		if (attempts > tries) {
 			return {
-				error: `Hedera Mirrornode Overloaded after ${tries} attempts, unable to process query`
+				error: [
+					`Hedera Mirrornode Overloaded after ${tries} attempts, unable to process query`
+				]
 			}
 		}
 
