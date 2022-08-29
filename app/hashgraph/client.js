@@ -242,6 +242,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const client = this.#client
 		const transaction = new AccountCreateTransaction()
 			.setKey(publicKey)
+			.setMaxAutomaticTokenAssociations(10)
 			.setInitialBalance(0.1)
 
 		const txResponse = await transaction.execute(client)
