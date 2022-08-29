@@ -577,7 +577,9 @@ class HashgraphClient extends HashgraphClientContract {
 			}
 		} catch (e) {
 			return {
-				errors: [ 'Something went wrong, likely that the token id probably incorrect' ]
+				errors: [
+					"Something went wrong, likely that the token id probably incorrect"
+				]
 			}
 		}
 	}
@@ -605,7 +607,9 @@ class HashgraphClient extends HashgraphClientContract {
 
 		if (!hasNft) {
 			return {
-				error: [ `The treasury does not hold the token ${token_id} of serial ${serial_number}` ]
+				error: [
+					`The treasury does not hold the token ${token_id} of serial ${serial_number}`
+				]
 			}
 		}
 
@@ -630,8 +634,9 @@ class HashgraphClient extends HashgraphClientContract {
 		} catch (e) {
 			return {
 				token_id,
-				error:
-					[ "Transfer failed, ensure that the recipient account is valid and has associated to the token" ]
+				error: [
+					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
+				]
 			}
 		}
 	}
