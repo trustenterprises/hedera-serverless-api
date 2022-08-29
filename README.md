@@ -6,7 +6,6 @@ You can look at our postman docs by clicking the button below.
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/run-collection/e61a0c42e7d572890996)
 
-
 ## What does it do?
 
 This API provides a simple but opinionated functionality layer between the Hedera JS client, we have cherry-picked and enhanced a number of capabilities including:
