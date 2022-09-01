@@ -16,6 +16,8 @@ const schema = Joi.object()
 
 		creator: Joi.string().optional(),
 
+		creatorDid: Joi.string().optional(),
+
 		description: Joi.string().optional(),
 
 		image: Joi.string().optional(),
@@ -37,6 +39,8 @@ const schema = Joi.object()
 				})
 				.optional()
 		),
+
+		attributes: Joi.array().items(Joi.object().optional()),
 
 		// Properties seems like a free-for-all 😂
 		properties: Joi.object()
