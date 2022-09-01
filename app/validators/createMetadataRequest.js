@@ -40,9 +40,7 @@ const schema = Joi.object()
 				.optional()
 		),
 
-		attributes: Joi.array().items(
-			Joi.object().optional()
-		),
+		attributes: Joi.array().items(Joi.object().optional()),
 
 		// Properties seems like a free-for-all 😂
 		properties: Joi.object()
