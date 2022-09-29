@@ -226,7 +226,10 @@ class HashgraphClient extends HashgraphClientContract {
 			.execute(client)
 
 		// Token decimal pass through
-		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+		const tokenDecimals = this.ensureDecimalsForClientCall(
+			specification,
+			decimals
+		)
 
 		const token = JSON.parse(tokens.toString())[token_id]
 		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
@@ -248,9 +251,7 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
-	createAccount = async ({
-		hasAutomaticAssociations = true
-	} = {}) => {
+	createAccount = async ({ hasAutomaticAssociations = true } = {}) => {
 		const privateKey = await PrivateKey.generate()
 		const publicKey = privateKey.publicKey
 		const client = this.#client
@@ -288,7 +289,10 @@ class HashgraphClient extends HashgraphClientContract {
 		const token = JSON.parse(tokens.toString())[token_id]
 
 		// Token decimal pass through
-		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+		const tokenDecimals = this.ensureDecimalsForClientCall(
+			specification,
+			decimals
+		)
 
 		const expectedValue = token / 10 ** tokenDecimals
 
@@ -332,7 +336,10 @@ class HashgraphClient extends HashgraphClientContract {
 			.execute(client)
 
 		// Token decimal pass through
-		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+		const tokenDecimals = this.ensureDecimalsForClientCall(
+			specification,
+			decimals
+		)
 
 		const token = JSON.parse(tokens.toString())[token_id]
 		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
@@ -376,7 +383,10 @@ class HashgraphClient extends HashgraphClientContract {
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
 		// Token decimal pass through
-		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+		const tokenDecimals = this.ensureDecimalsForClientCall(
+			specification,
+			decimals
+		)
 
 		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
 
@@ -408,7 +418,10 @@ class HashgraphClient extends HashgraphClientContract {
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
 		// Token decimal pass through
-		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+		const tokenDecimals = this.ensureDecimalsForClientCall(
+			specification,
+			decimals
+		)
 
 		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
 
@@ -448,7 +461,10 @@ class HashgraphClient extends HashgraphClientContract {
 		const supplyPrivateKey = PrivateKey.fromString(Config.privateKey)
 
 		// Token decimal pass through
-		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+		const tokenDecimals = this.ensureDecimalsForClientCall(
+			specification,
+			decimals
+		)
 
 		const supplyWithDecimals = supply * 10 ** tokenDecimals
 

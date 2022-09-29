@@ -8,7 +8,13 @@ async function BequestTokenHandler(req, res) {
 		return Response.unprocessibleEntity(res, validationErrors)
 	}
 
-	const { encrypted_receiver_key, token_id, receiver_id, amount, decimals } = req.body
+	const {
+		encrypted_receiver_key,
+		token_id,
+		receiver_id,
+		amount,
+		decimals
+	} = req.body
 
 	const bequestPayload = {
 		encrypted_receiver_key,
