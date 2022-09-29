@@ -94,7 +94,9 @@ test("This test will mint tokens for the NFT project", async () => {
 // Normally this would hit an end point for an integration test
 test("This will create an account and attempt to claim a token this will fail due to lack of association", async () => {
 
-	dummyAccount = await client.createAccount()
+	dummyAccount = await client.createAccount({
+		hasAutomaticAssociations: false
+	})
 
 	const claimable = await claimableTokenCheck({
 		token_id: nftProject.token_id,
@@ -147,7 +149,7 @@ test("After pass has been transferred a the same pass will be attempted to be se
 		serial_number: SERIAL_NUM
 	})
 
-	expect(transfer.error).toBe(`The treasury does not hold the token ${nftPass.token_id} of serial ${SERIAL_NUM}`)
+	expect(transfer.error[0]).toBe(`The treasury does not hold the token ${nftPass.token_id} of serial ${SERIAL_NUM}`)
 }, 20000)
 
 
@@ -160,7 +162,7 @@ test("After pass has been transferred a claim will be attempted again", async ()
 	})
 
 	expect(transfer.token_id).toBe(nftProject.token_id)
-	expect(transfer.error).toBe('Transfer failed, ensure that the recipient account is valid and has associated to the token')
+	expect(transfer.error[0]).toBe('Transfer failed, ensure that the recipient account is valid and has associated to the token')
 }, 20000)
 
 

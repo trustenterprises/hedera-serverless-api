@@ -8,12 +8,13 @@ async function SendTokenHandler(req, res) {
 		return Response.unprocessibleEntity(res, validationErrors)
 	}
 
-	const { receiver_id, token_id, amount } = req.body
+	const { receiver_id, token_id, amount, decimals } = req.body
 
 	const sendPayload = {
 		receiver_id,
 		token_id,
-		amount
+		amount,
+		decimals
 	}
 
 	const { hashgraphClient } = req.context

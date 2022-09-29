@@ -18,7 +18,10 @@ const schema = Joi.object({
 		.min(1)
 		.required(),
 	requires_kyc: Joi.bool().default(false),
-	can_freeze: Joi.bool().default(false)
+	can_freeze: Joi.bool().default(false),
+	decimals: Joi.number()
+		.min(1)
+		.optional()
 }).options({ allowUnknown: true })
 
 function createTokenRequest(candidate = {}) {

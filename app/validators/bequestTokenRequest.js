@@ -6,7 +6,10 @@ const schema = Joi.object({
 		.required(),
 	token_id: Joi.string().required(),
 	receiver_id: Joi.string().required(),
-	amount: Joi.number().required()
+	amount: Joi.number().required(),
+	decimals: Joi.number()
+		.min(1)
+		.optional()
 })
 
 function bequestTokenRequest(candidate = {}) {
