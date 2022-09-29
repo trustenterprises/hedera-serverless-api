@@ -1,6 +1,5 @@
 import HashgraphClient from "app/hashgraph/client"
 import sleep from "app/utils/sleep"
-import balance from "../../pages/api/account/balance"
 
 const client = new HashgraphClient()
 
@@ -244,5 +243,45 @@ test("This test will check if a wallet holds different tokens", async () => {
 	})
 
 	expect(hasTokensTrue.has_tokens).toBeTruthy()
+
+}, 20000)
+
+
+test("This test will create a token with explicit decimals", async () => {
+
+	const decimals = 2;
+
+	const tokenData = {
+		supply: "10",
+		name: 'example decimal token',
+		symbol: 'ted-e2e',
+		memo: 'DECIMAL TOKEN ACCOUNT TEST',
+		decimals
+	}
+
+	const token = await client.createToken(tokenData)
+
+	const account = await client.createAccount({
+		hasAutomaticAssociations: false
+	})
+
+	await client.bequestToken({
+		encrypted_receiver_key: account.encryptedKey,
+		token_id: token.tokenId,
+		receiver_id: account.accountId,
+		amount: 1,
+		decimals
+	})
+
+	// MUST AWAIT CONSENSUS 🙃
+	await sleep(5000)
+
+	const initialBalance = await client.getTokenBalance({
+		account_id: account.accountId,
+		token_id: token.tokenId,
+		decimals
+	})
+
+	expect(initialBalance.amount).toBe(1)
 
 }, 20000)
