@@ -30,7 +30,6 @@ import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
 import Mirror from "app/utils/mirrornode"
 import Specification from "app/hashgraph/tokens/specifications"
-import Language from "app/constants/language"
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -40,6 +39,15 @@ class HashgraphClient extends HashgraphClientContract {
 		super()
 
 		this.#client = HashgraphNodeNetwork.getNodeNetworkClient()
+	}
+
+	ensureDecimalsForClientCall(specification, decimals = undefined) {
+		// If decimals are not set for a HAPI call return the base Default Specification values
+		if (isNaN(decimals)) {
+			return specification.decimals
+		}
+
+		return decimals
 	}
 
 	/**
@@ -198,7 +206,8 @@ class HashgraphClient extends HashgraphClientContract {
 		encrypted_receiver_key,
 		token_id,
 		receiver_id,
-		amount
+		amount,
+		decimals
 	}) => {
 		const client = this.#client
 
@@ -216,8 +225,11 @@ class HashgraphClient extends HashgraphClientContract {
 			.setAccountId(Config.accountId)
 			.execute(client)
 
+		// Token decimal pass through
+		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+
 		const token = JSON.parse(tokens.toString())[token_id]
-		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
 
 		if (token < adjustedAmountBySpec) {
 			return false
@@ -236,14 +248,19 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 	}
 
-	createAccount = async () => {
+	createAccount = async ({
+		hasAutomaticAssociations = true
+	} = {}) => {
 		const privateKey = await PrivateKey.generate()
 		const publicKey = privateKey.publicKey
 		const client = this.#client
 		const transaction = new AccountCreateTransaction()
 			.setKey(publicKey)
-			.setMaxAutomaticTokenAssociations(10)
 			.setInitialBalance(0.1)
+
+		if (hasAutomaticAssociations) {
+			transaction.setMaxAutomaticTokenAssociations(10)
+		}
 
 		const txResponse = await transaction.execute(client)
 		const receipt = await txResponse.getReceipt(client)
@@ -260,7 +277,8 @@ class HashgraphClient extends HashgraphClientContract {
 	getTokenBalance = async ({
 		specification = Specification.Fungible,
 		account_id,
-		token_id
+		token_id,
+		decimals
 	}) => {
 		const client = this.#client
 		const { tokens } = await new AccountBalanceQuery()
@@ -269,13 +287,16 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const token = JSON.parse(tokens.toString())[token_id]
 
-		const expectedValue = token / 10 ** specification.decimals
+		// Token decimal pass through
+		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+
+		const expectedValue = token / 10 ** tokenDecimals
 
 		return {
 			token_id,
 			amount: expectedValue || 0,
 			raw_amount: token || 0,
-			decimals: specification.decimals
+			decimals: tokenDecimals
 		}
 	}
 
@@ -301,7 +322,8 @@ class HashgraphClient extends HashgraphClientContract {
 		specification = Specification.Fungible,
 		token_id,
 		receiver_id,
-		amount
+		amount,
+		decimals
 	}) => {
 		const client = this.#client
 
@@ -309,8 +331,11 @@ class HashgraphClient extends HashgraphClientContract {
 			.setAccountId(Config.accountId)
 			.execute(client)
 
+		// Token decimal pass through
+		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+
 		const token = JSON.parse(tokens.toString())[token_id]
-		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
 
 		if (token < adjustedAmountBySpec) {
 			return {
@@ -344,12 +369,16 @@ class HashgraphClient extends HashgraphClientContract {
 	mintTokens = async ({
 		specification = Specification.Fungible,
 		tokenId,
-		amount
+		amount,
+		decimals
 	}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
-		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+		// Token decimal pass through
+		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+
+		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
 
 		const transaction = await new TokenMintTransaction()
 			.setTokenId(tokenId)
@@ -360,7 +389,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const signTx = await transaction.sign(operatorPrivateKey)
 		const txResponse = await signTx.execute(client)
 		const receipt = await txResponse.getReceipt(client)
-		const supply = receipt.totalSupply.low / 10 ** specification.decimals
+		const supply = receipt.totalSupply.low / 10 ** tokenDecimals
 
 		return {
 			supply,
@@ -372,12 +401,16 @@ class HashgraphClient extends HashgraphClientContract {
 	burnTokens = async ({
 		specification = Specification.Fungible,
 		tokenId,
-		amount
+		amount,
+		decimals
 	}) => {
 		const client = this.#client
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 
-		const adjustedAmountBySpec = amount * 10 ** specification.decimals
+		// Token decimal pass through
+		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+
+		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
 
 		const transaction = await new TokenBurnTransaction()
 			.setTokenId(tokenId)
@@ -387,7 +420,7 @@ class HashgraphClient extends HashgraphClientContract {
 		const signTx = await transaction.sign(operatorPrivateKey)
 		const txResponse = await signTx.execute(client)
 		const receipt = await txResponse.getReceipt(client)
-		const supply = receipt.totalSupply.low / 10 ** specification.decimals
+		const supply = receipt.totalSupply.low / 10 ** tokenDecimals
 
 		return {
 			supply,
@@ -404,6 +437,7 @@ class HashgraphClient extends HashgraphClientContract {
 			name,
 			symbol,
 			supply,
+			decimals,
 			requires_kyc = false,
 			can_freeze = false
 		} = tokenCreation
@@ -413,14 +447,17 @@ class HashgraphClient extends HashgraphClientContract {
 		const operatorPrivateKey = PrivateKey.fromString(Config.privateKey)
 		const supplyPrivateKey = PrivateKey.fromString(Config.privateKey)
 
-		const supplyWithDecimals = supply * 10 ** specification.decimals
+		// Token decimal pass through
+		const tokenDecimals = this.ensureDecimalsForClientCall(specification, decimals)
+
+		const supplyWithDecimals = supply * 10 ** tokenDecimals
 
 		const transaction = new TokenCreateTransaction()
 			.setTokenName(name)
 			.setTokenSymbol(symbol)
 			.setTreasuryAccountId(accountId || Config.accountId)
 			.setInitialSupply(supplyWithDecimals)
-			.setDecimals(specification.decimals)
+			.setDecimals(tokenDecimals)
 			.setFreezeDefault(false)
 			.setFeeScheduleKey(operatorPrivateKey)
 			.setSupplyKey(operatorPrivateKey)
@@ -452,6 +489,7 @@ class HashgraphClient extends HashgraphClientContract {
 			name,
 			symbol,
 			memo,
+			decimals: tokenDecimals,
 			reference: specification.reference,
 			supply: String(supply),
 			supplyWithDecimals: String(supplyWithDecimals),

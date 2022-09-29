@@ -15,7 +15,8 @@ async function CreateTokenHandler(req, res) {
 		supply,
 		memo,
 		requires_kyc = false,
-		can_freeze = false
+		can_freeze = false,
+		decimals
 	} = req.body
 
 	const { hashgraphClient } = req.context
@@ -27,7 +28,8 @@ async function CreateTokenHandler(req, res) {
 		symbol,
 		supply,
 		requires_kyc,
-		can_freeze
+		can_freeze,
+		decimals
 	})
 
 	Response.json(res, token)
