@@ -8,7 +8,7 @@ const schema = Joi.object({
 	receiver_id: Joi.string().required(),
 	amount: Joi.number().required(),
 	decimals: Joi.number()
-		.min(1)
+		.min(0)
 		.optional()
 })
 
