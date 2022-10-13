@@ -221,29 +221,24 @@ class HashgraphClient extends HashgraphClientContract {
 			accountId: receiver_id
 		})
 
-		const { tokens } = await new AccountBalanceQuery()
-			.setAccountId(Config.accountId)
-			.execute(client)
+		try {
 
-		const token = JSON.parse(tokens.toString())[token_id]
+			const transfer = await new TransferTransaction()
+				.addTokenTransfer(token_id, Config.accountId, -amount)
+				.addTokenTransfer(token_id, receiver_id, amount)
+				.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
+				.execute(client)
 
-		console.log(token)
-		console.log(amount)
+			return {
+				amount,
+				receiver_id,
+				transaction_id: transfer.transactionId.toString()
+			}
 
-		if (token < amount) {
-			return false
-		}
-
-		const transfer = await new TransferTransaction()
-			.addTokenTransfer(token_id, Config.accountId, -amount)
-			.addTokenTransfer(token_id, receiver_id, amount)
-			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
-			.execute(client)
-
-		return {
-			amount,
-			receiver_id,
-			transaction_id: transfer.transactionId.toString()
+		} catch (e) {
+			return {
+				error: "Token failed to transfer"
+			}
 		}
 	}
 
