@@ -227,6 +227,9 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const token = JSON.parse(tokens.toString())[token_id]
 
+		console.log(token)
+		console.log(amount)
+
 		if (token < amount) {
 			return false
 		}
