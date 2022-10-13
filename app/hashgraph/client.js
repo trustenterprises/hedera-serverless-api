@@ -225,43 +225,15 @@ class HashgraphClient extends HashgraphClientContract {
 			.setAccountId(Config.accountId)
 			.execute(client)
 
-		// Token decimal pass through
-		const tokenDecimals = this.ensureDecimalsForClientCall(
-			specification,
-			decimals
-		)
-
 		const token = JSON.parse(tokens.toString())[token_id]
-		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
-		
-		console.log('token_id')
-		console.log(token_id)
-		
-		console.log('receiver_id')
-		console.log(receiver_id)
-		
-		console.log('token')
-		console.log(token)
-		
-		console.log('amount')
-		console.log(amount)
-		
-		console.log('decimals')
-		console.log(decimals)
-		
-		console.log('adjustedAmountBySpec')
-		console.log(adjustedAmountBySpec)
 
-		console.log('tokenDecimals')
-		console.log(tokenDecimals)
-
-		if (token < adjustedAmountBySpec) {
+		if (token < amount) {
 			return false
 		}
 
 		const transfer = await new TransferTransaction()
-			.addTokenTransfer(token_id, Config.accountId, -adjustedAmountBySpec)
-			.addTokenTransfer(token_id, receiver_id, adjustedAmountBySpec)
+			.addTokenTransfer(token_id, Config.accountId, -amount)
+			.addTokenTransfer(token_id, receiver_id, amount)
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.execute(client)
 
