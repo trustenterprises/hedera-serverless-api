@@ -340,6 +340,13 @@ class HashgraphClient extends HashgraphClientContract {
 			specification,
 			decimals
 		)
+		
+		console.log(token_id)
+		console.log(receiver_id)
+		console.log(amount)
+		console.log(decimals)
+
+		console.log(tokenDecimals)
 
 		const token = JSON.parse(tokens.toString())[token_id]
 		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
