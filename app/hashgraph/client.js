@@ -233,6 +233,27 @@ class HashgraphClient extends HashgraphClientContract {
 
 		const token = JSON.parse(tokens.toString())[token_id]
 		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
+		
+		console.log('token_id')
+		console.log(token_id)
+		
+		console.log('receiver_id')
+		console.log(receiver_id)
+		
+		console.log('token')
+		console.log(token)
+		
+		console.log('amount')
+		console.log(amount)
+		
+		console.log('decimals')
+		console.log(decimals)
+		
+		console.log('adjustedAmountBySpec')
+		console.log(adjustedAmountBySpec)
+
+		console.log('tokenDecimals')
+		console.log(tokenDecimals)
 
 		if (token < adjustedAmountBySpec) {
 			return false
@@ -340,13 +361,6 @@ class HashgraphClient extends HashgraphClientContract {
 			specification,
 			decimals
 		)
-		
-		console.log(token_id)
-		console.log(receiver_id)
-		console.log(amount)
-		console.log(decimals)
-
-		console.log(tokenDecimals)
 
 		const token = JSON.parse(tokens.toString())[token_id]
 		const adjustedAmountBySpec = amount * 10 ** tokenDecimals
