@@ -222,7 +222,6 @@ class HashgraphClient extends HashgraphClientContract {
 		})
 
 		try {
-
 			const transfer = await new TransferTransaction()
 				.addTokenTransfer(token_id, Config.accountId, -amount)
 				.addTokenTransfer(token_id, receiver_id, amount)
@@ -234,7 +233,6 @@ class HashgraphClient extends HashgraphClientContract {
 				receiver_id,
 				transaction_id: transfer.transactionId.toString()
 			}
-
 		} catch (e) {
 			return {
 				error: "Token failed to transfer"
