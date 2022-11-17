@@ -694,12 +694,7 @@ class HashgraphClient extends HashgraphClientContract {
 	 * @param ser
 	 * @returns {Promise<void>}
 	 */
-	multipleNftTransfer = async ({
-		token_id,
-		receiver_id,
-		serials
-	}) => {
-
+	multipleNftTransfer = async ({ token_id, receiver_id, serials }) => {
 		const client = this.#client
 
 		const transfer = await new TransferTransaction()
@@ -755,7 +750,11 @@ class HashgraphClient extends HashgraphClientContract {
 
 		// Required recur fn needed for pagination
 		const sendNftTransaction = async (limit, paginationLink) => {
-			const nfts = await Mirror.fetchNftIdsForBatchTransfer(token_id, limit, paginationLink)
+			const nfts = await Mirror.fetchNftIdsForBatchTransfer(
+				token_id,
+				limit,
+				paginationLink
+			)
 
 			const transfer = await this.multipleNftTransfer({
 				token_id,
@@ -770,7 +769,6 @@ class HashgraphClient extends HashgraphClientContract {
 		}
 
 		const cycleBatchTransfers = async (cycle, results = [], paginationLink) => {
-
 			if (!cycle.length) {
 				return results
 			}

@@ -1,4 +1,3 @@
-
 const BATCH_LIMITS = {
 	nftTransfers: 10
 }
@@ -10,15 +9,17 @@ const BATCH_LIMITS = {
  * @returns {any[]}
  */
 function nftTransfer(amount) {
-
 	// mod rem diff
 	const rem = amount % BATCH_LIMITS.nftTransfers
 
 	// Basal cycle for batch, as a whole number
 	const max = (amount - rem) / BATCH_LIMITS.nftTransfers
 
-		// When rem is falsely, remove -- more simple then if
-	const cycle = Array(max).fill(BATCH_LIMITS.nftTransfers).concat(rem).filter(e => e)
+	// When rem is falsely, remove -- more simple then if
+	const cycle = Array(max)
+		.fill(BATCH_LIMITS.nftTransfers)
+		.concat(rem)
+		.filter(e => e)
 
 	// For readability
 	return cycle

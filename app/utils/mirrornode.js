@@ -10,9 +10,11 @@ const queryNftAccountOwner = (token_id, serial) =>
 	`${mirrornode}/api/v1/tokens/${token_id}/nfts/${serial}`
 const queryNftForOwner = (token_id, account_id) =>
 	`${mirrornode}/api/v1/tokens/${token_id}/nfts/?account.id=${account_id}`
-const queryTreasuryTokenBalance = (token_id, account_id) => `${mirrornode}/api/v1/tokens/${token_id}/balances/?account.id=${account_id}`
-const getNftByLimit = (token_id, account_id, limit = 20) => `${mirrornode}/api/v1/tokens/${token_id}/nfts?account.id=${account_id}&order=asc&limit=${limit}`
-const queryReq = (next) => `${mirrornode}${next}`
+const queryTreasuryTokenBalance = (token_id, account_id) =>
+	`${mirrornode}/api/v1/tokens/${token_id}/balances/?account.id=${account_id}`
+const getNftByLimit = (token_id, account_id, limit = 20) =>
+	`${mirrornode}/api/v1/tokens/${token_id}/nfts?account.id=${account_id}&order=asc&limit=${limit}`
+const queryReq = next => `${mirrornode}${next}`
 
 const MIRRORNODE_WAIT_MS = 500
 const MIRRORNODE_TRIES = 5
@@ -99,9 +101,7 @@ async function checkTreasuryHasNftAmount(
 		queryTreasuryTokenBalance(nft_id, expected)
 	)
 
-	const {
-		balances
-	} = result.data
+	const { balances } = result.data
 
 	if (!balances.length) {
 		return false
@@ -109,7 +109,6 @@ async function checkTreasuryHasNftAmount(
 
 	return balances[0].balance >= amount
 }
-
 
 /**
  * Fetch the nft ids for a particular NFT tx, include the "next" id
@@ -130,10 +129,7 @@ async function fetchNftIdsForBatchTransfer(
 		link ? queryReq(link) : getNftByLimit(nft_id, expected, limit)
 	)
 
-	const {
-		nfts,
-		links
-	} = result.data
+	const { nfts, links } = result.data
 
 	const serials = nfts.splice(0, limit)
 

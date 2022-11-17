@@ -18,7 +18,9 @@ async function BatchTransferNftHandler(req, res) {
 	}
 
 	const { hashgraphClient } = req.context
-	const sendResponse = await hashgraphClient.batchTransferNft(batchTransferPayload)
+	const sendResponse = await hashgraphClient.batchTransferNft(
+		batchTransferPayload
+	)
 
 	if (sendResponse.error) {
 		return Response.unprocessibleEntity(res, sendResponse.error)
