@@ -10,6 +10,9 @@ const queryNftAccountOwner = (token_id, serial) =>
 	`${mirrornode}/api/v1/tokens/${token_id}/nfts/${serial}`
 const queryNftForOwner = (token_id, account_id) =>
 	`${mirrornode}/api/v1/tokens/${token_id}/nfts/?account.id=${account_id}`
+const queryTreasuryTokenBalance = (token_id, account_id) => `${mirrornode}/api/v1/tokens/${token_id}/balances/?account.id=${account_id}`
+const getNftByLimit = (token_id, account_id, limit = 20) => `${mirrornode}/api/v1/tokens/${token_id}/nfts?account.id=${account_id}&order=asc&limit=${limit}`
+const queryReq = (next) => `${mirrornode}${next}`
 
 const MIRRORNODE_WAIT_MS = 500
 const MIRRORNODE_TRIES = 5
@@ -76,6 +79,69 @@ async function checkTreasuryHasNft(
 	}
 
 	return result.data.account_id === expected
+}
+
+/**
+ * The primary purpose of this method is to detect whether the Treasury has enough
+ * tokens in treasury to satisfy the batch transfer of NFTs
+ *
+ * @param nft_id
+ * @param amount
+ * @param expected
+ * @returns {Promise<boolean>}
+ */
+async function checkTreasuryHasNftAmount(
+	nft_id,
+	amount,
+	expected = Config.accountId
+) {
+	const result = await retryableMirrorQuery(
+		queryTreasuryTokenBalance(nft_id, expected)
+	)
+
+	const {
+		balances
+	} = result.data
+
+	if (!balances.length) {
+		return false
+	}
+
+	return balances[0].balance >= amount
+}
+
+
+/**
+ * Fetch the nft ids for a particular NFT tx, include the "next" id
+ *
+ * @param nft_id
+ * @param limit
+ * @param expected
+ * @param link
+ * @returns {Promise<boolean>}
+ */
+async function fetchNftIdsForBatchTransfer(
+	nft_id,
+	limit,
+	link,
+	expected = Config.accountId
+) {
+	const result = await retryableMirrorQuery(
+		link ? queryReq(link) : getNftByLimit(nft_id, expected, limit)
+	)
+
+	const {
+		nfts,
+		links
+	} = result.data
+
+	const serials = nfts.splice(0, limit)
+
+	return {
+		actual: serials.length,
+		serials: serials.map(nft => nft.serial_number),
+		link: links.next
+	}
 }
 
 /**
@@ -156,5 +222,7 @@ export default {
 	checkTreasuryHasNft,
 	getSerialNumbersOfOwnedNft,
 	fetchTokenInformation,
-	ensureClaimableChildNftIsTransferable
+	ensureClaimableChildNftIsTransferable,
+	checkTreasuryHasNftAmount,
+	fetchNftIdsForBatchTransfer
 }
