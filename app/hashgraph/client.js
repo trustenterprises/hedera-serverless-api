@@ -30,6 +30,7 @@ import Explorer from "app/utils/explorer"
 import sendWebhookMessage from "app/utils/sendWebhookMessage"
 import Mirror from "app/utils/mirrornode"
 import Specification from "app/hashgraph/tokens/specifications"
+import Batchable from "app/utils/batchable"
 
 class HashgraphClient extends HashgraphClientContract {
 	// Keep a private internal reference to SDK client
@@ -681,6 +682,120 @@ class HashgraphClient extends HashgraphClientContract {
 					"Transfer failed, ensure that the recipient account is valid and has associated to the token"
 				]
 			}
+		}
+	}
+
+	/**
+	 * Given a token id and a receiver, attempt to send tokens based on limit
+	 * return status of transfer.
+	 *
+	 * @param token_id
+	 * @param receiver_id
+	 * @param ser
+	 * @returns {Promise<void>}
+	 */
+	multipleNftTransfer = async ({ token_id, receiver_id, serials }) => {
+		const client = this.#client
+
+		const transfer = await new TransferTransaction()
+
+		serials.map(serial => {
+			transfer.addNftTransfer(
+				new NftId(token_id, serial),
+				Config.accountId,
+				receiver_id
+			)
+		})
+
+		// We are making the assumption that if the transaction is successful NFTs are sent
+		try {
+			const tx = await transfer.execute(client)
+
+			await tx.getReceipt(client)
+
+			return {
+				serials,
+				total: serials.length
+			}
+		} catch (e) {
+			return {
+				error: e.message.toString(),
+				total: 0
+			}
+		}
+	}
+
+	/**
+	 * Attempt to transfer a batch of NFTs, of a particular amount
+	 *
+	 * We check that
+	 *
+	 * @param token_id
+	 * @param receiver_id
+	 * @param amount
+	 * @returns {Promise<{error: string}|{transaction_id: string, amount: (number|*), receiver_id}>}
+	 */
+	batchTransferNft = async ({ token_id, receiver_id, amount }) => {
+		const hasNft = await Mirror.checkTreasuryHasNftAmount(token_id, amount)
+
+		if (!hasNft) {
+			return {
+				errors: [
+					`The treasury does not hold the amount of NFTs of id ${token_id} to do the required batch transfer`
+				]
+			}
+		}
+
+		const transferCycleLimits = Batchable.nftTransfer(amount)
+
+		// Required recur fn needed for pagination
+		const sendNftTransaction = async (limit, paginationLink) => {
+			const nfts = await Mirror.fetchNftIdsForBatchTransfer(
+				token_id,
+				limit,
+				paginationLink
+			)
+
+			const transfer = await this.multipleNftTransfer({
+				token_id,
+				receiver_id,
+				serials: nfts.serials
+			})
+
+			return {
+				...nfts,
+				...transfer
+			}
+		}
+
+		const cycleBatchTransfers = async (cycle, results = [], paginationLink) => {
+			if (!cycle.length) {
+				return results
+			}
+
+			const limit = cycle.shift()
+
+			const transfer = await sendNftTransaction(limit, paginationLink)
+
+			results.push(transfer)
+
+			return cycleBatchTransfers(cycle, results, transfer.link)
+		}
+
+		const results = await cycleBatchTransfers(transferCycleLimits)
+
+		const errors = results.map(e => e.errors).filter(e => e)
+
+		if (errors.length) {
+			return {
+				errors
+			}
+		}
+
+		return {
+			results,
+			expected: amount,
+			actual_sent: results.map(e => e.total).reduce((e, n) => e + n)
 		}
 	}
 }
