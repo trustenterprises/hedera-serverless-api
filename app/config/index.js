@@ -20,7 +20,7 @@ const { MAINNET } = Environment
 // Note: This is the account treasury of Trust Enterprises that takes a 1/10th of royalty value.
 // You may remove this logic entirely, but you're using this software to make your life easier for managing NFTs..
 const ROYALTY_FEE_TREASURY =
-	HEDERA_NETWORK.toLowerCase() === MAINNET ? "0.0.1119570" : "0.0.34319163"
+	HEDERA_NETWORK.toLowerCase() === MAINNET ? "0.0.1119570" : "0.0.1897"
 
 const ROYALTY_FEE_FIVE_PERCENT_DIVISIBLE = 20
 
