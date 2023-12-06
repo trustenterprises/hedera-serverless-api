@@ -517,8 +517,7 @@ class HashgraphClient extends HashgraphClientContract {
 
 			// Enable custom fees, default to 5% to API treasury account
 			allow_custom_fees = true,
-			// royalty_account_id = account_id,
-			royalty_account_id = "0.0.4152948",
+			royalty_account_id = account_id,
 			royalty_fee = 0.05,
 
 			// Optional fallback for custom fees
