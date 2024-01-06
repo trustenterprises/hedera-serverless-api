@@ -1,12 +1,23 @@
-# Trust Enterprises: Serverless Hedera API
+# Trust Enterprises: Simple Self Hosted Hedera API Services
 
-Welcome to the serverless hedera API, you can find out more about the project and running your first client through [reading the docs](https://docs.trust.enterprises).
+Welcome to your self-hosted Hedera API, you can find out more about the project and running your first client through [reading the docs](https://docs.trust.enterprises).
 
 You can look at our postman docs by clicking the button below.
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/run-collection/e61a0c42e7d572890996)
 
+## Who is this for?
+
+Projects or individuals that want to either:
+
+a) Develop a proof of concept application and not worry about complexity of deploying their own service and working with the technology
+b) Have the starting point of an API for services to begin (used by DOVU, Amplify, Inky's Art Club, and countless community members.)
+
+You provide a system where you want control to manage tokens, or work with consensus without having to worry about identity and wallets. 
+
 ## What does it do?
+
+Deploy and configure this API to services such as Digital Ocean App Platform, Vercel, and other serverless PaaS platforms.
 
 This API provides a simple but opinionated functionality layer between the Hedera JS client, we have cherry-picked and enhanced a number of capabilities including:
 
@@ -14,6 +25,7 @@ This API provides a simple but opinionated functionality layer between the Heder
 - Token creation 
 - Custodial account generation
 - An entire NFT flow for the creation, minting, and management of assets.
+- HCS20 Inscriptions
 
 > Our API flow for the management of NFTs has been built from the ground up and includes special functionality for NFT-pass driven experiences that isn't present anywhere else.
 
