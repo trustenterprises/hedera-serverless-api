@@ -1,37 +1,34 @@
-import deployInscriptionRequest from "app/validators/inscriptions/deployRequest"
+import burnInscriptionRequest from "app/validators/inscriptions/burnRequest"
 import Response from "app/response"
 import Config from "app/config"
 
-async function DeployInscriptionHandler(req, res) {
-	const validationErrors = deployInscriptionRequest(req.body)
+async function BurnInscriptionHandler(req, res) {
+	const validationErrors = burnInscriptionRequest(req.body)
 
 	if (validationErrors) {
 		return Response.unprocessibleEntity(res, validationErrors)
 	}
 
 	const {
-		name,
-		ticker,
-		max,
-		limit,
-		metadata,
+		amount,
+		from,
 		memo,
 		topic_id = Config.inscriptionTopic
 	} = req.body
 
-	const deploy = {
+	const { tick } = req.query
+
+	const burn = {
 		p: "hcs-20", // default
-		op: "deploy", // default
-		name,
-		tick: ticker,
-		max,
-		lim: limit,
-		metadata,
+		op: "burn", // default
+		tick,
+		amt: amount,
+		from,
 		m: memo
 	}
 
 	const messageOptions = {
-		message: JSON.stringify(deploy),
+		message: JSON.stringify(burn),
 		topic_id
 	}
 
@@ -43,8 +40,8 @@ async function DeployInscriptionHandler(req, res) {
 
 	Response.json(res, {
 		...response,
-		inscription: deploy
+		inscription: burn
 	})
 }
 
-export default DeployInscriptionHandler
+export default BurnInscriptionHandler

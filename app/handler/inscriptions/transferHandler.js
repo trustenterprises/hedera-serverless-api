@@ -1,37 +1,36 @@
-import deployInscriptionRequest from "app/validators/inscriptions/deployRequest"
+import transferInscriptionRequest from "app/validators/inscriptions/transferRequest"
 import Response from "app/response"
 import Config from "app/config"
 
-async function DeployInscriptionHandler(req, res) {
-	const validationErrors = deployInscriptionRequest(req.body)
+async function TransferInscriptionHandler(req, res) {
+	const validationErrors = transferInscriptionRequest(req.body)
 
 	if (validationErrors) {
 		return Response.unprocessibleEntity(res, validationErrors)
 	}
 
 	const {
-		name,
-		ticker,
-		max,
-		limit,
-		metadata,
+		amount,
+		from,
+		to,
 		memo,
 		topic_id = Config.inscriptionTopic
 	} = req.body
 
-	const deploy = {
+	const { tick } = req.query
+
+	const transfer = {
 		p: "hcs-20", // default
-		op: "deploy", // default
-		name,
-		tick: ticker,
-		max,
-		lim: limit,
-		metadata,
+		op: "transfer", // default
+		tick,
+		amt: amount,
+		from,
+		to,
 		m: memo
 	}
 
 	const messageOptions = {
-		message: JSON.stringify(deploy),
+		message: JSON.stringify(transfer),
 		topic_id
 	}
 
@@ -43,8 +42,8 @@ async function DeployInscriptionHandler(req, res) {
 
 	Response.json(res, {
 		...response,
-		inscription: deploy
+		inscription: transfer
 	})
 }
 
-export default DeployInscriptionHandler
+export default TransferInscriptionHandler

@@ -1,16 +1,14 @@
 const Joi = require("@hapi/joi")
 
 const schema = Joi.object({
-	name: Joi.string().required(),
-	ticker: Joi.string().required(),
-	max: Joi.number().required(),
-	limit: Joi.string(),
-	metadata: Joi.string(),
+	from: Joi.string().required(),
+	to: Joi.string().required(),
+	amount: Joi.number().required(),
 	memo: Joi.string(),
 	topic_id: Joi.string()
 })
 
-function deployRequest(candidate = {}) {
+function transferRequest(candidate = {}) {
 	const validation = schema.validate(candidate || {}, { abortEarly: false })
 
 	if (validation.error) {
@@ -18,4 +16,4 @@ function deployRequest(candidate = {}) {
 	}
 }
 
-export default deployRequest
+export default transferRequest
