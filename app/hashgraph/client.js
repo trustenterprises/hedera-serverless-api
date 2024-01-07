@@ -116,12 +116,7 @@ class HashgraphClient extends HashgraphClientContract {
 		return { balance: parseFloat(balance.hbars.toString()) }
 	}
 
-	async sendConsensusMessage({
-		reference,
-		allow_synchronous_consensus,
-		message,
-		topic_id
-	}) {
+	async sendConsensusMessage({ reference, message, topic_id }) {
 		const client = this.#client
 
 		const transaction = await new TopicMessageSubmitTransaction({
@@ -139,38 +134,6 @@ class HashgraphClient extends HashgraphClientContract {
 			topic_id,
 			transaction_id: transaction.transactionId.toString(),
 			explorer_url: Explorer.getExplorerUrl(transaction.transactionId)
-		}
-
-		const syncMessageConsensus = async () => {
-			// await sleep()
-
-			const record = await new TransactionRecordQuery()
-				.setTransactionId(transaction.transactionId)
-				.execute(client)
-
-			const { seconds, nanos } = record.consensusTimestamp
-
-			const consensusResult = {
-				...messageTransactionResponse,
-				consensus_timestamp: {
-					seconds: seconds.toString(),
-					nanos: nanos.toString()
-				},
-				reference: reference
-			}
-
-			await sendWebhookMessage(consensusResult)
-
-			return consensusResult
-		}
-
-		// TODO: This is problematic.
-		// if (allow_synchronous_consensus) {
-		// 	return await syncMessageConsensus()
-		// }
-
-		if (Config.webhookUrl) {
-			await syncMessageConsensus()
 		}
 
 		return messageTransactionResponse

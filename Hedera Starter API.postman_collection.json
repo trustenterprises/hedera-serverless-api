@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "2c026d8f-795d-48c7-8554-4bbc17f797ad",
-		"name": "Serverless Hedera API",
+		"_postman_id": "074667d1-8e6a-4cde-9c23-b03075320a83",
+		"name": "Hedera Starter API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1019,25 +1019,25 @@
 							"urlencoded": [
 								{
 									"key": "amount",
-									"value": "2",
+									"value": "10",
 									"type": "text"
 								},
 								{
 									"key": "cid",
-									"value": "bafkreih4foivhmvlxsfvxgi2xxfbq2pd4vgkzpso2wb4jsfwak5wgnmu4q",
+									"value": "bafkreicrkvm5zuryhsrygesgpf26tclzbnp2x6k7t5xxg6rg4vmow3k3ma",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{domain}}/api/nft/0.0.47817425/mint",
+							"raw": "{{domain}}/api/nft/0.0.1321356/mint",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
 								"api",
 								"nft",
-								"0.0.47817425",
+								"0.0.1321356",
 								"mint"
 							]
 						}
@@ -1060,17 +1060,17 @@
 							"urlencoded": [
 								{
 									"key": "token_id",
-									"value": "0.0.15657534",
+									"value": "0.0.1321121",
 									"type": "text"
 								},
 								{
 									"key": "receiver_id",
-									"value": "0.0.15657776",
+									"value": "0.0.733321",
 									"type": "text"
 								},
 								{
 									"key": "serial_number",
-									"value": "3",
+									"value": "9",
 									"type": "text"
 								}
 							]
@@ -1245,6 +1245,843 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": {\n        \"error\": \"Transfer failed, ensure that the recipient account is valid and has associated to the token\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Inscription",
+			"item": [
+				{
+					"name": "Deploy Inscription",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "topic_id",
+									"value": "7459744",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "ticker",
+									"value": "TICK",
+									"type": "text"
+								},
+								{
+									"key": "max",
+									"value": "100",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/inscription/deploy",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"inscription",
+								"deploy"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "[Error] Validation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "617080",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/deploy",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"deploy"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "ETag",
+									"value": "\"52-N/XTKBsnyY94IlE9F5s2K+TcmlI\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "82"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 15:52:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"\\\"name\\\" is required\",\n        \"\\\"ticker\\\" is required\",\n        \"\\\"max\\\" is required\"\n    ]\n}"
+						},
+						{
+							"name": "[SUCCESS] Deploy Inscription",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "7459744",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "ticker",
+											"value": "TICK",
+											"type": "text"
+										},
+										{
+											"key": "max",
+											"value": "100",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/deploy",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"deploy"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"fb-+xXuXOpvFkPwF9EkToPCj0hPD0g\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "251"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 16:01:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"topic_id\": \"7459744\",\n        \"transaction_id\": \"0.0.135908@1704556890.630971149\",\n        \"explorer_url\": \"https://ledger-testnet.hashlog.io/tx/0.0.135908@1704556890.630971149\",\n        \"inscription\": {\n            \"p\": \"hcs-20\",\n            \"op\": \"deploy\",\n            \"name\": \"test\",\n            \"tick\": \"TICK\",\n            \"max\": \"100\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Mint Inscription",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "topic_id",
+									"value": "7459744",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "0.0.1156",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/inscription/TICK/mint",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"inscription",
+								"TICK",
+								"mint"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "[ERROR] Validation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "7459744",
+											"type": "text"
+										},
+										{
+											"key": "to",
+											"value": "0.0.1156",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/TICK/mint",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"TICK",
+										"mint"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "ETag",
+									"value": "\"25-H+qcV2Vy5dsh2tbUUQOzI11DCIs\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 16:20:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"\\\"amount\\\" is required\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Burn Inscription",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "topic_id",
+									"value": "7459744",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "0.0.1156",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/inscription/TICK/burn",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"inscription",
+								"TICK",
+								"burn"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "[ERROR] Validation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "7459744",
+											"type": "text"
+										},
+										{
+											"key": "from",
+											"value": "0.0.1156",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/TICK/burn",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"TICK",
+										"burn"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "ETag",
+									"value": "\"25-H+qcV2Vy5dsh2tbUUQOzI11DCIs\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 16:29:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"\\\"amount\\\" is required\"\n    ]\n}"
+						},
+						{
+							"name": "[SUCCESS] Burn Inscription",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "7459744",
+											"type": "text"
+										},
+										{
+											"key": "from",
+											"value": "0.0.1156",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/TICK/burn",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"TICK",
+										"burn"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"fb-yz3yASIzbPGaJZVd8ES6PQnMXh8\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "251"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 16:36:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"topic_id\": \"7459744\",\n        \"transaction_id\": \"0.0.135908@1704558976.649570355\",\n        \"explorer_url\": \"https://ledger-testnet.hashlog.io/tx/0.0.135908@1704558976.649570355\",\n        \"inscription\": {\n            \"p\": \"hcs-20\",\n            \"op\": \"burn\",\n            \"tick\": \"TICK\",\n            \"amt\": \"1\",\n            \"from\": \"0.0.1156\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Transfer Inscription",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_secret_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "topic_id",
+									"value": "7459744",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "0.0.1",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "0.0.2",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/inscription/TICK/transfer",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"inscription",
+								"TICK",
+								"transfer"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "[ERROR] validation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "7459744",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/TICK/transfer",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"TICK",
+										"transfer"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "ETag",
+									"value": "\"51-K+NO0DCTwgcrCky7pyTjhsXxJ0I\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "81"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 16:35:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"\\\"from\\\" is required\",\n        \"\\\"to\\\" is required\",\n        \"\\\"amount\\\" is required\"\n    ]\n}"
+						},
+						{
+							"name": "[SUCCESS] Transfer Inscription",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "7459744",
+											"type": "text"
+										},
+										{
+											"key": "from",
+											"value": "0.0.1",
+											"type": "text"
+										},
+										{
+											"key": "to",
+											"value": "0.0.2",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/TICK/transfer",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"TICK",
+										"transfer"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"109-MRZ6/8CHtKoC2cx534GBCIPfx90\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "265"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 16:36:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"topic_id\": \"7459744\",\n        \"transaction_id\": \"0.0.135908@1704558953.198848334\",\n        \"explorer_url\": \"https://ledger-testnet.hashlog.io/tx/0.0.135908@1704558953.198848334\",\n        \"inscription\": {\n            \"p\": \"hcs-20\",\n            \"op\": \"transfer\",\n            \"tick\": \"TICK\",\n            \"amt\": \"1\",\n            \"from\": \"0.0.1\",\n            \"to\": \"0.0.2\"\n        }\n    }\n}"
+						},
+						{
+							"name": "[SUCCESS] Transfer Inscription",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_secret_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "topic_id",
+											"value": "7459744",
+											"type": "text"
+										},
+										{
+											"key": "from",
+											"value": "0.0.1",
+											"type": "text"
+										},
+										{
+											"key": "to",
+											"value": "0.0.2",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/inscription/TICK/transfer",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"inscription",
+										"TICK",
+										"transfer"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "ETag",
+									"value": "\"109-MRZ6/8CHtKoC2cx534GBCIPfx90\""
+								},
+								{
+									"key": "Content-Length",
+									"value": "265"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 06 Jan 2024 16:36:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"topic_id\": \"7459744\",\n        \"transaction_id\": \"0.0.135908@1704558953.198848334\",\n        \"explorer_url\": \"https://ledger-testnet.hashlog.io/tx/0.0.135908@1704558953.198848334\",\n        \"inscription\": {\n            \"p\": \"hcs-20\",\n            \"op\": \"transfer\",\n            \"tick\": \"TICK\",\n            \"amt\": \"1\",\n            \"from\": \"0.0.1\",\n            \"to\": \"0.0.2\"\n        }\n    }\n}"
 						}
 					]
 				}
