@@ -1,6 +1,6 @@
 import createMetadataRequest from "app/validators/createMetadataRequest"
 import Response from "app/response"
-import NftStorage from "app/utils/nftStorage"
+import FilebaseStorage from "app/utils/filebaseStorage"
 import Language from "app/constants/language"
 
 async function CreateMetadataHandler(req, res) {
@@ -14,7 +14,7 @@ async function CreateMetadataHandler(req, res) {
 		)
 	}
 
-	const cid = await NftStorage.storeData(req.body)
+	const cid = await FilebaseStorage.storeData(req.body)
 
 	if (cid) {
 		return Response.json(res, { cid })

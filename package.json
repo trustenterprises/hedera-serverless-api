@@ -14,6 +14,7 @@
     "start-server": "next start -H 0.0.0.0 -p ${PORT:-8080}"
   },
   "dependencies": {
+    "@filebase/client": "^0.0.5",
     "@hapi/joi": "^17.1.1",
     "@hashgraph/sdk": "^2.6.0",
     "axios": "^0.21.1",
