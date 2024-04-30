@@ -1,5 +1,6 @@
 import { FilebaseClient } from "@filebase/client"
 import Config from "app/config"
+import { Blob } from "node:buffer"
 
 // Returns metadata for pinned payload
 async function storeData(payload) {
