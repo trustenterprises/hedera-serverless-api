@@ -126,14 +126,17 @@ class HashgraphClient extends HashgraphClientContract {
 			.setMaxTransactionFee(new Hbar(100, HbarUnit.Hbar))
 			.execute(client)
 
-		await transaction.getReceipt(client)
+		const receipt = await transaction.getReceipt(client)
+		const topicSequenceNumber = receipt.topicSequenceNumber.toString()
 
 		// Remember to allow for mainnet links for explorer
 		const messageTransactionResponse = {
 			reference,
 			topic_id,
+			topicSequenceNumber,
 			transaction_id: transaction.transactionId.toString(),
-			explorer_url: Explorer.getExplorerUrl(transaction.transactionId)
+			explorer_url: Explorer.getExplorerUrl(transaction.transactionId),
+			mirror_node_query: `${Config.mirrornodeUrl}/api/v1/topics/${topic_id}/messages/${topicSequenceNumber}`
 		}
 
 		return messageTransactionResponse
