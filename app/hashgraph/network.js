@@ -32,8 +32,8 @@ const nodesForMain = {
 	"35.204.86.32:50211": new AccountId(12)
 }
 
-const mainnetNodes = Client.forMainnet()
-// const mainnetNodes = Client.forNetwork(nodesForMain)
+// const mainnetNodes = Client.forMainnet()
+const mainnetNodes = Client.forNetwork(nodesForMain)
 
 const previewnetNodes = Client.forPreviewnet()
 
